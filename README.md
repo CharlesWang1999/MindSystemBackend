@@ -27,5 +27,5 @@ Then fllow the step 7-9. (maybe use pip instead of pip3)
 5. open browser and goto: http://localhost:8080
 
 ## Develop steps
-Try to move ARPictureBook from node server to Django. --via. Charles 2022/08/07
-Finish add start page, try to add second and third page, code review today later. --via. Charles 2022/08/08
+1. Try to move ARPictureBook from node server to Django. --via. Charles 2022/08/07
+2. Finish add start page, try to add second and third page, code review today later. --via. Charles 2022/08/08
