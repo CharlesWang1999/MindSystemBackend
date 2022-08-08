@@ -11,12 +11,13 @@ MindSystemBackend
 7. ```pip3 install django==2.2.27```
 8. ```pip3 install pylint #make sure use the pylint in virtualenv would be used```
 9. ```pip3 install pylint-django```
+10. ```pip3 install django-sslserver``` (add at 2022/08/08 to run ssl server)
 
 **Windows**
 
 [click here to learn how to activate virtualenv](https://blog.csdn.net/weixin_38346042/article/details/108944235)
 
-Then fllow the step 7-9. (maybe use pip instead of pip3)
+Then fllow the step 7-10. (maybe use pip instead of pip3)
 
 ## How to Strat This Project
 **Hint: May use ```python``` instead of ```python3``` command if show error in Windows**
@@ -26,6 +27,14 @@ Then fllow the step 7-9. (maybe use pip instead of pip3)
 4. ```python3 manage.py runserver 0.0.0.0:8080```
 5. open browser and goto: http://localhost:8080
 
+## How to Run SSL server
+1. activate the virtualenv
+2. ```pip/pip3 install django-sslserver```
+3. ```python3 manage.py runsslserver 0.0.0.0:8080```
+4. open browser and goto: https://localhost:8080
+5. check your ip and use other device in same LAN and goto: https://x.x.x.x:8080
+
 ## Develop steps
 1. Try to move ARPictureBook from node server to Django. --via. Charles 2022/08/07
-2. Finish add start page, try to add second and third page, code review today later. --via. Charles 2022/08/08
+2. Finish add start page, try to add second and third page, code review today later. --via. Charles 2022/08/08 morning
+3. Finish add second and third page, code review, find mobile phone must use ssl server to use camera. --via. Charles 2022/08/08 night

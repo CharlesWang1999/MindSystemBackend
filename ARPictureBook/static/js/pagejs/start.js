@@ -217,7 +217,7 @@ function scene_3_wrong() {
 }
 
 function jumpToNext() {
-  window.location.href = "second";
+  window.location.href = "/ARPicture/second";
 }
 
 var synth = window.speechSynthesis;
