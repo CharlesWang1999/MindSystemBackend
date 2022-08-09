@@ -34,6 +34,12 @@ Then fllow the step 7-10. (maybe use pip instead of pip3)
 4. open browser and goto: https://localhost:8080
 5. check your ip and use other device in same LAN and goto: https://x.x.x.x:8080
 
+## Where to find url
+1. find the file MindSystemBackend/urls.py
+2. find the include file in url patterns. e.g.:ARPictureBook.urls
+3. find the url pattern in the file of step 2.
+4. concat the final url. e.g.: localhost:8080/ARPicture/start
+
 ## Develop steps
 1. Try to move ARPictureBook from node server to Django. --via. Charles 2022/08/07
 2. Finish add start page, try to add second and third page, code review today later. --via. Charles 2022/08/08 morning
