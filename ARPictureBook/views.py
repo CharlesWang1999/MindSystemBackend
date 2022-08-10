@@ -1,15 +1,24 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
 
-def startPageView(request):
+def start_page_view(request):
     return render(request, 'start.html')
 
 
-def secondPageView(request):
+def second_page_view(request):
     return render(request, 'second.html')
 
 
-def thirdPageView(request):
+def third_page_view(request):
     return render(request, 'third.html')
+
+
+@csrf_exempt
+def get_query_result_view(request):
+    print('test ajax function')
+    print(request.POST.get('data', 'no data'))
+    return JsonResponse({"status": "success"})

@@ -217,6 +217,17 @@ function scene_3_wrong() {
 }
 
 function jumpToNext() {
+  console.log('testts')
+  $.ajax({
+    url: '/ARPicture/get_query_result/',
+    type: 'POST',
+    data: {'data': 'test data'},
+    datatype: 'json',
+    success: function(response){
+      console.log(response)
+      alert('success, click to next page...')
+    }
+  })
   window.location.href = "/ARPicture/second";
 }
 
