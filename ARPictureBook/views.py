@@ -20,5 +20,6 @@ def third_page_view(request):
 @csrf_exempt
 def get_query_result_view(request):
     print('test ajax function')
+    print(request.POST)
     print(request.POST.get('data', 'no data'))
     return JsonResponse({"status": "success"})

@@ -40,11 +40,19 @@ Then fllow the step 7-10. (maybe use pip instead of pip3)
 3. find the url pattern in the file of step 2.
 4. concat the final url. e.g.: localhost:8080/ARPicture/start
 
+## Use Django Admin see models
+1. The admin site is http(s)://localhost:8080/admin
+2. Create super user in terminal by use command ```python3 manage.py createsuperuser```
+3. Create your own model in file models.py
+4. Registe your model in file admin.py
+5. Login admin site, then you can see all your registed model there.
+
 ## Develop steps
 1. Try to move ARPictureBook from node server to Django. --via. Charles 2022/08/07
 2. Finish add start page, try to add second and third page, code review today later. --via. Charles 2022/08/08 morning
 3. Finish add second and third page, code review, find mobile phone must use ssl server to use camera. --via. Charles 2022/08/08 night
 4. Try to use ajax to send data from frontend to backend, quick demo. Use UnderScoreCase in backend, keep CamelCase in frontend. --via. Charles 2022/08/09
+5. Create models to save the query result. --via. Charles 2022/08/10
 
 ## Reference
 1. [How to use H5 camera](https://www.jianshu.com/p/052a7fecc358)
