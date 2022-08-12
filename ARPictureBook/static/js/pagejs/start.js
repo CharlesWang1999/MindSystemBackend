@@ -234,7 +234,10 @@ function jumpToNext() {
   var currentHref = window.location.href;
   let p=currentHref.split('?')[1]
   let params=new URLSearchParams(p)
-  console.log(params.get('id'))
+  const resultId = params.get('id');
+  if (resultId){
+    resultData['result_id'] = resultId;
+  }
   $.ajax({
     url: '/ARPicture/get_query_result/',
     type: 'POST',
@@ -242,8 +245,16 @@ function jumpToNext() {
     datatype: 'json',
     success: function(response){
       console.log(response);
+      if (response['status'] == 'error'){
+        alert("error!", response['errormessage']);
+        return;
+      }
       alert('success, click to next page...');
-      window.location.href = "/ARPicture/second";
+      url = "/ARPicture/second/"
+      if (response['result_id']) {
+        url += '?id=' + response['result_id']
+      }
+      window.location.href = url;
     }
   })
 }

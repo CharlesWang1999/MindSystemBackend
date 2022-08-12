@@ -52,7 +52,8 @@ Then fllow the step 7-10. (maybe use pip instead of pip3)
 2. Finish add start page, try to add second and third page, code review today later. --via. Charles 2022/08/08 morning
 3. Finish add second and third page, code review, find mobile phone must use ssl server to use camera. --via. Charles 2022/08/08 night
 4. Try to use ajax to send data from frontend to backend, quick demo. Use UnderScoreCase in backend, keep CamelCase in frontend. --via. Charles 2022/08/09
-5. Create models to save the query result. --via. Charles 2022/08/10
+5. Create models to save the query result. --via. Charles 2022/08/11
+6. Finish save result logic. --via Charles 2022/08/12
 
 ## Reference
 1. [How to use H5 camera](https://www.jianshu.com/p/052a7fecc358)

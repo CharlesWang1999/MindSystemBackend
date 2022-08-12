@@ -30,6 +30,8 @@ var bottomInfo = document.querySelector("#bottom-info");
 const correctText = "恭喜!<br/>回答正确"
 const wrongText = "回答错误<br/>再接再厉!";
 
+var resultData = {'page_name': 'second'};
+
 function scene_1_display() {
   topInfo.innerHTML =
     "小头爸爸和大头儿子发现钓到的时垃圾时，是什么心情？<br/>点击按钮做出选择";
@@ -60,6 +62,8 @@ function scene_1_correct() {
   topInfo.classList.replace("btn-primary", "btn-success");
   topInfo.innerHTML = correctText;
 
+  resultData['result1'] = 'correct';
+
   select_3.removeEventListener("click", scene_1_correct);
   select_2.removeEventListener("click", scene_1_wrong);
   select_1.removeEventListener("click", scene_1_wrong);
@@ -76,6 +80,8 @@ function scene_1_wrong() {
 
   topInfo.classList.replace("btn-primary", "btn-danger");
   topInfo.innerHTML = wrongText;
+
+  resultData['result1'] = 'wrong';
 
   select_3.removeEventListener("click", scene_1_correct);
   select_2.removeEventListener("click", scene_1_wrong);
@@ -126,6 +132,8 @@ function scene_2_correct() {
   topInfo.classList.replace("btn-primary", "btn-success");
   topInfo.innerHTML = correctText;
 
+  resultData['result2'] = 'correct';
+
   select_1.removeEventListener("click", scene_2_correct);
   select_2.removeEventListener("click", scene_2_wrong);
   select_3.removeEventListener("click", scene_2_wrong);
@@ -142,6 +150,8 @@ function scene_2_wrong() {
 
   topInfo.classList.replace("btn-primary", "btn-danger");
   topInfo.innerHTML = wrongText;
+
+  resultData['result2'] = 'wrong';
 
   select_1.removeEventListener("click", scene_2_correct);
   select_2.removeEventListener("click", scene_2_wrong);
@@ -192,6 +202,8 @@ function scene_3_correct() {
   topInfo.classList.replace("btn-primary", "btn-success");
   topInfo.innerHTML = correctText;
 
+  resultData['result3'] = 'correct';
+
   select_2.removeEventListener("click", scene_3_correct);
   select_1.removeEventListener("click", scene_3_wrong);
   select_3.removeEventListener("click", scene_3_wrong);
@@ -209,6 +221,8 @@ function scene_3_wrong() {
   topInfo.classList.replace("btn-primary", "btn-danger");
   topInfo.innerHTML = wrongText;
 
+  resultData['result3'] = 'wrong';
+
   select_2.removeEventListener("click", scene_3_correct);
   select_1.removeEventListener("click", scene_3_wrong);
   select_3.removeEventListener("click", scene_3_wrong);
@@ -217,7 +231,32 @@ function scene_3_wrong() {
 }
 
 function jumpToNext() {
-  window.location.href = "/ARPicture/third";
+  var currentHref = window.location.href;
+  let p=currentHref.split('?')[1]
+  let params=new URLSearchParams(p)
+  const resultId = params.get('id');
+  if (resultId){
+    resultData['result_id'] = resultId;
+  }
+  $.ajax({
+    url: '/ARPicture/get_query_result/',
+    type: 'POST',
+    data: resultData,
+    datatype: 'json',
+    success: function(response){
+      console.log(response);
+      if (response['status'] == 'error'){
+        alert("error!", response['errormessage']);
+        return;
+      }
+      alert('success, click to next page...');
+      url = "/ARPicture/third/"
+      if (response['result_id']) {
+        url += '?id=' + response['result_id']
+      }
+      window.location.href = url;
+    }
+  })
 }
 
 var synth = window.speechSynthesis;
