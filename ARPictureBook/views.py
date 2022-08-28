@@ -9,18 +9,17 @@ from ARPictureBook.models import (
 
 # import os
 # from datetime import datetime
-# from MindSystemBackend.kinectRecord import KinectRecord
+# # from MindSystemBackend.kinectRecord import KinectRecord
 # from MindSystemBackend.videoRecord import VideoRecord
 # from MindSystemBackend.actionAnalysis import ActionAnalysis
 # from MindSystemBackend.microExpressionAnalysis import MicroExpressionAnalysis
 # from queue import SimpleQueue
 # from threading import Thread
 # from time import sleep
-# from datetime import datetime
 
 # kinect_record = KinectRecord()
 # # will be different in different situations
-# camera_id = 1
+# camera_id = 0
 # video_record = VideoRecord(camera_id)
 # action_analysis = ActionAnalysis()
 # micro_expression_analysis = MicroExpressionAnalysis()
@@ -30,6 +29,7 @@ from ARPictureBook.models import (
 # micro_expression_save_path = ''
 
 # analysis_thread_queue = SimpleQueue()
+
 
 # def analysis_thread():
 #     while True:
@@ -53,22 +53,27 @@ from ARPictureBook.models import (
 
 #     action_video_save_path = f'{video_data_save_dir_this_round}/kinect_action.avi'
 #     micro_expression_save_path = f'{video_data_save_dir_this_round}/camera_micro_expression.avi'
-#     kinect_record.start_record(action_video_save_path)
+#     # kinect_record.start_record(action_video_save_path)
 #     video_record.start_record(micro_expression_save_path)
 
 
 # def stop_record():
-#     kinect_record.stop_record()
+#     # kinect_record.stop_record()
 #     video_record.stop_record()
 
-#     action_thread = Thread(name=f'analysis {action_video_save_path}',
-#         target=action_analysis.analysis, args=(action_video_save_path,))
-#     micro_expression_thread = Thread(name = f'analysis {micro_expression_save_path}',
-#         target=micro_expression_analysis.analysis, args=(micro_expression_save_path, ))
+#     action_thread = Thread(
+#         name=f'analysis {action_video_save_path}',
+#         target=action_analysis.analysis, args=(action_video_save_path,)
+#     )
+#     micro_expression_thread = Thread(
+#         name=f'analysis {micro_expression_save_path}',
+#         target=micro_expression_analysis.analysis, args=(micro_expression_save_path, )
+#     )
 #     analysis_thread_queue.put(action_thread)
 #     analysis_thread_queue.put(micro_expression_thread)
 
-# analysis_main_thread = Thread(name = 'analysis_main_thread', target=analysis_thread)
+
+# analysis_main_thread = Thread(name='analysis_main_thread', target=analysis_thread)
 # analysis_main_thread.start()
 
 # Create your views here.

@@ -48,8 +48,11 @@ class KinectRecord:
 
     def start_record(self, save_file_path):
         self._stopRecord = False
-        self._current_record_thread = Thread(name='kinect record thread',
-            target=self._record_thread, args=(save_file_path, ))
+        self._current_record_thread = Thread(
+            name='kinect record thread',
+            target=self._record_thread,
+            args=(save_file_path, )
+        )
         self._current_record_thread.start()
 
     def stop_record(self):

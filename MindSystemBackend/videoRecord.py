@@ -48,7 +48,7 @@ class VideoRecord:
 
 
 if __name__ == "__main__":
-    record_camera_id = 2
+    record_camera_id = 0
     save_file_path = './test.avi'
     video_record = VideoRecord(record_camera_id)
     video_record.start_record(save_file_path)
