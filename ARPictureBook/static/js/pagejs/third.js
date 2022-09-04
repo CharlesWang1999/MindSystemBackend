@@ -31,6 +31,7 @@ const correctText = "恭喜!<br/>回答正确"
 const wrongText = "回答错误<br/>再接再厉!";
 
 var resultData = {'page_name': 'third'};
+var partitionData = {'page_name': 'third'};
 
 function scene_1_display() {
   topInfo.innerHTML =
@@ -64,6 +65,9 @@ function scene_1_correct() {
 
   resultData['result1'] = 'correct';
 
+  partitionData['question_num'] = 1
+  partitionVideo();
+
   select_3.removeEventListener("click", scene_1_correct);
   select_2.removeEventListener("click", scene_1_wrong);
   select_1.removeEventListener("click", scene_1_wrong);
@@ -82,6 +86,9 @@ function scene_1_wrong() {
   topInfo.innerHTML = wrongText;
 
   resultData['result1'] = 'wrong';
+
+  partitionData['question_num'] = 1
+  partitionVideo();
 
   select_3.removeEventListener("click", scene_1_correct);
   select_2.removeEventListener("click", scene_1_wrong);
@@ -134,6 +141,9 @@ function scene_2_correct() {
 
   resultData['result2'] = 'correct';
 
+  partitionData['question_num'] = 2
+  partitionVideo();
+
   select_1.removeEventListener("click", scene_2_correct);
   select_2.removeEventListener("click", scene_2_wrong);
   select_3.removeEventListener("click", scene_2_wrong);
@@ -152,6 +162,9 @@ function scene_2_wrong() {
   topInfo.innerHTML = wrongText;
 
   resultData['result2'] = 'wrong';
+
+  partitionData['question_num'] = 2
+  partitionVideo();
 
   select_1.removeEventListener("click", scene_2_correct);
   select_2.removeEventListener("click", scene_2_wrong);
@@ -267,4 +280,25 @@ utterance.rate = 0.85;
 function speckText(str) {
   utterance.text = str;
   synth.speak(utterance);
+}
+
+//syj worte
+function partitionVideo(){
+  console.log("开始调用py")
+  var currentHref = window.location.href;
+  let p=currentHref.split('?')[1]
+  let params=new URLSearchParams(p)
+  const resultId = params.get('id');
+  if (resultId){
+    partitionData['result_id'] = resultId;
+  }
+  $.ajax({
+    url:'/ARPicture/get_web_click/',
+    type:'POST',
+    data: partitionData,
+    datatype: 'json',
+    success:function (response) {
+      console.log(response);
+    }
+  })
 }

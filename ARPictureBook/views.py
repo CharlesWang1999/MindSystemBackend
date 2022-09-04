@@ -64,7 +64,7 @@ def start_record():
         video_record.start_record(micro_expression_save_path)
 
 
-def stop_record():
+def stop_record(start_id=None, page_name=None, question_num=None):
     if settings.KINECT_RECORD:
         kinect_record.stop_record()
     if settings.CAMERA_RECORD:
@@ -79,7 +79,8 @@ def stop_record():
     if settings.CAMERA_RECORD:
         micro_expression_thread = Thread(
             name=f'analysis {micro_expression_save_path}',
-            target=micro_expression_analysis.analysis, args=(micro_expression_save_path, )
+            target=micro_expression_analysis.analysis,
+            args=(micro_expression_save_path, start_id, page_name, question_num, )
         )
         analysis_thread_queue.put(micro_expression_thread)
 
@@ -107,7 +108,6 @@ def third_page_view(request):
 
 @csrf_exempt
 def get_query_result_view(request):
-    stop_record()
     page_name = request.POST.get('page_name')
     result_id = request.POST.get('result_id', None)
     result1 = request.POST.get('result1', None)
@@ -116,7 +116,7 @@ def get_query_result_view(request):
     result1 = result1 == 'correct'
     result2 = result2 == 'correct'
     result3 = result3 == 'correct'
-    print(result1, result2, result3, result_id)
+    print(result1, result2, result3, result_id, type(result_id))
     if page_name == 'start' and result_id is None:
         start_page_result = StartPageResult(
             first_result=result1,
@@ -175,17 +175,29 @@ def get_query_result_view(request):
         third_page_result.save()
     else:
         return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
+    
+    stop_record(start_id=result_id, page_name=page_name, question_num=3)
 
     return JsonResponse({"status": "success", "result_id": result_id})
 
 
 @csrf_exempt
 def get_web_click_view(request):
-    page_name = request.POST.get('page_name')
-    question_num = request.POST.get('question_num')
+    page_name = request.POST.get('page_name', None)
+    question_num = request.POST.get('question_num', None)
+    result_id = request.POST.get('result_id', None)
     print('@186---', page_name, question_num, type(question_num))
-    stop_record()
+    question_num = int(question_num)
+    if page_name == 'start' and question_num == 1 and not result_id:
+        answer = request.POST.get('answer', None)
+        answer = answer == 'correct'
+        start_page_result = StartPageResult(
+            first_result=answer
+        )
+        start_page_result.save()
+        result_id = start_page_result.id
+    stop_record(start_id=result_id, page_name=page_name, question_num=question_num)
     print("继续开始录制")
     start_record()
 
-    return JsonResponse({"status": "success", "success": "contiune record"})
+    return JsonResponse({"status": "success", "result_id": result_id})

@@ -66,7 +66,8 @@ function scene_1_correct() {
   resultData['result1'] = 'correct';
 
   partitionData['question_num'] = 1
-  partitionVideo(partitionData);
+  partitionData['answer'] = 'correct'
+  partitionVideo();
 
   select_1.removeEventListener("click", scene_1_correct);
   select_2.removeEventListener("click", scene_1_wrong);
@@ -88,7 +89,8 @@ function scene_1_wrong() {
   resultData['result1'] = 'wrong';
 
   partitionData['question_num'] = 1
-  partitionVideo(partitionData);
+  partitionData['answer'] = 'wrong'
+  partitionVideo();
 
   select_1.removeEventListener("click", scene_1_correct);
   select_2.removeEventListener("click", scene_1_wrong);
@@ -142,7 +144,7 @@ function scene_2_correct() {
   resultData['result2'] = 'correct';
 
   partitionData['question_num'] = 2
-  partitionVideo(partitionData);
+  partitionVideo();
 
   select_2.removeEventListener("click", scene_2_correct);
   select_1.removeEventListener("click", scene_2_wrong);
@@ -164,7 +166,7 @@ function scene_2_wrong() {
   resultData['result2'] = 'wrong';
 
   partitionData['question_num'] = 2
-  partitionVideo(partitionData);
+  partitionVideo();
 
   select_2.removeEventListener("click", scene_2_correct);
   select_1.removeEventListener("click", scene_2_wrong);
@@ -251,6 +253,7 @@ function jumpToNext() {
   if (resultId){
     resultData['result_id'] = resultId;
   }
+  console.log('@256---', resultData)
   $.ajax({
     url: '/ARPicture/get_query_result/',
     type: 'POST',
@@ -283,8 +286,15 @@ function speckText(str) {
 }
 
 //syj worte
-function partitionVideo(partitionData){
+function partitionVideo(){
   console.log("开始调用py")
+  var currentHref = window.location.href;
+  let p=currentHref.split('?')[1]
+  let params=new URLSearchParams(p)
+  const resultId = params.get('id');
+  if (resultId){
+    partitionData['result_id'] = resultId;
+  }
   $.ajax({
     url:'/ARPicture/get_web_click/',
     type:'POST',
@@ -292,6 +302,8 @@ function partitionVideo(partitionData){
     datatype: 'json',
     success:function (response) {
       console.log(response);
+      if (!resultData['result_id'])
+        resultData['result_id'] = response['result_id'];
     }
   })
 }
