@@ -177,3 +177,15 @@ def get_query_result_view(request):
         return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
 
     return JsonResponse({"status": "success", "result_id": result_id})
+
+
+@csrf_exempt
+def get_web_click_view(request):
+    page_name = request.POST.get('page_name')
+    question_num = request.POST.get('question_num')
+    print('@186---', page_name, question_num, type(question_num))
+    stop_record()
+    print("继续开始录制")
+    start_record()
+
+    return JsonResponse({"status": "success", "success": "contiune record"})

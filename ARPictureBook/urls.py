@@ -4,6 +4,7 @@ from ARPictureBook.views import (
     second_page_view,
     third_page_view,
     get_query_result_view,
+    get_web_click_view,
 )
 
 urlpatterns = [
@@ -11,4 +12,5 @@ urlpatterns = [
     path('second/', second_page_view),
     path('third/', third_page_view),
     path('get_query_result/', get_query_result_view),
+    path('get_web_click/', get_web_click_view),
 ]

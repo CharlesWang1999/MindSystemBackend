@@ -31,6 +31,7 @@ const correctText = "恭喜!<br/>回答正确"
 const wrongText = "回答错误<br/>再接再厉!";
 
 var resultData = {'page_name': 'start'};
+var partitionData = {'page_name': 'start'};
 
 function scene_1_display() {
   topInfo.innerHTML =
@@ -64,6 +65,9 @@ function scene_1_correct() {
 
   resultData['result1'] = 'correct';
 
+  partitionData['question_num'] = 1
+  partitionVideo(partitionData);
+
   select_1.removeEventListener("click", scene_1_correct);
   select_2.removeEventListener("click", scene_1_wrong);
   select_3.removeEventListener("click", scene_1_wrong);
@@ -82,6 +86,9 @@ function scene_1_wrong() {
   topInfo.innerHTML = wrongText;
 
   resultData['result1'] = 'wrong';
+
+  partitionData['question_num'] = 1
+  partitionVideo(partitionData);
 
   select_1.removeEventListener("click", scene_1_correct);
   select_2.removeEventListener("click", scene_1_wrong);
@@ -134,6 +141,9 @@ function scene_2_correct() {
 
   resultData['result2'] = 'correct';
 
+  partitionData['question_num'] = 2
+  partitionVideo(partitionData);
+
   select_2.removeEventListener("click", scene_2_correct);
   select_1.removeEventListener("click", scene_2_wrong);
   select_3.removeEventListener("click", scene_2_wrong);
@@ -152,6 +162,9 @@ function scene_2_wrong() {
   topInfo.innerHTML = wrongText;
 
   resultData['result2'] = 'wrong';
+
+  partitionData['question_num'] = 2
+  partitionVideo(partitionData);
 
   select_2.removeEventListener("click", scene_2_correct);
   select_1.removeEventListener("click", scene_2_wrong);
@@ -267,4 +280,18 @@ utterance.rate = 0.85;
 function speckText(str) {
   utterance.text = str;
   synth.speak(utterance);
+}
+
+//syj worte
+function partitionVideo(partitionData){
+  console.log("开始调用py")
+  $.ajax({
+    url:'/ARPicture/get_web_click/',
+    type:'POST',
+    data: partitionData,
+    datatype: 'json',
+    success:function (response) {
+      console.log(response);
+    }
+  })
 }
