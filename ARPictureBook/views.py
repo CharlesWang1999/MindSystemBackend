@@ -1,102 +1,113 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 from ARPictureBook.models import (
     StartPageResult,
     SecondPageResult,
     ThirdPageResult
 )
 
-# import os
-# from datetime import datetime
-# # from MindSystemBackend.kinectRecord import KinectRecord
-# from MindSystemBackend.videoRecord import VideoRecord
-# from MindSystemBackend.actionAnalysis import ActionAnalysis
-# from MindSystemBackend.microExpressionAnalysis import MicroExpressionAnalysis
-# from queue import SimpleQueue
-# from threading import Thread
-# from time import sleep
+import os
+from datetime import datetime
+if settings.KINECT_RECORD:
+    from MindSystemBackend.kinectRecord import KinectRecord
+    from MindSystemBackend.actionAnalysis import ActionAnalysis
+if settings.CAMERA_RECORD:
+    from MindSystemBackend.videoRecord import VideoRecord
+    from MindSystemBackend.microExpressionAnalysis import MicroExpressionAnalysis
+from queue import SimpleQueue
+from threading import Thread
+from time import sleep
 
-# kinect_record = KinectRecord()
-# # will be different in different situations
-# camera_id = 0
-# video_record = VideoRecord(camera_id)
-# action_analysis = ActionAnalysis()
-# micro_expression_analysis = MicroExpressionAnalysis()
+if settings.KINECT_RECORD:
+    kinect_record = KinectRecord()
+    action_analysis = ActionAnalysis()
+    action_video_save_path = ''
 
-# video_data_save_path = 'VideoData'
-# action_video_save_path = ''
-# micro_expression_save_path = ''
+# will be different in different situations, plz overwrite camera id in settings.
+if settings.CAMERA_RECORD:
+    camera_id = settings.CAMERA_ID
+    video_record = VideoRecord(camera_id)
+    micro_expression_analysis = MicroExpressionAnalysis()
+    micro_expression_save_path = ''
 
-# analysis_thread_queue = SimpleQueue()
-
-
-# def analysis_thread():
-#     while True:
-#         while analysis_thread_queue.empty():
-#             print(f'analysis_thread_queue is empty at {datetime.now()}')
-#             sleep(10)
-#         current_analysis_thread = analysis_thread_queue.get()
-#         current_analysis_thread.start()
-#         print(f'start analysis {current_analysis_thread.name} there still has {analysis_thread_queue.qsize()} analysis thread waited')
-#         current_analysis_thread.join()
+video_data_save_path = 'VideoData'
+analysis_thread_queue = SimpleQueue()
 
 
-# def start_record():
-#     start_time = datetime.now()
-#     video_data_save_dir_this_round = f'{video_data_save_path}/{start_time.year:=04}_{start_time.month:=02}_{start_time.day:=02}_{start_time.hour:=02}_{start_time.minute:=02}_{start_time.second:=02}'
-#     if not os.path.exists(video_data_save_dir_this_round):
-#         os.mkdir(video_data_save_dir_this_round)
-
-#     global action_video_save_path
-#     global micro_expression_save_path
-
-#     action_video_save_path = f'{video_data_save_dir_this_round}/kinect_action.avi'
-#     micro_expression_save_path = f'{video_data_save_dir_this_round}/camera_micro_expression.avi'
-#     # kinect_record.start_record(action_video_save_path)
-#     video_record.start_record(micro_expression_save_path)
+def analysis_thread():
+    while True:
+        while analysis_thread_queue.empty():
+            print(f'analysis_thread_queue is empty at {datetime.now()}')
+            sleep(10)
+        current_analysis_thread = analysis_thread_queue.get()
+        current_analysis_thread.start()
+        print(f'start analysis {current_analysis_thread.name} there still has {analysis_thread_queue.qsize()} analysis thread waited')
+        current_analysis_thread.join()
 
 
-# def stop_record():
-#     # kinect_record.stop_record()
-#     video_record.stop_record()
+def start_record():
+    start_time = datetime.now()
+    video_data_save_dir_this_round = f'{video_data_save_path}/{start_time.year:=04}_{start_time.month:=02}_{start_time.day:=02}_{start_time.hour:=02}_{start_time.minute:=02}_{start_time.second:=02}'
+    if not os.path.exists(video_data_save_dir_this_round):
+        os.mkdir(video_data_save_dir_this_round)
 
-#     action_thread = Thread(
-#         name=f'analysis {action_video_save_path}',
-#         target=action_analysis.analysis, args=(action_video_save_path,)
-#     )
-#     micro_expression_thread = Thread(
-#         name=f'analysis {micro_expression_save_path}',
-#         target=micro_expression_analysis.analysis, args=(micro_expression_save_path, )
-#     )
-#     analysis_thread_queue.put(action_thread)
-#     analysis_thread_queue.put(micro_expression_thread)
+    global action_video_save_path
+    global micro_expression_save_path
+
+    if settings.KINECT_RECORD:
+        action_video_save_path = f'{video_data_save_dir_this_round}/kinect_action.avi'
+        kinect_record.start_record(action_video_save_path)
+    if settings.CAMERA_RECORD:
+        micro_expression_save_path = f'{video_data_save_dir_this_round}/camera_micro_expression.avi'
+        video_record.start_record(micro_expression_save_path)
 
 
-# analysis_main_thread = Thread(name='analysis_main_thread', target=analysis_thread)
-# analysis_main_thread.start()
+def stop_record():
+    if settings.KINECT_RECORD:
+        kinect_record.stop_record()
+    if settings.CAMERA_RECORD:
+        video_record.stop_record()
+
+    if settings.KINECT_RECORD:
+        action_thread = Thread(
+            name=f'analysis {action_video_save_path}',
+            target=action_analysis.analysis, args=(action_video_save_path,)
+        )
+        analysis_thread_queue.put(action_thread)
+    if settings.CAMERA_RECORD:
+        micro_expression_thread = Thread(
+            name=f'analysis {micro_expression_save_path}',
+            target=micro_expression_analysis.analysis, args=(micro_expression_save_path, )
+        )
+        analysis_thread_queue.put(micro_expression_thread)
+
+
+analysis_main_thread = Thread(name='analysis_main_thread', target=analysis_thread)
+analysis_main_thread.start()
 
 # Create your views here.
 
 
 def start_page_view(request):
-    # start_record()
+    start_record()
     return render(request, 'start.html')
 
 
 def second_page_view(request):
-    # start_record()
+    start_record()
     return render(request, 'second.html')
 
 
 def third_page_view(request):
-    # start_record()
+    start_record()
     return render(request, 'third.html')
 
 
 @csrf_exempt
 def get_query_result_view(request):
-    # stop_record()
+    stop_record()
     page_name = request.POST.get('page_name')
     result_id = request.POST.get('result_id', None)
     result1 = request.POST.get('result1', None)
