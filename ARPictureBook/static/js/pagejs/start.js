@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
   const sceneEl = document.querySelector("a-scene");
   // const arSystem = sceneEl.systems["mindar-image-system"];
+  cartoonData['CartoonVideo_path']="/static/cartoon/cartoon_first.avi";
+  PlayVideoCartoon();
   sceneEl.addEventListener("arReady", (event) => {
     speckText("你认为小头爸爸现在的心情怎样？点击按钮帮助大头儿子做出选择");
   });
-
   scene_1_display();
 });
 
@@ -299,6 +300,28 @@ function partitionVideo(){
     url:'/ARPicture/get_web_click/',
     type:'POST',
     data: partitionData,
+    datatype: 'json',
+    success:function (response) {
+      console.log(response);
+      if (!resultData['result_id'])
+        resultData['result_id'] = response['result_id'];
+    }
+  })
+}
+
+function PlayVideoCartoon(){
+  console.log("开始调用py")
+  var currentHref = window.location.href;
+  let p=currentHref.split('?')[1]
+  let params=new URLSearchParams(p)
+  const resultId = params.get('id');
+  if (resultId){
+    cartoonData['result_id'] = resultId;
+  }
+  $.ajax({
+    url:'/ARPicture/PlayVideo_cartoon/',
+    type:'POST',
+    data: cartoonData,
     datatype: 'json',
     success:function (response) {
       console.log(response);
