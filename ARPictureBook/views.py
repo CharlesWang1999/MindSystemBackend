@@ -20,7 +20,6 @@ from queue import SimpleQueue
 from threading import Thread
 from time import sleep
 import cv2
-import numpy as np
 from ffpyplayer.player import MediaPlayer
 
 if settings.KINECT_RECORD:
@@ -88,18 +87,13 @@ def stop_record(start_id=None, page_name=None, question_num=None):
         analysis_thread_queue.put(micro_expression_thread)
 
 
-analysis_main_thread = Thread(name='analysis_main_thread', target=analysis_thread)
-analysis_main_thread.start()
-
-# Create your views here.
-@csrf_exempt
-def PlayVideo_cartoon_view(request):
+def cartoon_video_thread(file_name):
     cv2.destroyAllWindows()
-    video_path=request.POST.get('CartoonVideo_path')
-    video=cv2.VideoCapture(video_path)
+    video_path = os.path.join(settings.BASE_DIR, 'ARPictureBook', 'static', 'cartoon', file_name)
+    video = cv2.VideoCapture(video_path)
     player = MediaPlayer(video_path)
     while True:
-        grabbed, frame=video.read()
+        grabbed, frame = video.read()
         audio_frame, val = player.get_frame()
         if not grabbed:
             print("End of video")
@@ -108,14 +102,22 @@ def PlayVideo_cartoon_view(request):
             break
         cv2.imshow("Video", frame)
         if val != 'eof' and audio_frame is not None:
-            #audio
+            # audio
             img, t = audio_frame
     video.release()
-    #sleep(10)
-    #cv2.destroyAllWindows()
+    # sleep(10)
+    # cv2.destroyAllWindows()
 
+
+analysis_main_thread = Thread(name='analysis_main_thread', target=analysis_thread)
+analysis_main_thread.start()
+
+
+# Create your views here.
 def start_page_view(request):
     start_record()
+    show_cartoon_video_thread = Thread(name='show_cartoon_video_thread', target=cartoon_video_thread, args=('cartoon_first.avi',))
+    show_cartoon_video_thread.start()
     return render(request, 'start.html')
 
 
@@ -198,7 +200,7 @@ def get_query_result_view(request):
         third_page_result.save()
     else:
         return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
-    
+
     stop_record(start_id=result_id, page_name=page_name, question_num=3)
 
     return JsonResponse({"status": "success", "result_id": result_id})

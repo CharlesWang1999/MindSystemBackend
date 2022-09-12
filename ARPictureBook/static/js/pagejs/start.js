@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const sceneEl = document.querySelector("a-scene");
   // const arSystem = sceneEl.systems["mindar-image-system"];
-  cartoonData['CartoonVideo_path']="/static/cartoon/cartoon_first.avi";
-  PlayVideoCartoon();
+  // cartoonData['CartoonVideo_path']="/static/cartoon/cartoon_first.avi";
+  // PlayVideoCartoon();
   sceneEl.addEventListener("arReady", (event) => {
     speckText("你认为小头爸爸现在的心情怎样？点击按钮帮助大头儿子做出选择");
   });
