@@ -19,6 +19,9 @@ if settings.CAMERA_RECORD:
 from queue import SimpleQueue
 from threading import Thread
 from time import sleep
+import cv2
+import numpy as np
+from ffpyplayer.player import MediaPlayer
 
 if settings.KINECT_RECORD:
     kinect_record = KinectRecord()
@@ -89,7 +92,27 @@ analysis_main_thread = Thread(name='analysis_main_thread', target=analysis_threa
 analysis_main_thread.start()
 
 # Create your views here.
-
+@csrf_exempt
+def PlayVideo_cartoon_view(request):
+    cv2.destroyAllWindows()
+    video_path=request.POST.get('CartoonVideo_path')
+    video=cv2.VideoCapture(video_path)
+    player = MediaPlayer(video_path)
+    while True:
+        grabbed, frame=video.read()
+        audio_frame, val = player.get_frame()
+        if not grabbed:
+            print("End of video")
+            break
+        if cv2.waitKey(28) & 0xFF == ord("q"):
+            break
+        cv2.imshow("Video", frame)
+        if val != 'eof' and audio_frame is not None:
+            #audio
+            img, t = audio_frame
+    video.release()
+    #sleep(10)
+    #cv2.destroyAllWindows()
 
 def start_page_view(request):
     start_record()
