@@ -7,7 +7,9 @@ $("#choose_mode_submit").click(
 				data: $("#choose_mode_form").serialize(),
 				success:function(context){
 					// alert(context['status'], context['answer_id'], context['next_page']);
-					console.log(context['status'], context['answer_id'], context['next_page'])
+					console.log(context['status'], context['uaid'])
+					url = "/ARPicture/question/" + context['uaid'] + '/0/'
+        	window.location.href = url;
 				}
 			})
 	}

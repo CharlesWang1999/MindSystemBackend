@@ -152,7 +152,7 @@ def choose_mode_submit_view(request):
     user_answer_info.set_page_order(page_order)
     print('@156---', user_answer_info.page_order)
     user_answer_info.save()
-    return JsonResponse({"status": "success", 'answer_id': answer_id, 'next_page': settings.PAGE_NUM_TO_NAME[page_order[0]], 'index': 0})
+    return JsonResponse({"status": "success", "uaid": user_answer_info.id})
 
 
 @csrf_exempt
