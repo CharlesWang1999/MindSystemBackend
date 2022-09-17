@@ -1,8 +1,8 @@
 import os
 from django.conf import settings
 from ARPictureBook.models import (
-    StartPageResult,
-    MicroExpressionDetectionResult
+    AnswerResult,
+    UserAnswerInfo
 )
 
 
@@ -10,7 +10,7 @@ class MicroExpressionAnalysis:
     def __init__(self):
         pass
 
-    def analysis(self, video_path, start_id, page_name, question_num):
+    def analysis(self, video_path, uaid, page_name, question_num):
         print(f'Start micro expression analysis {video_path}')
         print('@11--', settings.FAKE_FME)
         detection_file = 'FMEDetectionTest.py' if settings.FAKE_FME else 'FMEDetection.py'
@@ -24,26 +24,41 @@ class MicroExpressionAnalysis:
 
         fp = open('FMEDetection/output/result.txt', 'r')
         fme_result = fp.readlines()[-1].strip().split(':')[-1]
-        print('@27---', start_id, page_name, question_num)
-        if start_id is not None:
-            start_id = int(start_id)
-            start_page = StartPageResult.objects.filter(id=start_id).first()
-            micro_expression_result = MicroExpressionDetectionResult.objects.filter(
-                start_page_result=start_page,
+        print('@27---', uaid, page_name, question_num)
+        user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+        answer_result = AnswerResult.objects.filter(
+            answer_info=user_answer_info,
+            page_name=page_name,
+            question_num=question_num
+        ).first()
+        if not answer_result:
+            answer_result = AnswerResult(
+                answer_info=user_answer_info,
                 page_name=page_name,
                 question_num=question_num
             )
-            if micro_expression_result:
-                micro_expression_result = micro_expression_result.first()
-                micro_expression_result.detection_result = fme_result
-            else:
-                micro_expression_result = MicroExpressionDetectionResult(
-                    start_page_result=start_page,
-                    page_name=page_name,
-                    question_num=question_num,
-                    detection_result=fme_result
-                )
-            micro_expression_result.save()
+        answer_result.micro_expression_detection_result = fme_result
+        answer_result.save()
+        
+        # if start_id is not None:
+        #     start_id = int(start_id)
+        #     start_page = StartPageResult.objects.filter(id=start_id).first()
+        #     micro_expression_result = MicroExpressionDetectionResult.objects.filter(
+        #         start_page_result=start_page,
+        #         page_name=page_name,
+        #         question_num=question_num
+        #     )
+        #     if micro_expression_result:
+        #         micro_expression_result = micro_expression_result.first()
+        #         micro_expression_result.detection_result = fme_result
+        #     else:
+        #         micro_expression_result = MicroExpressionDetectionResult(
+        #             start_page_result=start_page,
+        #             page_name=page_name,
+        #             question_num=question_num,
+        #             detection_result=fme_result
+        #         )
+        #     micro_expression_result.save()
         print('@22---', fme_result)
         print(f'Micro expression analysis {video_path} finish')
         return analysis_result

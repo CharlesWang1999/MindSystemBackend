@@ -128,7 +128,25 @@ STATICFILES_DIRS = [
   os.path.join(BASE_DIR, 'ARPictureBook', 'static'),
   ]
 
+
 KINECT_RECORD = False
+
 CAMERA_RECORD = False
+
 CAMERA_ID = 0
+
 FAKE_FME = False
+
+MAX_QUESTION_PAGE = 3
+
+PAGE_NUM_TO_NAME = {
+    0: 'start',
+    1: 'second',
+    2: 'third'
+}
+
+PAGE_NAME_TO_NUM = {
+    'start': 0,
+    'second': 1,
+    'third': 2
+}

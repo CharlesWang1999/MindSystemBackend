@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <title>Choose Mode</title>
+</head>
+<body>
+    <form id="choose_mode_form">
+        {% csrf_token %}
+        Choose Yor Mode:
+        <input type="radio" name="mode" value="Testing" checked="checked" />Testing
+        <input type="radio" name="mode" value="Production" />Production
+        <button id="choose_mode_submit" type="button" class="btn btn-primary float-right">
+            Submit
+        </button>
+    </form>
+</body>
+</html>
+
+<script src="{% static "js/pagejs/choose_mode.js" %}"></script>

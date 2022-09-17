@@ -65,7 +65,7 @@ function scene_1_correct() {
 
   resultData['result1'] = 'correct';
 
-  partitionData['question_num'] = 1
+  partitionData['question_num'] = 0
   partitionVideo();
 
   select_3.removeEventListener("click", scene_1_correct);
@@ -87,7 +87,7 @@ function scene_1_wrong() {
 
   resultData['result1'] = 'wrong';
 
-  partitionData['question_num'] = 1
+  partitionData['question_num'] = 0
   partitionVideo();
 
   select_3.removeEventListener("click", scene_1_correct);
@@ -141,7 +141,7 @@ function scene_2_correct() {
 
   resultData['result2'] = 'correct';
 
-  partitionData['question_num'] = 2
+  partitionData['question_num'] = 1
   partitionVideo();
 
   select_1.removeEventListener("click", scene_2_correct);
@@ -163,7 +163,7 @@ function scene_2_wrong() {
 
   resultData['result2'] = 'wrong';
 
-  partitionData['question_num'] = 2
+  partitionData['question_num'] = 1
   partitionVideo();
 
   select_1.removeEventListener("click", scene_2_correct);
@@ -244,13 +244,9 @@ function scene_3_wrong() {
 }
 
 function jumpToNext() {
-  var currentHref = window.location.href;
-  let p=currentHref.split('?')[1]
-  let params=new URLSearchParams(p)
-  const resultId = params.get('id');
-  if (resultId){
-    resultData['result_id'] = resultId;
-  }
+  resultData['uaid'] = $("#uaid").text();
+  resultData['page_index'] = $("#page_index").text();
+  console.log('@256---', resultData)
   $.ajax({
     url: '/ARPicture/get_query_result/',
     type: 'POST',
@@ -262,12 +258,13 @@ function jumpToNext() {
         alert("error!", response['errormessage']);
         return;
       }
-      alert('success, waiting for next page develop...');
-      url = "/ARPicture/fourth/"
-      if (response['result_id']) {
-        url += '?id=' + response['result_id']
+      if (response['have_next_page']){
+        alert('success, click to next page...');
+        url = "/ARPicture/question/" + response['uaid'] + '/' + response['next_page_index'] + '/'
+        window.location.href = url;
+      } else {
+        alert('success, That is the end...');
       }
-      // window.location.href = url;
     }
   })
 }
@@ -282,16 +279,8 @@ function speckText(str) {
   synth.speak(utterance);
 }
 
-//syj worte
 function partitionVideo(){
-  console.log("开始调用py")
-  var currentHref = window.location.href;
-  let p=currentHref.split('?')[1]
-  let params=new URLSearchParams(p)
-  const resultId = params.get('id');
-  if (resultId){
-    partitionData['result_id'] = resultId;
-  }
+  partitionData['uaid'] = $("#uaid").text();
   $.ajax({
     url:'/ARPicture/get_web_click/',
     type:'POST',

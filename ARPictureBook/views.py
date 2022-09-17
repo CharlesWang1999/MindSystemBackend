@@ -3,13 +3,14 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from ARPictureBook.models import (
-    StartPageResult,
-    SecondPageResult,
-    ThirdPageResult
+    UserAnswerInfo,
+    AnswerResult
 )
+from django.contrib.auth.models import User
 
 import os
 from datetime import datetime
+import random
 if settings.KINECT_RECORD:
     from MindSystemBackend.kinectRecord import KinectRecord
     from MindSystemBackend.actionAnalysis import ActionAnalysis
@@ -66,7 +67,7 @@ def start_record():
         video_record.start_record(micro_expression_save_path)
 
 
-def stop_record(start_id=None, page_name=None, question_num=None):
+def stop_record(uaid=None, page_name=None, question_num=None):
     if settings.KINECT_RECORD:
         kinect_record.stop_record()
     if settings.CAMERA_RECORD:
@@ -82,7 +83,7 @@ def stop_record(start_id=None, page_name=None, question_num=None):
         micro_expression_thread = Thread(
             name=f'analysis {micro_expression_save_path}',
             target=micro_expression_analysis.analysis,
-            args=(micro_expression_save_path, start_id, page_name, question_num, )
+            args=(micro_expression_save_path, uaid, page_name, question_num, )
         )
         analysis_thread_queue.put(micro_expression_thread)
 
@@ -109,120 +110,122 @@ def cartoon_video_thread(file_name):
     # cv2.destroyAllWindows()
 
 
-analysis_main_thread = Thread(name='analysis_main_thread', target=analysis_thread)
-analysis_main_thread.start()
+if settings.KINECT_RECORD or settings.CAMERA_RECORD:
+    analysis_main_thread = Thread(name='analysis_main_thread', target=analysis_thread)
+    analysis_main_thread.start()
 
 
 # Create your views here.
-def start_page_view(request):
-    start_record()
-    show_cartoon_video_thread = Thread(name='show_cartoon_video_thread', target=cartoon_video_thread, args=('cartoon_first.avi',))
-    show_cartoon_video_thread.start()
-    return render(request, 'start.html')
+def choose_mode_view(request):
+    return render(request, 'choose_mode.html')
 
 
-def second_page_view(request):
-    start_record()
-    return render(request, 'second.html')
+def question_page_view(request, uaid, page_index):
+    user = User.objects.filter(pk=1).first()
+    user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+    if user_answer_info and user_answer_info.user == user:
+        start_record()
+        # show_cartoon_video_thread = Thread(name='show_cartoon_video_thread', target=cartoon_video_thread, args=('cartoon_first.avi',))
+        # show_cartoon_video_thread.start()
+        page_name = settings.PAGE_NUM_TO_NAME[user_answer_info.get_page_order()[page_index]]
+        print('@131---', page_name)
+        return render(request, f'{page_name}.html', {'uaid': uaid, 'page_index': page_index})
+    else:
+        return render(request, 'error.html')
 
 
-def third_page_view(request):
-    start_record()
-    return render(request, 'third.html')
+def choose_mode_submit_view(request):
+    running_mode = request.POST.get('mode')
+    user = User.objects.filter(pk=1).first()
+    page_order = [i for i in range(settings.MAX_QUESTION_PAGE)]
+    random.shuffle(page_order)
+    print('@140--', running_mode, user, page_order)
+    previous_user_answer_info = UserAnswerInfo.objects.filter(user=user).order_by('-answer_id')
+    answer_id = 1
+    if previous_user_answer_info:
+        answer_id = previous_user_answer_info.first().answer_id + 1
+    user_answer_info = UserAnswerInfo(
+        user=user,
+        answer_id=answer_id,
+        running_mode=running_mode
+    )
+    user_answer_info.set_page_order(page_order)
+    print('@156---', user_answer_info.page_order)
+    user_answer_info.save()
+    return JsonResponse({"status": "success", 'answer_id': answer_id, 'next_page': settings.PAGE_NUM_TO_NAME[page_order[0]], 'index': 0})
 
 
 @csrf_exempt
 def get_query_result_view(request):
     page_name = request.POST.get('page_name')
-    result_id = request.POST.get('result_id', None)
+    uaid = request.POST.get('uaid', None)
+    page_index = request.POST.get('page_index', None)
     result1 = request.POST.get('result1', None)
     result2 = request.POST.get('result2', None)
     result3 = request.POST.get('result3', None)
     result1 = result1 == 'correct'
     result2 = result2 == 'correct'
     result3 = result3 == 'correct'
-    print(result1, result2, result3, result_id, type(result_id))
-    if page_name == 'start' and result_id is None:
-        start_page_result = StartPageResult(
-            first_result=result1,
-            second_result=result2,
-            third_result=result3,
-        )
-        start_page_result.save()
-        result_id = start_page_result.id
-    elif page_name == 'start' and result_id.isdigit():
-        result_id = int(result_id)
-        start_page_result = StartPageResult.objects.filter(id=result_id)
-        if start_page_result:
-            start_page_result = start_page_result.first()
-        else:
-            start_page_result = StartPageResult()
-        start_page_result.first_result = result1
-        start_page_result.second_result = result2
-        start_page_result.third_result = result3
-        start_page_result.save()
-        result_id = start_page_result.id
-    elif page_name == 'second' and result_id.isdigit():
-        result_id = int(result_id)
-        start_page_result = StartPageResult.objects.filter(id=result_id)
-        if start_page_result:
-            start_page_result = start_page_result.first()
-        else:
-            return JsonResponse({"status": "error", "errormessage": 'can not find the id in start page!'})
-        second_page_result = SecondPageResult.objects.filter(
-            start_page_result=start_page_result)
-        if second_page_result:
-            second_page_result = second_page_result.first()
-        else:
-            second_page_result = SecondPageResult(
-                start_page_result=start_page_result)
-        second_page_result.first_result = result1
-        second_page_result.second_result = result2
-        second_page_result.third_result = result3
-        second_page_result.save()
-    elif page_name == 'third' and result_id.isdigit():
-        result_id = int(result_id)
-        start_page_result = StartPageResult.objects.filter(id=result_id)
-        if start_page_result:
-            start_page_result = start_page_result.first()
-        else:
-            return JsonResponse({"status": "error", "errormessage": 'can not find the id in start page!'})
-        third_page_result = ThirdPageResult.objects.filter(
-            start_page_result=start_page_result)
-        if third_page_result:
-            third_page_result = third_page_result.first()
-        else:
-            third_page_result = ThirdPageResult(
-                start_page_result=start_page_result)
-        third_page_result.first_result = result1
-        third_page_result.second_result = result2
-        third_page_result.third_result = result3
-        third_page_result.save()
+    user = User.objects.filter(pk=1).first()
+    print(result1, result2, result3, uaid, type(uaid), page_index)
+    if uaid and uaid.isdigit():
+        uaid = int(uaid)
+        user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+        if not user_answer_info or user_answer_info.user != user:
+            return JsonResponse({"status": "error", "errormessage": "can not found answer info by uaid"})
     else:
         return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
+    if page_index and page_index.isdigit():
+        page_index = int(page_index)
+    else:
+        return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss page index..."})
+    result_list = [result1, result2, result3]
+    for question_num in range(3):
+        answer_result = AnswerResult.objects.filter(
+            answer_info=user_answer_info,
+            page_name=page_name,
+            question_num=question_num
+        ).first()
+        if not answer_result:
+            answer_result = AnswerResult(
+                answer_info=user_answer_info,
+                page_name=page_name,
+                question_num=question_num
+            )
+        answer_result.question_result = result_list[question_num]
+        answer_result.save()
 
-    stop_record(start_id=result_id, page_name=page_name, question_num=3)
+    stop_record(uaid=uaid, page_name=page_name, question_num=2)
 
-    return JsonResponse({"status": "success", "result_id": result_id})
+    have_next_page = page_index != settings.MAX_QUESTION_PAGE - 1
+    context = {
+        "status": "success",
+        "have_next_page": have_next_page,
+        "uaid": uaid
+    }
+    if have_next_page:
+        context['next_page_index'] = page_index + 1
+
+    return JsonResponse(context)
 
 
 @csrf_exempt
 def get_web_click_view(request):
     page_name = request.POST.get('page_name', None)
     question_num = request.POST.get('question_num', None)
-    result_id = request.POST.get('result_id', None)
+    uaid = request.POST.get('uaid', None)
+    user = User.objects.filter(pk=1).first()
+    if uaid and uaid.isdigit():
+        uaid = int(uaid)
+        user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+        if not user_answer_info or user_answer_info.user != user:
+            return JsonResponse({"status": "error", "errormessage": "can not found answer info by uaid"})
+    else:
+        return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
     print('@186---', page_name, question_num, type(question_num))
     question_num = int(question_num)
-    if page_name == 'start' and question_num == 1 and not result_id:
-        answer = request.POST.get('answer', None)
-        answer = answer == 'correct'
-        start_page_result = StartPageResult(
-            first_result=answer
-        )
-        start_page_result.save()
-        result_id = start_page_result.id
-    stop_record(start_id=result_id, page_name=page_name, question_num=question_num)
+    stop_record(uaid=uaid, page_name=page_name, question_num=question_num)
     print("继续开始录制")
     start_record()
 
-    return JsonResponse({"status": "success", "result_id": result_id})
+    return JsonResponse({"status": "success"})
