@@ -128,6 +128,8 @@ STATICFILES_DIRS = [
   os.path.join(BASE_DIR, 'ARPictureBook', 'static'),
   ]
 
+LOGIN_URL = '/ARPicture/login/'
+
 
 KINECT_RECORD = False
 

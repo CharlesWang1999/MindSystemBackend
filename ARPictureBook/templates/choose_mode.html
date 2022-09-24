@@ -1,15 +1,7 @@
+{% extends './base_navbar.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="{% static "js/jquery.min.js" %}"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <title>Choose Mode</title>
-</head>
-<body>
+{% load static %}
+{% block content %}
     <form id="choose_mode_form">
         {% csrf_token %}
         Choose Yor Mode:
@@ -19,7 +11,8 @@
             Submit
         </button>
     </form>
-</body>
-</html>
+{% endblock %}
 
-<script src="{% static "js/pagejs/choose_mode.js" %}"></script>
+{% block script %}
+    <script src="{% static "js/pagejs/choose_mode.js" %}"></script>
+{% endblock %}

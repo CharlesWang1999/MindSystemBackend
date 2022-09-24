@@ -1,0 +1,15 @@
+{% extends './base_navbar.html' %}
+{% load static %}
+{% block content %}
+    <form action='' method="POST" class="form" >
+        {% csrf_token %}
+        <div>Username: {{user_form.username}}</div>
+        <div>Password: {{user_form.password}}</div>
+        <button class="btn-primary" type="submit">Login</button>
+    </form>
+    {% if message %}
+        <div class="alert alert-primary" role="alert">
+            {{message}}
+        </div>
+    {% endif %}
+{% endblock %}

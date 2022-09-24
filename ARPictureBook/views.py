@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -6,7 +6,10 @@ from ARPictureBook.models import (
     UserAnswerInfo,
     AnswerResult
 )
+from ARPictureBook.forms import UserForm
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 import os
 from datetime import datetime
@@ -116,12 +119,35 @@ if settings.KINECT_RECORD or settings.CAMERA_RECORD:
 
 
 # Create your views here.
+def login_view(request):
+    user_form = UserForm()
+    user = None
+    context = {"user_form": user_form}
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+    if request.method == "POST" and not user:
+        context['message'] = "invalid login"
+    if user is not None:
+        login(request, user)
+        return redirect("choose_mode")
+    return render(request, 'login.html', context)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("login")
+
+
+@login_required
 def choose_mode_view(request):
     return render(request, 'choose_mode.html')
 
 
+@login_required
 def question_page_view(request, uaid, page_index):
-    user = User.objects.filter(pk=1).first()
+    user = request.user
     user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
     if user_answer_info and user_answer_info.user == user:
         start_record()
@@ -134,9 +160,10 @@ def question_page_view(request, uaid, page_index):
         return render(request, 'error.html')
 
 
+@login_required
 def choose_mode_submit_view(request):
     running_mode = request.POST.get('mode')
-    user = User.objects.filter(pk=1).first()
+    user = request.user
     page_order = [i for i in range(settings.MAX_QUESTION_PAGE)]
     random.shuffle(page_order)
     print('@140--', running_mode, user, page_order)
@@ -156,6 +183,7 @@ def choose_mode_submit_view(request):
 
 
 @csrf_exempt
+@login_required
 def get_query_result_view(request):
     page_name = request.POST.get('page_name')
     uaid = request.POST.get('uaid', None)
@@ -166,7 +194,7 @@ def get_query_result_view(request):
     result1 = result1 == 'correct'
     result2 = result2 == 'correct'
     result3 = result3 == 'correct'
-    user = User.objects.filter(pk=1).first()
+    user = request.user
     print(result1, result2, result3, uaid, type(uaid), page_index)
     if uaid and uaid.isdigit():
         uaid = int(uaid)
@@ -210,11 +238,12 @@ def get_query_result_view(request):
 
 
 @csrf_exempt
+@login_required
 def get_web_click_view(request):
     page_name = request.POST.get('page_name', None)
     question_num = request.POST.get('question_num', None)
     uaid = request.POST.get('uaid', None)
-    user = User.objects.filter(pk=1).first()
+    user = request.user
     if uaid and uaid.isdigit():
         uaid = int(uaid)
         user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
