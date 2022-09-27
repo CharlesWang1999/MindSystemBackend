@@ -263,7 +263,8 @@ function jumpToNext() {
       }
       if (response['have_next_page']){
         alert('success, click to next page...');
-        url = "/ARPicture/question/" + response['uaid'] + '/' + response['next_page_index'] + '/'
+        let pageFunc = response['running_mode'] == 'Testing' ? 'question' : 'smooth_music';
+        url = "/ARPicture/" + pageFunc + "/" + response['uaid'] + '/' + response['next_page_index'] + '/'
         window.location.href = url;
       } else {
         alert('success, That is the end...');

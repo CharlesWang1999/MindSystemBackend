@@ -8,6 +8,7 @@ from ARPictureBook.views import (
     # PlayVideo_cartoon_view,
     choose_mode_view,
     choose_mode_submit_view,
+    smooth_music_view,
 )
 
 urlpatterns = [
@@ -18,5 +19,6 @@ urlpatterns = [
     path('get_query_result/', get_query_result_view),
     path('get_web_click/', get_web_click_view),
     path('choose_mode_submit/', choose_mode_submit_view),
+    path('smooth_music/<int:uaid>/<int:page_index>/', smooth_music_view, name='smooth_music')
     # path('PlayVideo_cartoon/', PlayVideo_cartoon_view),
 ]

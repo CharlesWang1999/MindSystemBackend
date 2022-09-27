@@ -7,7 +7,6 @@ from ARPictureBook.models import (
     AnswerResult
 )
 from ARPictureBook.forms import UserForm
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -140,6 +139,16 @@ def logout_view(request):
     return redirect("login")
 
 
+def smooth_music_view(request, uaid, page_index):
+    user = request.user
+    print('@144---', user)
+    user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+    if user_answer_info and user_answer_info.user == user:
+        return render(request, 'smooth_music.html', {'uaid': uaid, 'page_index': page_index})
+    else:
+        return render(request, 'error.html')
+
+
 @login_required
 def choose_mode_view(request):
     return render(request, 'choose_mode.html')
@@ -208,6 +217,7 @@ def get_query_result_view(request):
     else:
         return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss page index..."})
     result_list = [result1, result2, result3]
+    running_mode = user_answer_info.running_mode
     for question_num in range(3):
         answer_result = AnswerResult.objects.filter(
             answer_info=user_answer_info,
@@ -229,7 +239,8 @@ def get_query_result_view(request):
     context = {
         "status": "success",
         "have_next_page": have_next_page,
-        "uaid": uaid
+        "uaid": uaid,
+        "running_mode": running_mode
     }
     if have_next_page:
         context['next_page_index'] = page_index + 1
