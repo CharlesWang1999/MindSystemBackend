@@ -6,16 +6,39 @@
 <body>
     <box_left class="box_left">
         <form id="question_form">
-            选择图片表情类别
+            <button id="question_class" disabled>单选题</button>
+            <button id="question_text" disabled>根据大屏幕中图像，选择图像所对应的情绪</button>
             <div class="divCss">
-            1.你现在处于什么地方?()
+            <!-- 1.你现在处于什么地方?() -->
                 <ol type="A" start="" class="olCss" name="single" >
-                    <input class="inputClass" type="radio" name="place1" value="A" checked="checked" /><li class="liRight">银河系</li>
-                    <input class="inputClass" type="radio" name="place1" value="B" /><li class="liRight">太阳系</li>
-                    <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">地球</li>
+                    <div id="choice_left">
+                        <li class="answer">
+                            <input class="inputClass" type="radio" name="place1" value="A" /><div class="liRight">快乐</div>
+                        </li>
+                        <li class="answer">
+                            <input class="inputClass" type="radio" name="place1" value="B" /><div class="liRight">悲伤</div>
+                        </li>
+                        <li class="answer">
+                            <input class="inputClass" type="radio" name="place1" value="C" /><div class="liRight">愤怒</div>
+                        </li>       
+                    </div>
+                    <div id="choice_right">
+                        <li class="answer">
+                            <input class="inputClass" type="radio" name="place1" value="D" /><div class="liRight">恐惧</div>
+                        </li>
+                        <li class="answer">
+                            <input class="inputClass" type="radio" name="place1" value="E" /><div class="liRight">厌恶</div>
+                        </li>
+                        <li class="answer">
+                            <input class="inputClass" type="radio" name="place1" value="F" /><div class="liRight">惊奇</div>
+                        </li>       
+                    </div>
+                    <!-- <div id="choice_right"><input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">恐惧</li>
+                    <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">厌恶</li>
+                    <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">惊奇</li></div> -->
                 </ol>
             </div>
-            <div class="divCss">
+            <!-- <div class="divCss">
             2.你现在处于什么地方?()
                 <ol type="A" start="" class="olCss" name="single" >
                     <input class="inputClass" type="radio" name="place2" value="A"  /><li class="liRight">银河系</li>
@@ -38,7 +61,7 @@
                     <input class="inputClass" type="checkbox" name="place4" value="B" checked="checked" /><li class="liRight">太阳系</li>
                     <input class="inputClass" type="checkbox" name="place4" value="C" checked="checked" /><li class="liRight">地球</li>
                 </ol>
-            </div>
+            </div> -->
             <!-- <input type="button" value="提交答案" onclick="sendMsg()" /> -->
         </form>
         

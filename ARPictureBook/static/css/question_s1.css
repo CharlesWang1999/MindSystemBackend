@@ -21,14 +21,49 @@
     left: 66%;
     background: #0095ff;
 }
-#question_form{
-    position: relative;
-    left: 30%;
+#question_text{
+    position: absolute;
+    left: 16%;
+    top: 12%;
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    height: 48px;
+    line-height: 44px;
+    font-weight: 500;
+    border-radius: 2px;
+    color:white;
+    background: #0095ff;
+    border-radius: 10px;
 }
 .divCss{
 	
-    margin-bottom: 10px;
-    
+    margin-bottom: 10px
+}
+#choice_left{
+    position:absolute;
+    width: 50%;
+    height: 100%;
+    top: 20%;
+    left: 0%;
+}
+#choice_right{
+    position:absolute;
+    width: 50%;
+    height: 100%;
+    top: 20%;
+    left: 50%;
+}
+.answer{
+    position:relative;
+    top: 10px;
+    left: 100px;
+    padding-top: 40px;
 }
 .olCss{
 	padding-left: 20px;
@@ -39,11 +74,14 @@
 .inputClass {
 	float:left;
 	margin-left: -50px;
+    
 }
 .liRight {
 	
 }
 #question_button{
+    position:absolute;
+    top: 75%;
     width: 85%;
     display: block;
     margin: 0 auto;
@@ -58,4 +96,25 @@
     border-radius: 2px;
     color: #fff;
     background: #0095ff;
+    border-radius: 10px;
+}
+#question_class{
+    position:absolute;
+    top :12%;
+    left: 5%;
+    width: 45px;
+    display: block;
+    margin: 0 auto;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+    height: 44px;
+    line-height: 44px;
+    font-weight: 500;
+    border-radius: 2px;
+    color:black;
+    background: #00ff80;
+    border-radius: 20px;
 }
