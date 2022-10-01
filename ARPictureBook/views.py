@@ -160,12 +160,37 @@ def choose_mode_view(request):
 @login_required
 @csrf_exempt
 def question_click_view(request):
-    context = {"status": "success"}
     uaid = request.POST.get('uaid', None)
-    context['uaid'] = uaid
     round_num = request.POST.get('round_num', None)
-    context['round_num'] = round_num
-    print('@160---', uaid, round_num)
+    page_round = request.POST.get('page_round', None)
+    round_num = int(round_num)
+    user = request.user
+    if uaid and uaid.isdigit():
+        uaid = int(uaid)
+        user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+        if not user_answer_info or user_answer_info.user != user:
+            return JsonResponse({"status": "error", "errormessage": "can not found answer info by uaid"})
+    else:
+        return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
+    running_mode = user_answer_info.running_mode
+    have_next_page = round_num != settings.MAX_ROUND_NUM
+    context = {
+        "status": "success",
+        "have_next_page": have_next_page,
+        "uaid": uaid,
+        "running_mode": running_mode,
+        "round_num": round_num,
+        "page_round": page_round
+    }
+    if page_round == 'link':
+        if have_next_page:
+            context['next_round_num'] = round_num + 1
+        else:
+            next_round_num = 1
+            next_page_round = 's2'
+            context['next_round_num'] = next_round_num
+            context['next_page_round'] = next_page_round
+    print('@193---', context)
     return JsonResponse(context)
 
 
@@ -246,6 +271,11 @@ def smooth_music_click_view(request):
 @login_required
 def question_s1_view(request, uaid, round_num):
     return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
+def question_link_view(request, uaid, round_num):
+    return render(request, 'question_link.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required

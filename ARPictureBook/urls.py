@@ -2,6 +2,7 @@ from django.urls import path
 from ARPictureBook.views import (
     login_view,
     logout_view,
+    question_link_view,
     question_page_view,
     get_query_result_view,
     get_web_click_view,
@@ -29,6 +30,7 @@ urlpatterns = [
     path('choose_mode_submit/', choose_mode_submit_view),
     path('smooth_music/<int:uaid>/<int:round_num>/<str:page_round>/', smooth_music_view, name='smooth_music'),
     path('question_s1/<int:uaid>/<int:round_num>/', question_s1_view, name='question_s1'),
+    path('question_link/<int:uaid>/<int:round_num>/', question_link_view, name='question_link'),
     path('self_report_s1/<int:uaid>/<int:round_num>/', self_report_s1_view, name='self_report_s1'),
     # path('PlayVideo_cartoon/', PlayVideo_cartoon_view),
 ]
