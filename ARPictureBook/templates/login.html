@@ -1,12 +1,39 @@
 {% extends './base_navbar.html' %}
 {% load static %}
 {% block content %}
-    <form action='' method="POST" class="form" >
-        {% csrf_token %}
-        <div>Username: {{user_form.username}}</div>
-        <div>Password: {{user_form.password}}</div>
-        <button class="btn-primary" type="submit">Login</button>
-    </form>
+<head>
+    <link rel="stylesheet" href="{% static "css/login.css" %}">
+</head>
+<h1>用户登录界面</h1>
+<div class="bg"></div>
+<div class="bg-mask"></div>
+<div class="login_box">
+    <left class="left_box">
+        <img src="{% static "image/start.jpg" %}" alt="加载错误" class="left_image">
+    </left>
+    <right class="right_box" style="background-color: white;">
+        <right_bg class="right_bg"></right_bg>
+        <!-- <bg class="right_bg"></bg> -->
+        <form action='' method="POST" class="form" >    
+            <div class="form-group">
+                {% csrf_token %}
+                <label for="un">
+                    Username:
+                </label>
+                <input type="text" name="username" class="form-control" id="un" tabindex="1" placeholder="输入用户名" required spellcheck="false" data-ms-editor="true">
+                <!-- <div>{{user_form.username}}</div> -->
+                <label for="pd">Password:</label>
+                <input type="password" name="password" class="form-control" id="pd" tabindex="2" autocomplete="off" placeholder="输入密码" required>
+                <!-- <div>{{user_form.password}}</div> -->
+                <button class="btn-primary" type="submit" style="line-height: 38px; width: 180px; text-align: center; background-color:rgb(245, 96, 145); border-radius: 10px;">Login
+                </button>
+                
+            </div>
+        </form>
+    </right>
+</div>
+
+    
     {% if message %}
         <div class="alert alert-primary" role="alert">
             {{message}}

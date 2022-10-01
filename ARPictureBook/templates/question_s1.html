@@ -1,7 +1,62 @@
 {% extends './base_question.html' %}
 {% load static %}
 {% block content %}
+<script type='text/javascript' src='https://www.wjx.cn/handler/jqemed.ashx?activity=eOJdc4H&width=760&source=iframe'></script>
 选择图片表情类别
+
+<box_left class="box_left"></box_left>
+<box_ar class="box_left"></box_ar>
+<box_right class="box_left"></box_right>
+
+
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>选择题choice question</title>
+<style>
+.divCss{
+	margin-bottom: 10px;
+}
+.olCss{
+	padding-left: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+	margin-left: 40px;
+}
+.inputClass {
+	float:left;
+	margin-left: -50px;
+}
+.liRight {
+	
+}
+</style>
+</head>
+<body>
+<!-- 
+type默认为数字,其他类型有英文字母A/a,罗马字母I/i,
+start可以设置起始标记 下标从1开始 
+-->
+<div class="divCss">
+1.你现在处于什么地方?()
+	<ol type="A" start="" class="olCss" >
+		<input class="inputClass" type="radio" name="place" value="A" checked="checked" /><li class="liRight">银河系</li>
+		<input class="inputClass" type="radio" name="place" value="B" /><li class="liRight">太阳系</li>
+		<input class="inputClass" type="radio" name="place" value="C" /><li class="liRight">地球</li>
+	</ol>
+</div>
+<div class="divCss">
+2.你现在处于什么地方?()
+	<ol type="A" start="" class="olCss" >
+		<input class="inputClass" type="checkbox" name="place" value="A" checked="checked" /><li class="liRight">银河系</li>
+		<input class="inputClass" type="checkbox" name="place" value="B" checked="checked" /><li class="liRight">太阳系</li>
+		<input class="inputClass" type="checkbox" name="place" value="C" /><li class="liRight">地球</li>
+	</ol>
+</div>
+</body>
+</html>
 <button id='question_button'>下一步（自我报告S1）</button>
 <div id="page_round" style="display: none">s1</div>
 {% endblock %}
