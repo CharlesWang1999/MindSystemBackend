@@ -22,8 +22,11 @@ $('#self_report_button').click(function(){
           }
           window.location.href = url;
         } else {
-          if(response['running_mode'] == 'Testing'){
+          if(response['running_mode'] === 'Testing'){
             url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/'
+            if(resultData['page_round'] === 's4') {
+              url = "/ARPicture/system_evaluate/" + resultData['uaid'] + '/'
+            }
           } else {
             url = "/ARPicture/smooth_music/" + response['uaid'] + '/' + response['round_num'] + '/' + resultData['page_round'] + '/'
           }

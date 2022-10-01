@@ -10,7 +10,19 @@ $('#question_button').click(function(){
     datatype: 'json',
     success:function (response) {
       console.log(response);
-      url = "/ARPicture/self_report_" + resultData['page_round'] + "/" + resultData['uaid'] + '/' + resultData['round_num'] + '/'
+      if(resultData['page_round'] === 'link') {
+        if(response['running_mode'] === 'Testing'){
+          if(response['have_next_page']) {
+            url = "/ARPicture/question_link/" + resultData['uaid'] + '/' + response['next_round_num'] + '/'
+          } else {
+            url = "/ARPicture/question_s2/" + resultData['uaid'] + '/1/'
+          }
+        } else {
+          url = "/ARPicture/smooth_music/" + resultData['uaid'] + '/' + resultData['round_num'] + '/link/'
+        }
+      } else{
+        url = "/ARPicture/self_report_" + resultData['page_round'] + "/" + resultData['uaid'] + '/' + resultData['round_num'] + '/'
+      }
       window.location.href = url;
     }
   })
