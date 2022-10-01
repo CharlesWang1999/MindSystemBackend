@@ -1,0 +1,10 @@
+{% extends './base_navbar.html' %}
+{% load static %}
+{% block content %}
+    系统评估
+    <button id='system_evaluate_button'>系统评估完成</button>
+    <div id="uaid" style="display: none">{{uaid}}</div>
+{% endblock %}
+{% block script %}
+    <script src={% static "js/pagejs/system_evaluate.js" %}></script>
+{% endblock script %}

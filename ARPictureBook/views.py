@@ -224,6 +224,7 @@ def self_report_click_view(request):
         context['next_round_num'] = round_num + 1
     else:
         next_round_num = 1
+        next_page_round = None
         if page_round == 's1':
             next_page_round = 'link'
         elif page_round == 'link':
@@ -279,8 +280,65 @@ def question_link_view(request, uaid, round_num):
 
 
 @login_required
+def question_s2_view(request, uaid, round_num):
+    return render(request, 'question_s2.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
+def question_s3_view(request, uaid, round_num):
+    return render(request, 'question_s3.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
+def question_s4_view(request, uaid, round_num):
+    return render(request, 'question_s4.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
 def self_report_s1_view(request, uaid, round_num):
     return render(request, 'self_report_s1.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
+def self_report_s2_view(request, uaid, round_num):
+    return render(request, 'self_report_s2.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
+def self_report_s3_view(request, uaid, round_num):
+    return render(request, 'self_report_s3.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
+def self_report_s4_view(request, uaid, round_num):
+    return render(request, 'self_report_s4.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
+def system_evaluate_view(request, uaid):
+    return render(request, 'system_evaluate.html', {'uaid': uaid})
+
+
+@login_required
+def experiment_evaluate_view(request, uaid):
+    return render(request, 'experiment_evaluate.html', {'uaid': uaid})
+
+
+@login_required
+def finish_view(request, uaid):
+    return render(request, 'finish.html', {'uaid': uaid})
+
+
+@csrf_exempt
+@login_required
+def system_evaluate_click_view(request):
+    return JsonResponse({'status': "success"})
+
+
+@csrf_exempt
+@login_required
+def experiment_evaluate_click_view(request):
+    return JsonResponse({'status': "success"})
 
 
 @login_required
