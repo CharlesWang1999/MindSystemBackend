@@ -271,7 +271,7 @@ def smooth_music_click_view(request):
 
 @login_required
 def question_s1_view(request, uaid, round_num):
-    command = 'python PlayVideo/playVideoAtWeb.py'
+    command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
     os.system(command)
     return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num})
 

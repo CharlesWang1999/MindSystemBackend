@@ -1,5 +1,5 @@
 import webbrowser
-import os
+import os, sys
 
 template_html_path = os.path.dirname(__file__) + '/template.html'
 temp_html_path = os.path.dirname(__file__) + '/temp.html'
@@ -22,5 +22,10 @@ def _replace_video_path(video_path: str):
 
 
 if __name__ == '__main__':
-    play('VideoSource/sub01-1.mp4')
+    print('@25---', sys.argv)
+    if len(sys.argv) != 2:
+        print('error num argvs')
+        sys.exit()
+    video_name = sys.argv[1]
+    play('VideoSource/' + video_name)
     # play('absolute\\video\\path.mp4')

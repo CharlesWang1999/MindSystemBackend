@@ -4,4 +4,6 @@ test.avi
 VideoData/2022_*
 FMEDetection/
 PaddleDetection/
+MindSystemBackend/settings.py
+ARPictureBook/__pycache__/*
 ARPictureBook/static/cartoon/cartoon_first.avi
