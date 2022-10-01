@@ -271,28 +271,37 @@ def smooth_music_click_view(request):
 
 @login_required
 def question_s1_view(request, uaid, round_num):
-    command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
+    # command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
+    command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
     os.system(command)
     return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
 def question_link_view(request, uaid, round_num):
+    command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
+    os.system(command)
     return render(request, 'question_link.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
 def question_s2_view(request, uaid, round_num):
+    command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
+    os.system(command)
     return render(request, 'question_s2.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
 def question_s3_view(request, uaid, round_num):
+    command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
+    os.system(command)
     return render(request, 'question_s3.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
 def question_s4_view(request, uaid, round_num):
+    command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
+    os.system(command)
     return render(request, 'question_s4.html', {'uaid': uaid, 'round_num': round_num})
 
 
