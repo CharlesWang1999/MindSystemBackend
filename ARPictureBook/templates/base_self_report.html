@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Self Report{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+</head>
+<body>
+    <div id="content">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <div id="uaid" style="display: none">{{uaid}}</div>
+    <div id="round_num" style="display: none">{{round_num}}</div>
+</body>
+</html>
+{% block script %}
+    <script src={% static "js/pagejs/self_report_click.js" %}></script>
+{% endblock script %}

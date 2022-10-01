@@ -242,7 +242,7 @@ function selectTrack(flag){
  function disabledSubmitButton(submitButton, submitButtonText) {
     submitButton.disabled="disabled";
     //submitButton.attr({ "disabled": "disabled" });     //控制按钮为禁用
-    var second = 30;
+    var second = 5;
     var intervalObj = setInterval(function () {
         submitButton.innerHTML=submitButtonText + "(" + second + ")";
         if (second == 0) {
@@ -256,11 +256,21 @@ function selectTrack(flag){
 }
 function back_the_question() {
     //在这里添加跳转
-    let uaid = $("#uaid").text();
-    let pageIndex = $("#page_index").text();
-    url = "/ARPicture/question/" + uaid + '/' + pageIndex + '/'
-    window.location.href = url;
-    console.log("成功跳转至下一页", url);
+    let resultData = {}
+    resultData['uaid'] = $("#uaid").text();
+    resultData['round_num'] = $("#round_num").text();
+    resultData['page_round'] = $("#page_round").text();
+    $.ajax({
+      url:'/ARPicture/smooth_music_click/',
+      type:'POST',
+      data: resultData,
+      datatype: 'json',
+      success:function (response) {
+        console.log(response);
+        url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/'
+        window.location.href = url;
+      }
+    })
 }
 
 // 初始化播放器

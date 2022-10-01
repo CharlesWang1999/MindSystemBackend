@@ -152,3 +152,5 @@ PAGE_NAME_TO_NUM = {
     'second': 1,
     'third': 2
 }
+
+MAX_ROUND_NUM = 6

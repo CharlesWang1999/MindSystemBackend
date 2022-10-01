@@ -8,7 +8,7 @@ $("#choose_mode_submit").click(
 				success:function(context){
 					// alert(context['status'], context['answer_id'], context['next_page']);
 					console.log(context['status'], context['uaid'])
-					url = "/ARPicture/question/" + context['uaid'] + '/0/'
+					url = "/ARPicture/question_s1/" + context['uaid'] + '/1/'
         	window.location.href = url;
 				}
 			})

@@ -139,12 +139,15 @@ def logout_view(request):
     return redirect("login")
 
 
-def smooth_music_view(request, uaid, page_index):
+def smooth_music_view(request, uaid, round_num, page_round):
+    valid_page_round = ['s1', 'link', 's2', 's3', 's4']
+    if page_round not in valid_page_round:
+        return render(request, 'error.html')
     user = request.user
     print('@144---', user)
     user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
     if user_answer_info and user_answer_info.user == user:
-        return render(request, 'smooth_music.html', {'uaid': uaid, 'page_index': page_index})
+        return render(request, 'smooth_music.html', {'uaid': uaid, 'round_num': round_num, 'page_round': page_round})
     else:
         return render(request, 'error.html')
 
@@ -152,6 +155,102 @@ def smooth_music_view(request, uaid, page_index):
 @login_required
 def choose_mode_view(request):
     return render(request, 'choose_mode.html')
+
+
+@login_required
+@csrf_exempt
+def question_click_view(request):
+    context = {"status": "success"}
+    uaid = request.POST.get('uaid', None)
+    context['uaid'] = uaid
+    round_num = request.POST.get('round_num', None)
+    context['round_num'] = round_num
+    print('@160---', uaid, round_num)
+    return JsonResponse(context)
+
+
+@login_required
+@csrf_exempt
+def self_report_click_view(request):
+    uaid = request.POST.get('uaid', None)
+    round_num = request.POST.get('round_num', None)
+    page_round = request.POST.get('page_round', None)
+    print('@178---', page_round)
+    round_num = int(round_num)
+    user = request.user
+    if uaid and uaid.isdigit():
+        uaid = int(uaid)
+        user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+        if not user_answer_info or user_answer_info.user != user:
+            return JsonResponse({"status": "error", "errormessage": "can not found answer info by uaid"})
+    else:
+        return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
+    running_mode = user_answer_info.running_mode
+    print('@189---', running_mode)
+    have_next_page = round_num != settings.MAX_ROUND_NUM
+    context = {
+        "status": "success",
+        "have_next_page": have_next_page,
+        "uaid": uaid,
+        "running_mode": running_mode,
+        "round_num": round_num
+    }
+    if have_next_page:
+        context['next_round_num'] = round_num + 1
+    else:
+        next_round_num = 1
+        if page_round == 's1':
+            next_page_round = 'link'
+        elif page_round == 'link':
+            next_page_round = 's2'
+        elif page_round == 's2':
+            next_page_round = 's3'
+        elif page_round == 's3':
+            next_page_round = 's4'
+        context['next_round_num'] = next_round_num
+        context['next_page_round'] = next_page_round
+
+    return JsonResponse(context)
+
+
+@login_required
+@csrf_exempt
+def smooth_music_click_view(request):
+    uaid = request.POST.get('uaid', None)
+    round_num = request.POST.get('round_num', None)
+    page_round = request.POST.get('page_round', None)
+    round_num = int(round_num)
+    have_next_page = round_num != settings.MAX_ROUND_NUM
+    if have_next_page:
+        next_page_round = page_round
+        next_round_num = round_num + 1
+    else:
+        next_round_num = 1
+        if page_round == 's1':
+            next_page_round = 'link'
+        elif page_round == 'link':
+            next_page_round = 's2'
+        elif page_round == 's2':
+            next_page_round = 's3'
+        elif page_round == 's3':
+            next_page_round = 's4'
+    context = {
+        'uaid': uaid,
+        'next_round_num': next_round_num,
+        'next_page_round': next_page_round
+    }
+    print('@241---', context)
+    return JsonResponse(context)
+
+
+@login_required
+def question_s1_view(request, uaid, round_num):
+    return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num})
+
+
+@login_required
+def self_report_s1_view(request, uaid, round_num):
+    return render(request, 'self_report_s1.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
