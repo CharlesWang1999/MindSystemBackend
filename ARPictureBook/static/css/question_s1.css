@@ -1,0 +1,33 @@
+
+.divCss{
+	margin-bottom: 10px;
+}
+.olCss{
+	padding-left: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+	margin-left: 40px;
+}
+.inputClass {
+	float:left;
+	margin-left: -50px;
+}
+.liRight {
+	
+}
+#question_button{
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    height: 44px;
+    line-height: 44px;
+    font-weight: 500;
+    border-radius: 2px;
+    color: #fff;
+    background: #0095ff;
+}

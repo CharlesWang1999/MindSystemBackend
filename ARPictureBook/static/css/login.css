@@ -1,0 +1,76 @@
+.bg{
+    /* 固定定位 */
+    position: fixed;
+    top: -40px;
+    right: -40px;
+    bottom: -40px;
+    left: -40px;
+    background: url(/static/image/start.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    /* 模糊滤镜 */
+    filter: blur(40px);
+    z-index: 1;
+}
+.bg-mask{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(255,255,255,0.5);
+    z-index: 2;
+}
+.login_box{
+    position: relative;
+    height: 600px;
+    width: 800px;
+    z-index: 3;
+    font-size:0;
+}
+.left_box{
+    width: 40%;
+    height: 100%;
+    display: inline-block;
+}
+.right_box{
+    width: 60%;
+    height: 100%;
+    display: inline-block;
+    
+}
+.right_bg{
+    position: fixed;
+    background: url(/static/image/start2.jpg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+}
+.left_image{
+    width: 300px;
+    height: 600px;
+}
+.right_bg{
+    position: relative;
+    height: inherit;
+    width: auto;
+    background: rgba(255,255,255);
+    background-size: cover;
+    background-position: center;
+}
+.form{
+    position: relative;
+    top:20%;
+    right: -10%;
+    width: 350px;
+    height: 450px;
+}
+.btn-primary{
+    top: 50px;
+    align-self: center;
+    position: relative;
+}
+.left_image{
+    width: 350px;
+    height: 400px;
+}
