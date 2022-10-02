@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
     <script src="{% static "js/jquery.min.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/aframe.min.js" %}"></script>
+    <script src="{% static "js/mind-ar-js.js" %}"></script>
+    <script src="{% static "js/mindar-image-aframe.prod.js" %}"></script>
+    <script src="{% static "js/aframe-extras.min.js" %}"></script>
+    {% block extra_script %}{% endblock extra_script %}
 </head>
 <body>
     <div id="content">

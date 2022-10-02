@@ -78,7 +78,7 @@ canvas {
     line-height: 44px;
     font-weight: 500;
 }
-/* #self_report_button{
+#self_report_button{
     display: flex;
     color: #fff;
     background: #0095ff;
@@ -87,4 +87,4 @@ canvas {
     line-height: 44px;
     font-weight: 500;
     margin-top: 60px;
-} */
+}
