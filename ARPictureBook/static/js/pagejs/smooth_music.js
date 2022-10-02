@@ -268,6 +268,9 @@ function back_the_question() {
       success:function (response) {
         console.log(response);
         url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/'
+        if(resultData['page_round'] === 's4' && !resultData['have_next_page']) {
+            url = "/ARPicture/system_evaluate/" + resultData['uaid'] + '/'
+          }
         window.location.href = url;
       }
     })
