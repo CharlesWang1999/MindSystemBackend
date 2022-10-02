@@ -281,7 +281,20 @@ def question_s1_view(request, uaid, round_num):
 def question_link_view(request, uaid, round_num):
     command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
     os.system(command)
-    return render(request, 'question_link.html', {'uaid': uaid, 'round_num': round_num})
+    if round_num == 1:
+        img_name = 'afraid.jpg'
+    elif round_num == 2:
+        img_name = 'angry.jpg'
+    elif round_num == 3:
+        img_name = 'digust.jfif'
+    elif round_num == 4:
+        img_name = 'happy.jpg'
+    elif round_num == 5:
+        img_name = 'sad.jpg'
+    elif round_num == 6:
+        img_name = 'surp.jfif'
+        
+    return render(request, 'question_link.html', {'uaid': uaid, 'round_num': round_num, 'img_name': img_name})
 
 
 @login_required

@@ -1,14 +1,11 @@
-{% extends './base_question.html' %}
+{% extends "./base_question.html" %}
 {% load static %}
 {% block extra_script %}
     <link rel="stylesheet" href="{% static "css/question_s1.css" %}" />
 {% endblock extra_script %}
 {% block content %}
-<!-- <script type='text/javascript' src='https://www.wjx.cn/handler/jqemed.ashx?activity=eOJdc4H&width=760&source=iframe'></script> -->
-{% comment %} <div class="container"> {% endcomment %}
     <div class="row">
         <div class="col-lg-8 col-sm-8 box_left">
-            {% comment %} <div style="width: 480px;"> {% endcomment %}
             <!-- ar代码 -->
             <a-scene
                 mindar-image="imageTargetSrc: https://raw.githubusercontent.com/weiqingv/ARedu/main/minds/lion.mind;uiError:no; uiLoading:no; uiScanning:no;"
@@ -69,7 +66,6 @@
             </a-scene>
         </div>
         <!-- ar代码 -->
-        {% comment %} </div> {% endcomment %}
         <div class="col-lg-4 col-sm-4 box_right">
             <div class="box_right_container">
                 <form id="question_form">
@@ -134,77 +130,5 @@
             </div>
         </div>
     </div>
-</div>
-{% comment %} </div> {% endcomment %}
-{% comment %} <div class="box_left">
-        <form id="question_form">
-            <button type="button" id="question_class" disabled>单选题</button>
-            <button type="button" id="question_text" disabled>根据大屏幕中图像，选择图像所对应的情绪</button>
-            <div class="divCss">
-                <!-- 1.你现在处于什么地方?() -->
-                <div id="choice_left">
-                    <ul start="" class="olCss" name="single">
-                        <li class="answer">
-                            <input id="emotion_a" class="inputClass" type="radio" name="place1" value="A"/>
-                            <label for="emotion_a" class="liRight">A. 快乐</label>
-                        </li>
-                        <li class="answer">
-                            <input id="emotion_b" class="inputClass" type="radio" name="place1" value="B"/>
-                            <label for="emotion_b" class="liRight">B. 悲伤</label>
-                        </li>
-                        <li class="answer">
-                            <input id="emotion_c" class="inputClass" type="radio" name="place1" value="C"/>
-                            <label for="emotion_c" class="liRight">C. 愤怒</label>
-                        </li>
-                    </ul>
-                </div>
-                <div id="choice_right">
-                    <ul start="" class="olCss" name="single">
-                        <li class="answer">
-                            <input id="emotion_d" class="inputClass" type="radio" name="place1" value="D"/>
-                            <label for="emotion_d" class="liRight">D. 恐惧</label>
-                        </li>
-                        <li class="answer">
-                            <input id="emotion_e" class="inputClass" type="radio" name="place1" value="E"/>
-                            <label for="emotion_e" class="liRight">E. 厌恶</label>
-                        </li>
-                        <li class="answer">
-                            <input id="emotion_f" class="inputClass" type="radio" name="place1" value="F"/>
-                            <label for="emotion_f" class="liRight">F. 惊奇</label>
-                        </li>
-                        <!-- <div id="choice_right"><input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">恐惧</li>
-                            <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">厌恶</li>
-                            <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">惊奇</li></div> -->
-                    </ul>
-                </div>
-</div> {% endcomment %}
-<!-- <div class="divCss">
-            2.你现在处于什么地方?()
-                <ol type="A" start="" class="olCss" name="single">
-                    <input class="inputClass" type="radio" name="place2" value="A"  /><li class="liRight">银河系</li>
-                    <input class="inputClass" type="radio" name="place2" value="B" checked="checked" /><li class="liRight">太阳系</li>
-                    <input class="inputClass" type="radio" name="place2" value="C" /><li class="liRight">地球</li>
-                </ol>
-            </div>
-            <div class="divCss">
-            3.你现在处于什么地方?()
-                <ol type="A" start="" class="olCss" name="multi">
-                    <input class="inputClass" type="checkbox" name="place3" value="A" checked="checked" /><li class="liRight">银河系</li>
-                    <input class="inputClass" type="checkbox" name="place3" value="B" checked="checked" /><li class="liRight">太阳系</li>
-                    <input class="inputClass" type="checkbox" name="place3" value="C" /><li class="liRight">���球</li>
-                </ol>
-            </div>
-            <div class="divCss">
-            4.你现在处于什么地方?()
-                <ol type="A" start="" class="olCss" name="multi">
-                    <input class="inputClass" type="checkbox" name="place4" value="A" /><li class="liRight">银河系</li>
-                    <input class="inputClass" type="checkbox" name="place4" value="B" checked="checked" /><li class="liRight">太阳系</li>
-                    <input class="inputClass" type="checkbox" name="place4" value="C" checked="checked" /><li class="liRight">地球</li>
-                </ol>
-            </div> -->
-<!-- <input type="button" value="提交答案" onclick="sendMsg()" /> -->
-{% comment %} </form> {% endcomment %}
-{% comment %} <button type="button" id="question_button">下一步（自我报告S4）</button> {% endcomment %}
-
-<div id="page_round" style="display: none">s4</div>
-{% endblock %}
+    <div id="page_round" style="display: none">s4</div>
+{% endblock content %}
