@@ -2,6 +2,12 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static "css/question_s1.css" %}">
+<script src="{% static "js/jquery.min.js" %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/aframe.min.js" %}"></script>
+<script src="{% static "js/mind-ar-js.js" %}"></script>
+<script src="{% static "js/mindar-image-aframe.prod.js" %}"></script>
+<script src="{% static "js/aframe-extras.min.js" %}"></script>
 <!-- <script type='text/javascript' src='https://www.wjx.cn/handler/jqemed.ashx?activity=eOJdc4H&width=760&source=iframe'></script> -->
 <body>
     <box_left class="box_left">
@@ -68,7 +74,65 @@
         <button id='question_button'>下一步（自我报告S1）</button>
         <div id="page_round" style="display: none">s1</div>
     </box_left>
-    <box_ar class="box_ar"></box_ar>
+
+    <box_ar class="box_ar">
+        <!-- ar代码 -->
+        <a-scene
+        mindar-image="imageTargetSrc: https://raw.githubusercontent.com/weiqingv/ARedu/main/minds/lion.mind;uiError:no; uiLoading:no; uiScanning:no;"
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+        >
+        <a-assets>
+            <a-asset-item
+            id="bearModel"
+            src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/bear/scene.gltf"
+            ></a-asset-item>
+            <a-asset-item
+            id="trexModel"
+            src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/trex/scene.gltf"
+            ></a-asset-item>
+            <a-asset-item
+            id="raccoonModel"
+            src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/raccoon/scene.gltf"
+            ></a-asset-item>
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false" id="camera"></a-camera>
+
+        <a-entity mindar-image-target="targetIndex: 0">
+            <a-gltf-model
+            rotation="0 0 0 "
+            position="0 -0.25 0"
+            scale="0.05 0.05 0.05"
+            src="#bearModel"
+            animation-mixer
+            ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 1">
+            <a-gltf-model
+            rotation="0 0 0 "
+            position="0 -0.25 0"
+            scale="0.05 0.05 0.05"
+            src="#trexModel"
+            animation-mixer
+            ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 2">
+            <a-gltf-model
+            rotation="0 0 0 "
+            position="0 -0.25 0"
+            scale="0.05 0.05 0.05"
+            src="#raccoonModel"
+            animation-mixer
+            ></a-gltf-model>
+        </a-entity>
+        </a-scene>
+
+    </div>
+    <!-- ar代码 -->
+    </box_ar>
     <box_right class="box_right"></box_right>
 
 </body>
