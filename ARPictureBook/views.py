@@ -53,9 +53,9 @@ def analysis_thread():
         current_analysis_thread.join()
 
 
-def start_record():
+def start_record(uaid=None, page_round=None, round_num=None):
     start_time = datetime.now()
-    video_data_save_dir_this_round = f'{video_data_save_path}/{start_time.year:=04}_{start_time.month:=02}_{start_time.day:=02}_{start_time.hour:=02}_{start_time.minute:=02}_{start_time.second:=02}'
+    video_data_save_dir_this_round = f'{video_data_save_path}/{start_time.year:=04}_{start_time.month:=02}_{start_time.day:=02}_{start_time.hour:=02}_{start_time.minute:=02}_{start_time.second:=02}_{uaid}_{page_round}_{round_num}'
     if not os.path.exists(video_data_save_dir_this_round):
         os.mkdir(video_data_save_dir_this_round)
 
@@ -66,11 +66,11 @@ def start_record():
         action_video_save_path = f'{video_data_save_dir_this_round}/kinect_action.avi'
         kinect_record.start_record(action_video_save_path)
     if settings.CAMERA_RECORD:
-        micro_expression_save_path = f'{video_data_save_dir_this_round}/camera_micro_expression.avi'
+        micro_expression_save_path = f'{video_data_save_dir_this_round}/camera_micro_expression.mp4'
         video_record.start_record(micro_expression_save_path)
 
 
-def stop_record(uaid=None, page_name=None, question_num=None):
+def stop_record(uaid=None, page_round=None, round_num=None):
     if settings.KINECT_RECORD:
         kinect_record.stop_record()
     if settings.CAMERA_RECORD:
@@ -86,7 +86,7 @@ def stop_record(uaid=None, page_name=None, question_num=None):
         micro_expression_thread = Thread(
             name=f'analysis {micro_expression_save_path}',
             target=micro_expression_analysis.analysis,
-            args=(micro_expression_save_path, uaid, page_name, question_num, )
+            args=(micro_expression_save_path, uaid, page_round, round_num, )
         )
         analysis_thread_queue.put(micro_expression_thread)
 
@@ -175,6 +175,7 @@ def question_click_view(request):
             return JsonResponse({"status": "error", "errormessage": "can not found answer info by uaid"})
     else:
         return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
+    stop_record(uaid, page_round, round_num)
     running_mode = user_answer_info.running_mode
     have_next_page = round_num != settings.MAX_ROUND_NUM
     final_result_queryset = FinalResult.objects.filter(
@@ -316,6 +317,7 @@ def question_s1_view(request, uaid, round_num):
     # command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
     command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
     os.system(command)
+    start_record(uaid, 's1', round_num)
     return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num})
 
 
@@ -323,6 +325,7 @@ def question_s1_view(request, uaid, round_num):
 def question_link_view(request, uaid, round_num):
     command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
     os.system(command)
+    start_record(uaid, 'link', round_num)
     if round_num == 1:
         img_name = 'afraid.jpg'
     elif round_num == 2:
@@ -342,6 +345,7 @@ def question_link_view(request, uaid, round_num):
 def question_s2_view(request, uaid, round_num):
     command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
     os.system(command)
+    start_record(uaid, 's2', round_num)
     return render(request, 'question_s2.html', {'uaid': uaid, 'round_num': round_num})
 
 
@@ -349,6 +353,7 @@ def question_s2_view(request, uaid, round_num):
 def question_s3_view(request, uaid, round_num):
     command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
     os.system(command)
+    start_record(uaid, 's3', round_num)
     return render(request, 'question_s3.html', {'uaid': uaid, 'round_num': round_num})
 
 
@@ -356,6 +361,7 @@ def question_s3_view(request, uaid, round_num):
 def question_s4_view(request, uaid, round_num):
     command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
     os.system(command)
+    start_record(uaid, 's4', round_num)
     return render(request, 'question_s4.html', {'uaid': uaid, 'round_num': round_num})
 
 

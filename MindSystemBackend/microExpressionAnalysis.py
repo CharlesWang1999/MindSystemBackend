@@ -2,7 +2,8 @@ import os
 from django.conf import settings
 from ARPictureBook.models import (
     AnswerResult,
-    UserAnswerInfo
+    UserAnswerInfo,
+    FinalResult
 )
 
 
@@ -10,7 +11,7 @@ class MicroExpressionAnalysis:
     def __init__(self):
         pass
 
-    def analysis(self, video_path, uaid, page_name, question_num):
+    def analysis(self, video_path, uaid, page_round, round_num):
         print(f'Start micro expression analysis {video_path}')
         print('@11--', settings.FAKE_FME)
         detection_file = 'FMEDetectionTest.py' if settings.FAKE_FME else 'FMEDetection.py'
@@ -24,21 +25,37 @@ class MicroExpressionAnalysis:
 
         fp = open('FMEDetection/output/result.txt', 'r')
         fme_result = fp.readlines()[-1].strip().split(':')[-1]
-        print('@27---', uaid, page_name, question_num)
+        print('@27---', uaid, page_round, round_num)
         user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
-        answer_result = AnswerResult.objects.filter(
+        final_result_queryset = FinalResult.objects.filter(
             answer_info=user_answer_info,
-            page_name=page_name,
-            question_num=question_num
-        ).first()
-        if not answer_result:
-            answer_result = AnswerResult(
+            page_round=page_round,
+            round_num=round_num
+        )
+        final_result = None
+        if final_result_queryset:
+            final_result = final_result_queryset.first()
+        else:
+            final_result = FinalResult(
                 answer_info=user_answer_info,
-                page_name=page_name,
-                question_num=question_num
+                page_round=page_round,
+                round_num=round_num
             )
-        answer_result.micro_expression_detection_result = fme_result
-        answer_result.save()
+        final_result.micro_expression_detection_result = fme_result
+        final_result.save()
+        # answer_result = AnswerResult.objects.filter(
+        #     answer_info=user_answer_info,
+        #     page_name=page_name,
+        #     question_num=question_num
+        # ).first()
+        # if not answer_result:
+        #     answer_result = AnswerResult(
+        #         answer_info=user_answer_info,
+        #         page_name=page_name,
+        #         question_num=question_num
+        #     )
+        # answer_result.micro_expression_detection_result = fme_result
+        # answer_result.save()
         
         # if start_id is not None:
         #     start_id = int(start_id)
