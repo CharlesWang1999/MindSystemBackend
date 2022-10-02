@@ -27,3 +27,12 @@ class AnswerResult(models.Model):
     question_result = models.BooleanField(null=True, blank=True)
     micro_expression_detection_result = models.CharField(max_length=255, null=True, blank=True)
     action_detection_result = models.CharField(max_length=255, null=True, blank=True)
+
+
+class FinalResult(models.Model):
+    answer_info = models.ForeignKey(UserAnswerInfo, on_delete=models.CASCADE)
+    page_round = models.CharField(max_length=255)
+    round_num = models.IntegerField()
+    question_result = models.CharField(max_length=255, null=True, blank=True)
+    self_report_result = models.CharField(max_length=255, null=True, blank=True)
+    micro_expression_detection_result = models.CharField(max_length=255, null=True, blank=True)

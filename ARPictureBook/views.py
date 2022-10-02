@@ -1,10 +1,12 @@
+from typing import Final
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from ARPictureBook.models import (
     UserAnswerInfo,
-    AnswerResult
+    AnswerResult,
+    FinalResult
 )
 from ARPictureBook.forms import UserForm
 from django.contrib.auth import authenticate, login, logout
@@ -163,6 +165,7 @@ def question_click_view(request):
     uaid = request.POST.get('uaid', None)
     round_num = request.POST.get('round_num', None)
     page_round = request.POST.get('page_round', None)
+    question_info = request.POST.get('question_info', None)
     round_num = int(round_num)
     user = request.user
     if uaid and uaid.isdigit():
@@ -174,6 +177,22 @@ def question_click_view(request):
         return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
     running_mode = user_answer_info.running_mode
     have_next_page = round_num != settings.MAX_ROUND_NUM
+    final_result_queryset = FinalResult.objects.filter(
+        answer_info=user_answer_info,
+        page_round=page_round,
+        round_num=round_num
+    )
+    final_result = None
+    if final_result_queryset:
+        final_result = final_result_queryset.first()
+    else:
+        final_result = FinalResult(
+            answer_info=user_answer_info,
+            page_round=page_round,
+            round_num=round_num
+        )
+    final_result.question_result = question_info
+    final_result.save()
     context = {
         "status": "success",
         "have_next_page": have_next_page,
@@ -286,14 +305,13 @@ def question_link_view(request, uaid, round_num):
     elif round_num == 2:
         img_name = 'angry.jpg'
     elif round_num == 3:
-        img_name = 'digust.jfif'
+        img_name = 'disgust.jpg'
     elif round_num == 4:
         img_name = 'happy.jpg'
     elif round_num == 5:
         img_name = 'sad.jpg'
     elif round_num == 6:
-        img_name = 'surp.jfif'
-        
+        img_name = 'surp.jpg'
     return render(request, 'question_link.html', {'uaid': uaid, 'round_num': round_num, 'img_name': img_name})
 
 
