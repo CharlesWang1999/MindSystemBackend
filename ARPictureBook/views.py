@@ -166,6 +166,7 @@ def question_click_view(request):
     round_num = request.POST.get('round_num', None)
     page_round = request.POST.get('page_round', None)
     question_info = request.POST.get('question_info', None)
+    print('@178---', page_round, question_info)
     round_num = int(round_num)
     user = request.user
     if uaid and uaid.isdigit():
@@ -221,7 +222,7 @@ def self_report_click_view(request):
     page_round = request.POST.get('page_round', None)
     question_info = request.POST.get('question_info', None)
     other_info = request.POST.get('other_info', None)
-    print('@178---', page_round)
+    print('@178---', page_round, question_info, other_info)
     round_num = int(round_num)
     user = request.user
     if uaid and uaid.isdigit():
@@ -251,6 +252,7 @@ def self_report_click_view(request):
     final_result.self_report_result = question_info
     if question_info == 'D':
         final_result.self_report_result_detail = other_info
+    print('@254--', final_result.self_report_result)
     final_result.save()
     context = {
         "status": "success",
