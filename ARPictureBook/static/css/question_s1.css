@@ -60,3 +60,21 @@ ul {
 canvas {
     pointer-events: none;
 }
+.question_class{
+    display: flex;
+    color: rgb(0, 0, 0);
+    background: #00ff2a;
+    border-radius: 16px;
+    font-size: 10px;
+    line-height: 44px;
+    font-weight: 500;
+}
+.question_text{
+    display: flex;
+    color: #fff;
+    background: #0095ff;
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 44px;
+    font-weight: 500;
+}
