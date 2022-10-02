@@ -24,7 +24,7 @@ $('#question_button').click(function () {
       } else {
         url = "/ARPicture/self_report_" + resultData['page_round'] + "/" + resultData['uaid'] + '/' + resultData['round_num'] + '/'
       }
-      // window.location.href = url;
+      window.location.href = url;
     }
   })
 }

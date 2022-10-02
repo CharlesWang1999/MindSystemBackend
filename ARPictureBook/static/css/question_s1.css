@@ -181,3 +181,6 @@ body {
 ul {
     list-style: none;
 }
+canvas {
+    pointer-events: none;
+}
