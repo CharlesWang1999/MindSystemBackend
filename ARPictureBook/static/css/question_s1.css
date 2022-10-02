@@ -1,33 +1,9 @@
-/* .box_left{
-    position: absolute;
-    width: 60%;
-    height: 100%;
-    top: 0%;
-    left: 6%;
-}
-.box_ar{
-    position: absolute;
-    width: 33%;
-    height: 50%;
-    top: 0%;
-    left: 66%;
-}
-.box_right{
-    position: absolute;
-    width: 33%;
-    height: 50%;
-    top: 50%;
-    left: 66%;
-    background: #0095ff;
-} */
 body {
     overflow: hidden;
     width: 99vw;
 }
 .box_left {
-    /* display: flex; */
     height: 100vh;
-    /* background-color: #0095ff; */
 }
 .box_right {
     height: 100vh;
@@ -77,107 +53,7 @@ body {
     line-height: 44px;
     font-weight: 500;
     margin-top: 60px;
-    /* width: 100px; */
 }
-
-/* #question_text{
-    position: absolute;
-    left: 16%;
-    top: 12%;
-    width: 60%;
-    display: block;
-    margin: 0 auto;
-    outline: 0;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    height: 48px;
-    line-height: 44px;
-    font-weight: 500;
-    border-radius: 2px;
-    color:white;
-    background: #0095ff;
-    border-radius: 10px;
-}
-.divCss{
-	
-    margin-bottom: 10px
-}
-#choice_left{
-    position:absolute;
-    width: 50%;
-    height: 100%;
-    top: 20%;
-    left: 0%;
-}
-#choice_right{
-    position:absolute;
-    width: 50%;
-    height: 100%;
-    top: 20%;
-    left: 50%;
-}
-.answer{
-    display: flex;
-    position:relative;
-    top: 10px;
-    left: 100px;
-    padding-top: 40px;
-}
-.olCss{
-	padding-left: 20px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-	margin-left: 40px;
-}
-.inputClass {
-	float:left;
-	margin-left: -50px;
-    
-}
-.liRight {
-	padding-left: 20px;
-}
-#question_button{
-    position:absolute;
-    top: 75%;
-    width: 85%;
-    display: block;
-    margin: 0 auto;
-    outline: 0;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    height: 44px;
-    line-height: 44px;
-    font-weight: 500;
-    border-radius: 2px;
-    color: #fff;
-    background: #0095ff;
-    border-radius: 10px;
-}
-#question_class{
-    position:absolute;
-    top :12%;
-    left: 5%;
-    width: 45px;
-    display: block;
-    margin: 0 auto;
-    outline: 0;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    font-size: 10px;
-    height: 44px;
-    line-height: 44px;
-    font-weight: 500;
-    border-radius: 2px;
-    color:black;
-    background: #00ff80;
-    border-radius: 20px;
-} */
 ul {
     list-style: none;
 }
