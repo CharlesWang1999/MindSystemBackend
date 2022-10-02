@@ -1,4 +1,3 @@
-from typing import Final
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -288,6 +287,7 @@ def smooth_music_click_view(request):
     page_round = request.POST.get('page_round', None)
     round_num = int(round_num)
     have_next_page = round_num != settings.MAX_ROUND_NUM
+    next_page_round = None
     if have_next_page:
         next_page_round = page_round
         next_round_num = round_num + 1
@@ -304,7 +304,8 @@ def smooth_music_click_view(request):
     context = {
         'uaid': uaid,
         'next_round_num': next_round_num,
-        'next_page_round': next_page_round
+        'next_page_round': next_page_round,
+        "have_next_page": have_next_page
     }
     print('@241---', context)
     return JsonResponse(context)
@@ -321,7 +322,7 @@ def question_s1_view(request, uaid, round_num):
 @login_required
 def question_link_view(request, uaid, round_num):
     command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
-    # os.system(command)
+    os.system(command)
     if round_num == 1:
         img_name = 'afraid.jpg'
     elif round_num == 2:
