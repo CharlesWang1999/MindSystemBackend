@@ -2,6 +2,128 @@
 {% load static %}
 {% block content %}
     系统评估
+    {% comment %} 问卷 {% endcomment %}
+    <!DOCTYPE html>
+    <html lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <title>选择题choice question</title>
+    <style>
+    .divCss{
+        margin-bottom: 10px;
+    }
+    .olCss{
+        padding-left: 20px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-left: 40px;
+    }
+    .inputClass {
+        float:left;
+        margin-left: -50px;
+    }
+    .liRight {
+        
+    }
+    </style>
+    </head>
+    <body>
+    <!-- 
+    type默认为数字,其他类型有英文字母A/a,罗马字母I/i,
+    start可以设置起始标记 下标从1开始 
+    -->
+    <form>
+        <div class="divCss">
+        1.你对我们的系统满意度?()
+            <ol type="A" start="" class="olCss" name="single" >
+                <input class="inputClass" type="radio" name="place1" value="A" /><li class="liRight">十分满意</li>
+                <input class="inputClass" type="radio" name="place1" value="B" /><li class="liRight">满意</li>
+                <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">一般</li>
+                <input class="inputClass" type="radio" name="place1" value="D" /><li class="liRight">不满意</li>
+            </ol>
+        </div>
+        <div class="divCss">
+        2.你觉得我们的系统美观程度如何?()
+            <ol type="A" start="" class="olCss" name="single" >
+                <input class="inputClass" type="radio" name="place2" value="A" /><li class="liRight">十分美观</li>
+                <input class="inputClass" type="radio" name="place2" value="B" /><li class="liRight">美观</li>
+                <input class="inputClass" type="radio" name="place2" value="C" /><li class="liRight">一般</li>
+                <input class="inputClass" type="radio" name="place2" value="D" /><li class="liRight">不美观</li>
+            </ol>
+        </div>
+        <div class="divCss">
+        3.你觉得那些环节设计的比较好?()
+            <ol type="A" start="" class="olCss" name="multi" >
+                <input class="inputClass" type="checkbox" name="place3" value="A" /><li class="liRight">音乐舒缓界面</li>
+                <input class="inputClass" type="checkbox" name="place3" value="B" /><li class="liRight">图片-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place3" value="C" /><li class="liRight">图片-图片选择环节</li>
+                <input class="inputClass" type="checkbox" name="place3" value="D" /><li class="liRight">视频-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place3" value="E" /><li class="liRight">视频加文字AR-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place3" value="F" /><li class="liRight">情景-情绪选择环节</li>
+            </ol>
+        </div>
+        <div class="divCss">
+        4.你现在处于什么地方?()
+            <ol type="A" start="" class="olCss" name="multi" >
+                <input class="inputClass" type="checkbox" name="place4" value="A" /><li class="liRight">银河系</li>
+                <input class="inputClass" type="checkbox" name="place4" value="B" checked="checked" /><li class="liRight">太阳系</li>
+                <input class="inputClass" type="checkbox" name="place4" value="C" checked="checked" /><li class="liRight">地球</li>
+            </ol>
+        </div>
+        <div class="divCss">
+        4.你现在处于什么地方?()
+                <ol type="A" start="" class="olCss" name="multi" >
+                    <input class="inputClass" type="checkbox" name="place4" value="A" /><li class="liRight">银河系</li>
+                    <input class="inputClass" type="checkbox" name="place4" value="B" checked="checked" /><li class="liRight">太阳系</li>
+                    <input class="inputClass" type="checkbox" name="place4" value="C" checked="checked" /><li class="liRight">地球</li>
+                </ol>
+        </div>
+        <div class="divCss">
+        4.你现在处于什么地方?()
+                <ol type="A" start="" class="olCss" name="multi" >
+                    <input class="inputClass" type="checkbox" name="place4" value="A" /><li class="liRight">银河系</li>
+                    <input class="inputClass" type="checkbox" name="place4" value="B" checked="checked" /><li class="liRight">太阳系</li>
+                    <input class="inputClass" type="checkbox" name="place4" value="C" checked="checked" /><li class="liRight">地球</li>
+                </ol>
+        </div>
+        <input type="button" value="提交答案" onclick="sendMsg()" />
+    </form>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script>
+    function sendMsg(){
+        //题目数
+        var singleSize = $("[name='single']").length;
+        var multiSize = $("[name='multi']").length;
+        //答案数组
+        var answerArr = new Array(singleSize+multiSize);
+        //单选答案
+        $("[name='single']").each(function(index){
+            //放入答案
+            var answer = $("input[name='place"+(index+1)+"']:checked").val();
+            answerArr[index] = answer;
+        })
+        //多选答案
+        $("[name='multi']").each(function(index){
+            //拼接多选答案
+            var multiAnswer = "";
+            $("input[name='place"+(index+singleSize+1)+"']:checked").each(function(){
+                if ("checked" == $(this).attr("checked")) {
+                    //拼接答案
+                    multiAnswer = multiAnswer+$(this).attr('value');
+                }
+            })
+            //放入答案
+            answerArr[index+singleSize] = multiAnswer;
+        })
+        //在调试模式下的console中查看输出
+        console.log(answerArr);
+        //发送答案到服务器
+    }
+    </script>
+    </body>
+    </html>
+
+    {% comment %} 问卷 {% endcomment %}
     <button id='system_evaluate_button'>系统评估完成</button>
     <div id="uaid" style="display: none">{{ uaid }}</div>
 {% endblock %}

@@ -2,6 +2,124 @@
 {% load static %}
 {% block content %}
     实验评估
+    {% comment %} 问卷 {% endcomment %}
+    <!DOCTYPE html>
+    <html lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <title>选择题choice question</title>
+    <style>
+    .divCss{
+        margin-bottom: 10px;
+    }
+    .olCss{
+        padding-left: 20px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-left: 40px;
+    }
+    .inputClass {
+        float:left;
+        margin-left: -50px;
+    }
+    .liRight {
+        
+    }
+    </style>
+    </head>
+    <body>
+    <!-- 
+    type默认为数字,其他类型有英文字母A/a,罗马字母I/i,
+    start可以设置起始标记 下标从1开始 
+    -->
+    <form>
+        <div class="divCss">
+        1.实验结果是否和自身心理预期一致?(  )
+            <ol type="A" start="" class="olCss" name="single" >
+                <input class="inputClass" type="radio" name="place1" value="A" /><li class="liRight">完成一致</li>
+                <input class="inputClass" type="radio" name="place1" value="B" /><li class="liRight">一致</li>
+                <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">差强人意</li>
+                <input class="inputClass" type="radio" name="place1" value="D" /><li class="liRight">相差很大</li>
+            </ol>
+        </div>
+        <div class="divCss">
+        2.你觉得实验和EQ量表关系紧密程度(  )
+                <ol type="A" start="" class="olCss" name="single" >
+                    <input class="inputClass" type="radio" name="place1" value="A" /><li class="liRight">十分紧密</li>
+                    <input class="inputClass" type="radio" name="place1" value="B" /><li class="liRight">紧密</li>
+                    <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">一般</li>
+                    <input class="inputClass" type="radio" name="place1" value="D" /><li class="liRight">不紧密</li>
+                </ol>
+            </div>
+        <div class="divCss">
+        3.实验是否新颖并且感兴趣?(  )
+            <ol type="A" start="" class="olCss" name="single" >
+                <input class="inputClass" type="radio" name="place2" value="A" /><li class="liRight">十分新颖</li>
+                <input class="inputClass" type="radio" name="place2" value="B" /><li class="liRight">有意思</li>
+                <input class="inputClass" type="radio" name="place2" value="C" /><li class="liRight">一般</li>
+                <input class="inputClass" type="radio" name="place2" value="D" /><li class="liRight">没有兴趣</li>
+            </ol>
+        </div>
+        <div class="divCss">
+        4.你觉得那些环节能体现自己的共情能力?(  )
+            <ol type="A" start="" class="olCss" name="multi" >
+                <input class="inputClass" type="checkbox" name="place3" value="A" /><li class="liRight">表情识别</li>
+                <input class="inputClass" type="checkbox" name="place3" value="B" /><li class="liRight">图片-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place3" value="C" /><li class="liRight">图片-图片选择环节</li>
+                <input class="inputClass" type="checkbox" name="place3" value="D" /><li class="liRight">视频-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place3" value="E" /><li class="liRight">视频加文字AR-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place3" value="F" /><li class="liRight">情景-情绪选择环节</li>
+            </ol>
+        </div>
+        <div class="divCss">
+        5.你觉得那些环节能刺激到你的情绪?(  )
+            <ol type="A" start="" class="olCss" name="multi" >
+                <input class="inputClass" type="checkbox" name="place2" value="A" /><li class="liRight">音乐舒缓界面</li>
+                <input class="inputClass" type="checkbox" name="place2" value="B" /><li class="liRight">图片-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place2" value="C" /><li class="liRight">图片-图片选择环节</li>
+                <input class="inputClass" type="checkbox" name="place2" value="D" /><li class="liRight">视频-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place2" value="E" /><li class="liRight">视频加文字AR-情绪选择环节</li>
+                <input class="inputClass" type="checkbox" name="place2" value="F" /><li class="liRight">情景-情绪选择环节</li>
+            </ol>
+        </div>
+        <input type="button" value="提交答案" onclick="sendMsg()" />
+    </form>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script>
+    function sendMsg(){
+        //题目数
+        var singleSize = $("[name='single']").length;
+        var multiSize = $("[name='multi']").length;
+        //答案数组
+        var answerArr = new Array(singleSize+multiSize);
+        //单选答案
+        $("[name='single']").each(function(index){
+            //放入答案
+            var answer = $("input[name='place"+(index+1)+"']:checked").val();
+            answerArr[index] = answer;
+        })
+        //多选答案
+        $("[name='multi']").each(function(index){
+            //拼接多选答案
+            var multiAnswer = "";
+            $("input[name='place"+(index+singleSize+1)+"']:checked").each(function(){
+                if ("checked" == $(this).attr("checked")) {
+                    //拼接答案
+                    multiAnswer = multiAnswer+$(this).attr('value');
+                }
+            })
+            //放入答案
+            answerArr[index+singleSize] = multiAnswer;
+        })
+        //在调试模式下的console中查看输出
+        console.log(answerArr);
+        //发送答案到服务器
+    }
+    </script>
+    </body>
+    </html>
+
+    {% comment %} 问卷 {% endcomment %}
     <button id='experiment_evaluate_button'>实验评估完成</button>
     <div id="uaid" style="display: none">{{uaid}}</div>
 {% endblock %}
