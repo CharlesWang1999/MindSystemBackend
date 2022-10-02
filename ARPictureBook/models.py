@@ -35,4 +35,5 @@ class FinalResult(models.Model):
     round_num = models.IntegerField()
     question_result = models.CharField(max_length=255, null=True, blank=True)
     self_report_result = models.CharField(max_length=255, null=True, blank=True)
+    self_report_result_detail = models.CharField(max_length=255, null=True, blank=True)
     micro_expression_detection_result = models.CharField(max_length=255, null=True, blank=True)

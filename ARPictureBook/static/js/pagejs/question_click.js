@@ -7,7 +7,6 @@ $('#question_button').click(function () {
   $.ajax({
     url: '/ARPicture/question_click/',
     type: 'POST',
-    // data: $("#question_form").serialize(),
     data: resultData,
     datatype: 'json',
     success: function (response) {

@@ -219,6 +219,8 @@ def self_report_click_view(request):
     uaid = request.POST.get('uaid', None)
     round_num = request.POST.get('round_num', None)
     page_round = request.POST.get('page_round', None)
+    question_info = request.POST.get('question_info', None)
+    other_info = request.POST.get('other_info', None)
     print('@178---', page_round)
     round_num = int(round_num)
     user = request.user
@@ -232,6 +234,24 @@ def self_report_click_view(request):
     running_mode = user_answer_info.running_mode
     print('@189---', running_mode)
     have_next_page = round_num != settings.MAX_ROUND_NUM
+    final_result_queryset = FinalResult.objects.filter(
+        answer_info=user_answer_info,
+        page_round=page_round,
+        round_num=round_num
+    )
+    final_result = None
+    if final_result_queryset:
+        final_result = final_result_queryset.first()
+    else:
+        final_result = FinalResult(
+            answer_info=user_answer_info,
+            page_round=page_round,
+            round_num=round_num
+        )
+    final_result.self_report_result = question_info
+    if question_info == 'D':
+        final_result.self_report_result_detail = other_info
+    final_result.save()
     context = {
         "status": "success",
         "have_next_page": have_next_page,
