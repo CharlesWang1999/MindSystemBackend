@@ -3,6 +3,8 @@ $('#self_report_button').click(function(){
     resultData['uaid'] = $("#uaid").text();
     resultData['round_num'] = $("#round_num").text();
     resultData['page_round'] = $("#page_round").text();
+    resultData['question_info'] = $('input[name="place1"]:checked').val()
+    resultData['other_info'] = $('input[name="place2"]').val()
     $.ajax({
       url:'/ARPicture/self_report_click/',
       type:'POST',

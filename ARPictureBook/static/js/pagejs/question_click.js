@@ -3,7 +3,7 @@ $('#question_button').click(function () {
   resultData['uaid'] = $("#uaid").text();
   resultData['round_num'] = $("#round_num").text();
   resultData['page_round'] = $("#page_round").text();
-  console.log('@6--', $("#question_form").serialize())
+  resultData['question_info'] = $('input[name="place1"]:checked').val()
   $.ajax({
     url: '/ARPicture/question_click/',
     type: 'POST',
