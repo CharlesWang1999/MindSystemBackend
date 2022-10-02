@@ -321,7 +321,7 @@ def question_s1_view(request, uaid, round_num):
 @login_required
 def question_link_view(request, uaid, round_num):
     command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
-    os.system(command)
+    # os.system(command)
     if round_num == 1:
         img_name = 'afraid.jpg'
     elif round_num == 2:
