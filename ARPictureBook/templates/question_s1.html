@@ -1,46 +1,186 @@
-{% extends './base_question.html' %}
+{% extends "./base_question.html" %}
 {% load static %}
+{% block extra_script %}
+    <link rel="stylesheet" href="{% static "css/question_s1.css" %}" />
+{% endblock extra_script %}
 {% block content %}
-<link rel="stylesheet" href="{% static "css/question_s1.css" %}">
-<!-- <script type='text/javascript' src='https://www.wjx.cn/handler/jqemed.ashx?activity=eOJdc4H&width=760&source=iframe'></script> -->
-<body>
-    <box_left class="box_left">
-        <form id="question_form">
-            <button id="question_class" disabled>单选题</button>
-            <button id="question_text" disabled>根据大屏幕中图像，选择图像所对应的情绪</button>
-            <div class="divCss">
-            <!-- 1.你现在处于什么地方?() -->
-                <ol type="A" start="" class="olCss" name="single" >
-                    <div id="choice_left">
-                        <li class="answer">
-                            <input class="inputClass" type="radio" name="place1" value="A" /><div class="liRight">快乐</div>
-                        </li>
-                        <li class="answer">
-                            <input class="inputClass" type="radio" name="place1" value="B" /><div class="liRight">悲伤</div>
-                        </li>
-                        <li class="answer">
-                            <input class="inputClass" type="radio" name="place1" value="C" /><div class="liRight">愤怒</div>
-                        </li>       
+    <!-- <script type='text/javascript' src='https://www.wjx.cn/handler/jqemed.ashx?activity=eOJdc4H&width=760&source=iframe'></script> -->
+    {% comment %} <div class="container"> {% endcomment %}
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 box_left">
+            {% comment %} <div style="width: 480px;"> {% endcomment %}
+            <!-- ar代码 -->
+            <a-scene
+                mindar-image="imageTargetSrc: https://raw.githubusercontent.com/weiqingv/ARedu/main/minds/lion.mind;uiError:no; uiLoading:no; uiScanning:no;"
+                color-space="sRGB"
+                renderer="colorManagement: true, physicallyCorrectLights"
+                vr-mode-ui="enabled: false"
+                device-orientation-permission-ui="enabled: false"
+                >
+                <a-assets>
+                    <a-asset-item
+                        id="bearModel"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/bear/scene.gltf"
+                        >
+                    </a-asset-item>
+                    <a-asset-item
+                        id="trexModel"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/trex/scene.gltf"
+                        >
+                    </a-asset-item>
+                    <a-asset-item
+                        id="raccoonModel"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/raccoon/scene.gltf"
+                        >
+                    </a-asset-item>
+                </a-assets>
+                <a-camera position="0 0 0" look-controls="enabled: false" id="camera">
+                </a-camera>
+                <a-entity mindar-image-target="targetIndex: 0">
+                    <a-gltf-model
+                        rotation="0 0 0 "
+                        position="0 -0.25 0"
+                        scale="0.05 0.05 0.05"
+                        src="#bearModel"
+                        animation-mixer
+                        >
+                    </a-gltf-model>
+                </a-entity>
+                <a-entity mindar-image-target="targetIndex: 1">
+                    <a-gltf-model
+                        rotation="0 0 0 "
+                        position="0 -0.25 0"
+                        scale="0.05 0.05 0.05"
+                        src="#trexModel"
+                        animation-mixer
+                        >
+                    </a-gltf-model>
+                </a-entity>
+                <a-entity mindar-image-target="targetIndex: 2">
+                    <a-gltf-model
+                        rotation="0 0 0 "
+                        position="0 -0.25 0"
+                        scale="0.05 0.05 0.05"
+                        src="#raccoonModel"
+                        animation-mixer
+                        >
+                    </a-gltf-model>
+                </a-entity>
+            </a-scene>
+        </div>
+        <!-- ar代码 -->
+        {% comment %} </div> {% endcomment %}
+        <div class="col-lg-4 col-sm-4 box_right">
+            <div class="box_right_container">
+                <form id="question_form">
+                    <div class="question_title">
+                        <div class="question_class">单选题</div>
+                        <div class="question_text">根据大屏幕中图像，选择图像所对应的情绪</div>
                     </div>
-                    <div id="choice_right">
-                        <li class="answer">
-                            <input class="inputClass" type="radio" name="place1" value="D" /><div class="liRight">恐惧</div>
-                        </li>
-                        <li class="answer">
-                            <input class="inputClass" type="radio" name="place1" value="E" /><div class="liRight">厌恶</div>
-                        </li>
-                        <li class="answer">
-                            <input class="inputClass" type="radio" name="place1" value="F" /><div class="liRight">惊奇</div>
-                        </li>       
+                    <div class="question_option">
+                        <ul start="" class="olCss" name="single">
+                            <li class="answer">
+                                <input id="emotion_a"
+                                       class="inputClass"
+                                       type="radio"
+                                       name="place1"
+                                       value="A"/>
+                                <label for="emotion_a" class="liRight">A. 快乐</label>
+                            </li>
+                            <li class="answer">
+                                <input id="emotion_b"
+                                       class="inputClass"
+                                       type="radio"
+                                       name="place1"
+                                       value="B"/>
+                                <label for="emotion_b" class="liRight">B. 悲伤</label>
+                            </li>
+                            <li class="answer">
+                                <input id="emotion_c"
+                                       class="inputClass"
+                                       type="radio"
+                                       name="place1"
+                                       value="C"/>
+                                <label for="emotion_c" class="liRight">C. 愤怒</label>
+                            </li>
+                            <li class="answer">
+                                <input id="emotion_d"
+                                       class="inputClass"
+                                       type="radio"
+                                       name="place1"
+                                       value="D"/>
+                                <label for="emotion_d" class="liRight">D. 恐惧</label>
+                            </li>
+                            <li class="answer">
+                                <input id="emotion_e"
+                                       class="inputClass"
+                                       type="radio"
+                                       name="place1"
+                                       value="E"/>
+                                <label for="emotion_e" class="liRight">E. 厌恶</label>
+                            </li>
+                            <li class="answer">
+                                <input id="emotion_f"
+                                       class="inputClass"
+                                       type="radio"
+                                       name="place1"
+                                       value="F"/>
+                                <label for="emotion_f" class="liRight">F. 惊奇</label>
+                            </li>
+                        </ul>
                     </div>
-                    <!-- <div id="choice_right"><input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">恐惧</li>
-                    <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">厌恶</li>
-                    <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">惊奇</li></div> -->
-                </ol>
+                </form>
+                <button type="button" id="question_button">确定提交</button>
             </div>
-            <!-- <div class="divCss">
+        </div>
+    </div>
+</div>
+{% comment %} </div> {% endcomment %}
+{% comment %} <div class="box_left">
+        <form id="question_form">
+            <button type="button" id="question_class" disabled>单选题</button>
+            <button type="button" id="question_text" disabled>根据大屏幕中图像，选择图像所对应的情绪</button>
+            <div class="divCss">
+                <!-- 1.你现在处于什么地方?() -->
+                <div id="choice_left">
+                    <ul start="" class="olCss" name="single">
+                        <li class="answer">
+                            <input id="emotion_a" class="inputClass" type="radio" name="place1" value="A"/>
+                            <label for="emotion_a" class="liRight">A. 快乐</label>
+                        </li>
+                        <li class="answer">
+                            <input id="emotion_b" class="inputClass" type="radio" name="place1" value="B"/>
+                            <label for="emotion_b" class="liRight">B. 悲伤</label>
+                        </li>
+                        <li class="answer">
+                            <input id="emotion_c" class="inputClass" type="radio" name="place1" value="C"/>
+                            <label for="emotion_c" class="liRight">C. 愤怒</label>
+                        </li>
+                    </ul>
+                </div>
+                <div id="choice_right">
+                    <ul start="" class="olCss" name="single">
+                        <li class="answer">
+                            <input id="emotion_d" class="inputClass" type="radio" name="place1" value="D"/>
+                            <label for="emotion_d" class="liRight">D. 恐惧</label>
+                        </li>
+                        <li class="answer">
+                            <input id="emotion_e" class="inputClass" type="radio" name="place1" value="E"/>
+                            <label for="emotion_e" class="liRight">E. 厌恶</label>
+                        </li>
+                        <li class="answer">
+                            <input id="emotion_f" class="inputClass" type="radio" name="place1" value="F"/>
+                            <label for="emotion_f" class="liRight">F. 惊奇</label>
+                        </li>
+                        <!-- <div id="choice_right"><input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">恐惧</li>
+                            <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">厌恶</li>
+                            <input class="inputClass" type="radio" name="place1" value="C" /><li class="liRight">惊奇</li></div> -->
+                    </ul>
+                </div>
+</div> {% endcomment %}
+<!-- <div class="divCss">
             2.你现在处于什么地方?()
-                <ol type="A" start="" class="olCss" name="single" >
+                <ol type="A" start="" class="olCss" name="single">
                     <input class="inputClass" type="radio" name="place2" value="A"  /><li class="liRight">银河系</li>
                     <input class="inputClass" type="radio" name="place2" value="B" checked="checked" /><li class="liRight">太阳系</li>
                     <input class="inputClass" type="radio" name="place2" value="C" /><li class="liRight">地球</li>
@@ -48,43 +188,26 @@
             </div>
             <div class="divCss">
             3.你现在处于什么地方?()
-                <ol type="A" start="" class="olCss" name="multi" >
+                <ol type="A" start="" class="olCss" name="multi">
                     <input class="inputClass" type="checkbox" name="place3" value="A" checked="checked" /><li class="liRight">银河系</li>
                     <input class="inputClass" type="checkbox" name="place3" value="B" checked="checked" /><li class="liRight">太阳系</li>
-                    <input class="inputClass" type="checkbox" name="place3" value="C" /><li class="liRight">地球</li>
+                    <input class="inputClass" type="checkbox" name="place3" value="C" /><li class="liRight">���球</li>
                 </ol>
             </div>
             <div class="divCss">
             4.你现在处于什么地方?()
-                <ol type="A" start="" class="olCss" name="multi" >
+                <ol type="A" start="" class="olCss" name="multi">
                     <input class="inputClass" type="checkbox" name="place4" value="A" /><li class="liRight">银河系</li>
                     <input class="inputClass" type="checkbox" name="place4" value="B" checked="checked" /><li class="liRight">太阳系</li>
                     <input class="inputClass" type="checkbox" name="place4" value="C" checked="checked" /><li class="liRight">地球</li>
                 </ol>
             </div> -->
-            <!-- <input type="button" value="提交答案" onclick="sendMsg()" /> -->
-        </form>
-        
-        <button id='question_button'>下一步（自我报告S1）</button>
-        <div id="page_round" style="display: none">s1</div>
-    </box_left>
-    <box_ar class="box_ar"></box_ar>
-    <box_right class="box_right"></box_right>
-
-</body>
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="zh"> -->
-<head>
-<meta charset="utf-8">
-<title>选择题choice question</title>
-
-</head>
-
-{% endblock %}
+<!-- <input type="button" value="提交答案" onclick="sendMsg()" /> -->
+{% comment %} </form> {% endcomment %}
+{% comment %} <button type="button" id="question_button">下一步（自我报告S1）</button> {% endcomment %}
+<div id="page_round" style="display: none">
+    s1
+</div>
+{% comment %} <div class="box_ar"></div>
+<div class="box_right"> {% endcomment %}
+{% endblock content %}
