@@ -1,7 +1,119 @@
 {% extends './base_self_report.html' %}
 {% load static %}
+{% block extra_script %}
+    <link rel="stylesheet" href="{% static "css/question_s1.css" %}" />
+{% endblock extra_script %}
 {% block content %}
-自我报告 S2
-<button id='self_report_button'>下一步</button>
+<div class="row">
+    <div class="col-lg-8 col-sm-8 box_left">
+        <!-- ar代码 -->
+        <a-scene
+            mindar-image="imageTargetSrc: https://raw.githubusercontent.com/weiqingv/ARedu/main/minds/lion.mind;uiError:no; uiLoading:no; uiScanning:no;"
+            color-space="sRGB"
+            renderer="colorManagement: true, physicallyCorrectLights"
+            vr-mode-ui="enabled: false"
+            device-orientation-permission-ui="enabled: false"
+            >
+            <a-assets>
+                <a-asset-item
+                    id="bearModel"
+                    src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/bear/scene.gltf"
+                    >
+                </a-asset-item>
+                <a-asset-item
+                    id="trexModel"
+                    src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/trex/scene.gltf"
+                    >
+                </a-asset-item>
+                <a-asset-item
+                    id="raccoonModel"
+                    src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/raccoon/scene.gltf"
+                    >
+                </a-asset-item>
+            </a-assets>
+            <a-camera position="0 0 0" look-controls="enabled: false" id="camera">
+            </a-camera>
+            <a-entity mindar-image-target="targetIndex: 0">
+                <a-gltf-model
+                    rotation="0 0 0 "
+                    position="0 -0.25 0"
+                    scale="0.05 0.05 0.05"
+                    src="#bearModel"
+                    animation-mixer
+                    >
+                </a-gltf-model>
+            </a-entity>
+            <a-entity mindar-image-target="targetIndex: 1">
+                <a-gltf-model
+                    rotation="0 0 0 "
+                    position="0 -0.25 0"
+                    scale="0.05 0.05 0.05"
+                    src="#trexModel"
+                    animation-mixer
+                    >
+                </a-gltf-model>
+            </a-entity>
+            <a-entity mindar-image-target="targetIndex: 2">
+                <a-gltf-model
+                    rotation="0 0 0 "
+                    position="0 -0.25 0"
+                    scale="0.05 0.05 0.05"
+                    src="#raccoonModel"
+                    animation-mixer
+                    >
+                </a-gltf-model>
+            </a-entity>
+        </a-scene>
+    </div>
+    <!-- ar代码 -->
+    <div class="col-lg-4 col-sm-4 box_right">
+        <div class="box_right_container">
+            <form id="question_form">
+                <div class="question_title">
+                    <div class="question_class">单选题</div>
+                    <div class="question_text">你根据什么做出如上判断的？</div>
+                </div>
+                <div class="question_option">
+                    <ul start="" class="olCss" name="single">
+                        <li class="answer">
+                            <input id="emotion_a"
+                                   class="inputClass"
+                                   type="radio"
+                                   name="place1"
+                                   value="A"/>
+                            <label for="emotion_a" class="liRight">A. 视频人物的表情</label>
+                        </li>
+                        <li class="answer">
+                            <input id="emotion_b"
+                                   class="inputClass"
+                                   type="radio"
+                                   name="place1"
+                                   value="B"/>
+                            <label for="emotion_b" class="liRight">B. 视频中的背景</label>
+                        </li>
+                        <li class="answer">
+                            <input id="emotion_c"
+                                   class="inputClass"
+                                   type="radio"
+                                   name="place1"
+                                   value="C"/>
+                            <label for="emotion_c" class="liRight">C. 我自己的相关经历</label>
+                        </li>
+                        <li class="answer">
+                            <input id="emotion_d"
+                                   class="inputClass"
+                                   type="radio"
+                                   name="place1"
+                                   value="D"/>
+                            <label for="emotion_d" class="liRight">D. 其他线索:__________</label>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <button type="button" id="self_report_button">确定提交</button>
+        </div>
+    </div>
+</div>
+<!-- <button id='self_report_button'>下一步</button> -->
 <div id="page_round" style="display: none">s2</div>
 {% endblock %}
