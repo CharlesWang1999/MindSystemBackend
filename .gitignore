@@ -7,3 +7,4 @@ PaddleDetection/
 MindSystemBackend/settings.py
 ARPictureBook/__pycache__/*
 ARPictureBook/static/cartoon/cartoon_first.avi
+PlayVideo/temp.html
