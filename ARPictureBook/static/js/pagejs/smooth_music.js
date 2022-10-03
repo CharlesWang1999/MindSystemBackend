@@ -17,9 +17,9 @@ let play_pause=document.querySelector('.play-pause'),
     next_page=document.querySelector('.btn_next_page')
 
 // 专辑名数组
-let albums=['『天気の子』のテーマ','初の晴れ女バイト','二つの告白','晴れゆく空','グランドエスケープ'];
+let albums=['Album Leaf','Polonaises','Andante Spianato','Cantabile','Fugue'];
 // 歌曲信息数组
-let track_names=['RADWIMPS - 『天気の子』のテーマ','RADWIMPS - 初の晴れ女バイト','RADWIMPS - 二つの告白','RADWIMPS - 晴れゆく空','三浦透子 - グランドエスケープ'];
+let track_names=['Album Leaf,[KK1240]-In E-Moderato (V0)','Polonaises,Op.71-No.3 in Fm (V0)','Andante Spianato,Op.22-In Eb (V0)','Cantabile,[KK1230]-In Bb (V0)','Fugue,[KK1242]-In Am (V0)'];
 
 // 定义变量
 let progress_t, //鼠标在进度条上悬停的位置
