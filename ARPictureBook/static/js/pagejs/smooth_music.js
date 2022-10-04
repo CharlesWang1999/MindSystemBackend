@@ -267,7 +267,10 @@ function back_the_question() {
       datatype: 'json',
       success:function (response) {
         console.log(response);
-        url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/'
+        url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' ;
+        if (response['next_page_round'] === 's2') {
+            url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' + response['running_mode'] + '/'
+        }
         if(resultData['page_round'] === 's4' && !resultData['have_next_page']) {
             url = "/ARPicture/system_evaluate/" + resultData['uaid'] + '/'
           }

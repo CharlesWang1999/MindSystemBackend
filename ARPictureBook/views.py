@@ -302,10 +302,14 @@ def smooth_music_click_view(request):
             next_page_round = 's3'
         elif page_round == 's3':
             next_page_round = 's4'
+    user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+    running_mode = user_answer_info.running_mode
+    print('@189---', running_mode)
     context = {
         'uaid': uaid,
         'next_round_num': next_round_num,
         'next_page_round': next_page_round,
+        "running_mode": running_mode,
         "have_next_page": have_next_page
     }
     print('@241---', context)
@@ -342,8 +346,11 @@ def question_link_view(request, uaid, round_num):
 
 
 @login_required
-def question_s2_view(request, uaid, round_num):
-    command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
+def question_s2_view(request, uaid, round_num,running_mode):
+    if(running_mode=='extra'):
+        command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
+    else:
+        command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
     os.system(command)
     start_record(uaid, 's2', round_num)
     return render(request, 'question_s2.html', {'uaid': uaid, 'round_num': round_num})

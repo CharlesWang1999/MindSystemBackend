@@ -5,8 +5,9 @@
     <form id="choose_mode_form">
         {% csrf_token %}
         Choose Yor Mode:
-        <input type="radio" name="mode" value="Testing" checked="checked" />Testing
-        <input type="radio" name="mode" value="Production" />Production
+        <input type="radio" name="mode" value="Testing" checked="checked" />A
+        <input type="radio" name="mode" value="Production" />B
+        <input type="radio" name="mode" value="extra" />C
         <button id="choose_mode_submit" type="button" class="btn btn-primary float-right">
             Submit
         </button>
