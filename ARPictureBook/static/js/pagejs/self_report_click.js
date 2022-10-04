@@ -29,10 +29,10 @@ $('#self_report_button').click(function(){
         } else {
           if(response['running_mode'] === 'Testing'){
             url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/'
-            if(resultData['page_round'] === 's4') {
-              url = "/ARPicture/system_evaluate/" + resultData['uaid'] + '/'
+            if(response['next_page_round'] == 's4') {
+              url = "/ARPicture/finish/" + resultData['uaid'] + '/'
             }
-            else if (response['next_page_round'] == 's2') {
+            else if (response['next_page_round'] == 's2'|| response['next_page_round'] === 'link') {
               url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' +response['running_mode'] + '/'
             }
           } else {

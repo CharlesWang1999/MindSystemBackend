@@ -1,3 +1,4 @@
+from time import sleep
 import webbrowser
 import os, sys
 
@@ -19,6 +20,7 @@ def _replace_video_path(video_path: str):
     tempHTML = open(temp_html_path, "wt")
     tempHTML.write(data)
     tempHTML.close()
+    
 
 
 if __name__ == '__main__':
@@ -29,3 +31,4 @@ if __name__ == '__main__':
     video_name = sys.argv[1]
     play('VideoSource/' + video_name)
     # play('absolute\\video\\path.mp4')
+    
