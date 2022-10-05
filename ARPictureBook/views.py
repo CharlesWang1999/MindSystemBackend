@@ -22,7 +22,7 @@ if settings.CAMERA_RECORD:
     from MindSystemBackend.microExpressionAnalysis import MicroExpressionAnalysis
 from queue import SimpleQueue
 from threading import Thread
-from time import sleep
+from time import sleep, time
 import cv2
 from ffpyplayer.player import MediaPlayer
 
@@ -40,7 +40,7 @@ if settings.CAMERA_RECORD:
 
 video_data_save_path = 'VideoData'
 analysis_thread_queue = SimpleQueue()
-
+time_txt_save_path = 'VideoData/time'
 
 def analysis_thread():
     while True:
@@ -53,8 +53,12 @@ def analysis_thread():
         current_analysis_thread.join()
 
 
-def start_record(uaid=None, page_round=None, round_num=None):
+def start_record(uaid, page_round, round_num):
     start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 视频录制开始\n"
+        f.write(str_write)
     video_data_save_dir_this_round = f'{video_data_save_path}/{start_time.year:=04}_{start_time.month:=02}_{start_time.day:=02}_{start_time.hour:=02}_{start_time.minute:=02}_{start_time.second:=02}_{uaid}_{page_round}_{round_num}'
     if not os.path.exists(video_data_save_dir_this_round):
         os.mkdir(video_data_save_dir_this_round)
@@ -70,7 +74,12 @@ def start_record(uaid=None, page_round=None, round_num=None):
         video_record.start_record(micro_expression_save_path)
 
 
-def stop_record(uaid=None, page_round=None, round_num=None):
+def stop_record(uaid, page_round, round_num):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 视频录制结束\n"
+        f.write(str_write)
     if settings.KINECT_RECORD:
         kinect_record.stop_record()
     if settings.CAMERA_RECORD:
@@ -148,6 +157,11 @@ def smooth_music_view(request, uaid, round_num, page_round):
     print('@144---', user)
     user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
     if user_answer_info and user_answer_info.user == user:
+        start_time = datetime.now()
+        this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+        with open(str(this_time_txt_save_path),"a") as f:
+            str_write=str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 音乐舒缓界面进入\n"
+            f.write(str_write)
         return render(request, 'smooth_music.html', {'uaid': uaid, 'round_num': round_num, 'page_round': page_round})
     else:
         return render(request, 'error.html')
@@ -211,6 +225,11 @@ def question_click_view(request):
             context['next_round_num'] = next_round_num
             context['next_page_round'] = next_page_round
     print('@193---', context)
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' question_'+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 点击提交\n"
+        f.write(str_write)
     return JsonResponse(context)
 
 
@@ -276,7 +295,11 @@ def self_report_click_view(request):
             next_page_round = 's4'
         context['next_round_num'] = next_round_num
         context['next_page_round'] = next_page_round
-
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' self_report_'+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 点击提交\n"
+        f.write(str_write)
     return JsonResponse(context)
 
 
@@ -313,39 +336,45 @@ def smooth_music_click_view(request):
         "have_next_page": have_next_page
     }
     print('@241---', context)
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' smooth_music_'+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 点击提交\n"
+        f.write(str_write)
     return JsonResponse(context)
 
 
 @login_required
-def question_s1_view(request, uaid, round_num):
+def question_s1_view(request, uaid, round_num,running_mode):
     # command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
-    # command = 'python PlayVideo/playImageAtWeb.py start2.jpg'
-    command = 'python PlayVideo/playImageAtWeb.py s1-'+str(round_num)+'.jpg'
+    # command = 'python PlayVideo/playImageAtWeb.py start2.jpg' 
+
+    command = 'python PlayVideo/playImageAtWeb.py '+str(running_mode)+'-s1-'+str(round_num)+'.jpg'
     os.system(command)
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' question_s1阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
+        f.write(str_write)
     start_record(uaid, 's1', round_num)
     return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
 def question_link_view(request, uaid, round_num,running_mode):
-    if(running_mode=='extra'):
-        command = 'python PlayVideo/playImageAtWeb.py extra-link-'+str(round_num)+'.jpg'
-    else:
-        command = 'python PlayVideo/playImageAtWeb.py link-'+str(round_num)+'.jpg'
+    # if(running_mode=='Extra'):
+    #     command = 'python PlayVideo/playImageAtWeb.py extra-link-'+str(round_num)+'.jpg'
+    # else:
+    #     command = 'python PlayVideo/playImageAtWeb.py link-'+str(round_num)+'.jpg'
+    command ='python PlayVideo/playImageAtWeb.py '+str(running_mode)+'-link.jpg'
     os.system(command)
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' question_link阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
+        f.write(str_write)
     start_record(uaid, 'link', round_num)
-    if round_num == 1:
-        img_name = 'afraid.jpg'
-    elif round_num == 2:
-        img_name = 'angry.jpg'
-    elif round_num == 3:
-        img_name = 'disgust.jpg'
-    elif round_num == 4:
-        img_name = 'happy.jpg'
-    elif round_num == 5:
-        img_name = 'sad.jpg'
-    elif round_num == 6:
-        img_name = 'surp.jpg'
+    img_name = str(running_mode) +'-link-'+str(round_num)+'.jpg'
     return render(request, 'question_link.html', {'uaid': uaid, 'round_num': round_num, 'img_name': img_name})
 
 
@@ -354,12 +383,16 @@ def question_s2_view(request, uaid, round_num,running_mode):
     command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg' #打开ARmaker
     os.system(command)
     sleep(0.01)
-    if(running_mode=='extra'):
+    if(running_mode=='Extra'):
         command = 'python PlayVideo/playVideoAtWeb.py s2-'+str(round_num)+'.mp4'
     else:
         command = 'python PlayVideo/playVideoAtWeb.py s2-'+str(round_num)+'.mp4'
     os.system(command)
-    
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' question_s2阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
+        f.write(str_write)
     start_record(uaid, 's2', round_num)
     return render(request, 'question_s2.html', {'uaid': uaid, 'round_num': round_num})
 
@@ -372,6 +405,11 @@ def question_s3_view(request, uaid, round_num):
     # command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
     command = 'python PlayVideo/playVideoAtWeb.py s3-'+str(round_num)+'.mp4'
     os.system(command)
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' question_s3阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
+        f.write(str_write)
     start_record(uaid, 's3', round_num)
     return render(request, 'question_s3.html', {'uaid': uaid, 'round_num': round_num})
 
@@ -386,21 +424,41 @@ def question_s4_view(request, uaid, round_num):
 
 @login_required
 def self_report_s1_view(request, uaid, round_num):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' self_report_s1阶段'+'第'+str(round_num)+'页'+" 页面进入\n"
+        f.write(str_write)
     return render(request, 'self_report_s1.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
 def self_report_s2_view(request, uaid, round_num):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' self_report_s2阶段'+'第'+str(round_num)+'页'+" 页面进入\n"
+        f.write(str_write)
     return render(request, 'self_report_s2.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
 def self_report_s3_view(request, uaid, round_num):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' self_report_s3阶段'+'第'+str(round_num)+'页'+" 页面进入\n"
+        f.write(str_write)
     return render(request, 'self_report_s3.html', {'uaid': uaid, 'round_num': round_num})
 
 
 @login_required
 def self_report_s4_view(request, uaid, round_num):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' self_report_s4阶段'+'第'+str(round_num)+'页'+" 页面进入\n"
+        f.write(str_write)
     return render(request, 'self_report_s4.html', {'uaid': uaid, 'round_num': round_num})
 
 
@@ -416,6 +474,11 @@ def experiment_evaluate_view(request, uaid):
 
 @login_required
 def finish_view(request, uaid):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+" 测试结束\n"
+        f.write(str_write)
     return render(request, 'finish.html', {'uaid': uaid})
 
 
@@ -465,7 +528,7 @@ def choose_mode_submit_view(request):
     user_answer_info.set_page_order(page_order)
     print('@156---', user_answer_info.page_order)
     user_answer_info.save()
-    return JsonResponse({"status": "success", "uaid": user_answer_info.id})
+    return JsonResponse({"status": "success", "uaid": user_answer_info.id,"mode":user_answer_info.running_mode})
 
 
 @csrf_exempt

@@ -2,6 +2,7 @@ db.sqlite3
 test.avi
 .DS_Store
 VideoData/2022_*
+VideoData/time
 FMEDetection/
 PaddleDetection/
 MindSystemBackend/settings.py

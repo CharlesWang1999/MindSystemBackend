@@ -19,11 +19,14 @@ $('#self_report_button').click(function(){
         if (response['have_next_page']){
           if(response['running_mode'] == 'Testing'){
             url = "/ARPicture/question_" + resultData['page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/'
-            if (resultData['page_round'] == 's2') {
+            if (resultData['page_round'] == 's2'||resultData['page_round'] == 's1') {
               url = "/ARPicture/question_" + resultData['page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' +response['running_mode'] + '/'
             }
           } else {
             url = "/ARPicture/smooth_music/" + response['uaid'] + '/' + response['round_num'] + '/' + resultData['page_round'] + '/'
+            if (resultData['page_round'] == 's1') {
+              url = "/ARPicture/question_" + resultData['page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' +response['running_mode'] + '/'
+            }
           }
           window.location.href = url;
         } else {
@@ -32,11 +35,14 @@ $('#self_report_button').click(function(){
             if(response['next_page_round'] == 's4') {
               url = "/ARPicture/finish/" + resultData['uaid'] + '/'
             }
-            else if (response['next_page_round'] == 's2'|| response['next_page_round'] === 'link') {
+            else if (response['next_page_round'] == 's2'|| response['next_page_round'] === 'link'||resultData['next_page_round'] == 's1') {
               url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' +response['running_mode'] + '/'
             }
           } else {
             url = "/ARPicture/smooth_music/" + response['uaid'] + '/' + response['round_num'] + '/' + resultData['page_round'] + '/'
+            if (response['next_page_round'] === 'link'||resultData['next_page_round'] == 's1'){
+              url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' +response['running_mode'] + '/'
+            }
           }
           window.location.href = url;
         }

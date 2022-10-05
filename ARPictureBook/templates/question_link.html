@@ -15,20 +15,47 @@
                 vr-mode-ui="enabled: false"
                 device-orientation-permission-ui="enabled: false"
                 >
+                <a-scene
+                mindar-image="imageTargetSrc: https://raw.githubusercontent.com/weiqingv/ARedu/main/minds/lion.mind;uiError:no; uiLoading:no; uiScanning:no;"
+                color-space="sRGB"
+                renderer="colorManagement: true, physicallyCorrectLights"
+                vr-mode-ui="enabled: false"
+                device-orientation-permission-ui="enabled: false"
+                >
                 <a-assets>
                     <a-asset-item
                         id="bearModel"
-                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/bear/scene.gltf"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/father/F_Angry.gltf"
                         >
                     </a-asset-item>
                     <a-asset-item
                         id="trexModel"
-                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/trex/scene.gltf"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/father/F_Fear.gltf"
                         >
                     </a-asset-item>
                     <a-asset-item
                         id="raccoonModel"
-                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/raccoon/scene.gltf"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/father/F_Happy.gltf"
+                        >
+                    </a-asset-item>
+                    <a-asset-item
+                        id="bearModel"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/father/F_Hate.gltf"
+                        >
+                    </a-asset-item>
+                    <a-asset-item
+                        id="trexModel"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/father/F_Sad.gltf"
+                        >
+                    </a-asset-item>
+                    <a-asset-item
+                        id="raccoonModel"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/father/F_Surprise.gltf"
+                        >
+                    </a-asset-item>
+                    <a-asset-item
+                        id="raccoonModel"
+                        src="https://raw.githubusercontent.com/weiqingv/ARedu/main/models/father/F_Stand.gltf"
                         >
                     </a-asset-item>
                 </a-assets>
@@ -38,7 +65,7 @@
                     <a-gltf-model
                         rotation="0 0 0 "
                         position="0 -0.25 0"
-                        scale="0.05 0.05 0.05"
+                        scale="0.50 0.50 0.50"
                         src="#bearModel"
                         animation-mixer
                         >
@@ -48,7 +75,7 @@
                     <a-gltf-model
                         rotation="0 0 0 "
                         position="0 -0.25 0"
-                        scale="0.05 0.05 0.05"
+                        scale="0.50 0.50 0.50"
                         src="#trexModel"
                         animation-mixer
                         >
@@ -58,7 +85,47 @@
                     <a-gltf-model
                         rotation="0 0 0 "
                         position="0 -0.25 0"
-                        scale="0.05 0.05 0.05"
+                        scale="0.50 0.50 0.50"
+                        src="#raccoonModel"
+                        animation-mixer
+                        >
+                    </a-gltf-model>
+                </a-entity>
+                <a-entity mindar-image-target="targetIndex: 3">
+                    <a-gltf-model
+                        rotation="0 0 0 "
+                        position="0 -0.25 0"
+                        scale="0.50 0.50 0.50"
+                        src="#raccoonModel"
+                        animation-mixer
+                        >
+                    </a-gltf-model>
+                </a-entity>
+                <a-entity mindar-image-target="targetIndex: 4">
+                    <a-gltf-model
+                        rotation="0 0 0 "
+                        position="0 -0.25 0"
+                        scale="0.50 0.50 0.50"
+                        src="#raccoonModel"
+                        animation-mixer
+                        >
+                    </a-gltf-model>
+                </a-entity>
+                <a-entity mindar-image-target="targetIndex: 5">
+                    <a-gltf-model
+                        rotation="0 0 0 "
+                        position="0 -0.25 0"
+                        scale="0.50 0.50 0.50"
+                        src="#raccoonModel"
+                        animation-mixer
+                        >
+                    </a-gltf-model>
+                </a-entity>
+                <a-entity mindar-image-target="targetIndex: 6">
+                    <a-gltf-model
+                        rotation="0 0 0 "
+                        position="0 -0.25 0"
+                        scale="0.50 0.50 0.50"
                         src="#raccoonModel"
                         animation-mixer
                         >

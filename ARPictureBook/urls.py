@@ -42,7 +42,7 @@ urlpatterns = [
     path('experiment_evaluate_click/', experiment_evaluate_click_view),
     path('choose_mode_submit/', choose_mode_submit_view),
     path('smooth_music/<int:uaid>/<int:round_num>/<str:page_round>/', smooth_music_view, name='smooth_music'),
-    path('question_s1/<int:uaid>/<int:round_num>/', question_s1_view, name='question_s1'),
+    path('question_s1/<int:uaid>/<int:round_num>/<str:running_mode>/', question_s1_view, name='question_s1'),
     path('question_s2/<int:uaid>/<int:round_num>/<str:running_mode>/', question_s2_view, name='question_s2'),
     path('question_s3/<int:uaid>/<int:round_num>/', question_s3_view, name='question_s3'),
     path('question_s4/<int:uaid>/<int:round_num>/', question_s4_view, name='question_s4'),

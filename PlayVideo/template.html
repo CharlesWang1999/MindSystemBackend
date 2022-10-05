@@ -14,6 +14,8 @@
 
     <script>
         var aud = document.getElementById("showVideo");
+        aud.volume=0.2;
+        aud.metud=false;
         aud.onended = function() {
             window.close();
         };
