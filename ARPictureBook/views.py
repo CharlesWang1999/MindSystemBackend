@@ -382,11 +382,8 @@ def question_link_view(request, uaid, round_num,running_mode):
 def question_s2_view(request, uaid, round_num,running_mode):
     command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg' #打开ARmaker
     os.system(command)
-    sleep(0.01)
-    if(running_mode=='Extra'):
-        command = 'python PlayVideo/playVideoAtWeb.py s2-'+str(round_num)+'.mp4'
-    else:
-        command = 'python PlayVideo/playVideoAtWeb.py s2-'+str(round_num)+'.mp4'
+    sleep(10)
+    command = 'python PlayVideo/playVideoAtWeb.py '+str(running_mode)+'-s2-'+str(round_num)+'.mp4'
     os.system(command)
     start_time = datetime.now()
     this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
@@ -398,11 +395,10 @@ def question_s2_view(request, uaid, round_num,running_mode):
 
 
 @login_required
-def question_s3_view(request, uaid, round_num):
+def question_s3_view(request, uaid, round_num,running_mode):
     command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg' #打开ARmaker
     os.system(command)
-    sleep(0.01)
-    # command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
+    sleep(10)
     command = 'python PlayVideo/playVideoAtWeb.py s3-'+str(round_num)+'.mp4'
     os.system(command)
     start_time = datetime.now()
