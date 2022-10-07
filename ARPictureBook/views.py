@@ -1,3 +1,4 @@
+from decimal import Rounded
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -396,7 +397,10 @@ def question_s2_view(request, uaid, round_num,running_mode):
 
 @login_required
 def question_s3_view(request, uaid, round_num,running_mode):
-    command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg' #打开ARmaker
+    if (running_mode == 'Extra'):
+        command = 'python PlayVideo/playImageAtWeb.py ARmaker-'+str(round_num)+'.jpg' #打开ARmaker
+    else:
+        command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg' #打开ARmaker
     os.system(command)
     sleep(10)
     command = 'python PlayVideo/playVideoAtWeb.py s3-'+str(round_num)+'.mp4'
