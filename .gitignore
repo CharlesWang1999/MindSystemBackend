@@ -8,7 +8,6 @@ FERMoudle/
 ARPictureBook/migrations/__pycache__
 PaddleDetection/
 MindSystemBackend/settings.py
-ARPictureBook/__pycache__/*
-MindSystemBackend/__pycache__/*
+__pycache__/
 ARPictureBook/static/cartoon/cartoon_first.avi
 PlayVideo/temp.html

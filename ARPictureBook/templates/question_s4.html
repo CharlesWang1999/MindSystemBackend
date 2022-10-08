@@ -127,67 +127,63 @@
         </div>
         <!-- ar代码 -->
         <div class="col-lg-4 col-sm-4 box_right">
-            <div class="box_right_container">
-                <form id="question_form">
-                    <div class="question_title">
-                        <div class="question_class">单选题</div>
-                        <div class="question_text">根据大屏幕中视频，判断并选择视频中人物的情绪</div>
-                    </div>
-                    <div class="question_option">
-                        <ul start="" class="olCss" name="single">
-                            <li class="answer">
-                                <input id="emotion_a"
-                                       class="inputClass"
-                                       type="radio"
-                                       name="place1"
-                                       value="A"/>
-                                <label for="emotion_a" class="liRight">A. 快乐</label>
-                            </li>
-                            <li class="answer">
-                                <input id="emotion_b"
-                                       class="inputClass"
-                                       type="radio"
-                                       name="place1"
-                                       value="B"/>
-                                <label for="emotion_b" class="liRight">B. 悲伤</label>
-                            </li>
-                            <li class="answer">
-                                <input id="emotion_c"
-                                       class="inputClass"
-                                       type="radio"
-                                       name="place1"
-                                       value="C"/>
-                                <label for="emotion_c" class="liRight">C. 愤怒</label>
-                            </li>
-                            <li class="answer">
-                                <input id="emotion_d"
-                                       class="inputClass"
-                                       type="radio"
-                                       name="place1"
-                                       value="D"/>
-                                <label for="emotion_d" class="liRight">D. 恐惧</label>
-                            </li>
-                            <li class="answer">
-                                <input id="emotion_e"
-                                       class="inputClass"
-                                       type="radio"
-                                       name="place1"
-                                       value="E"/>
-                                <label for="emotion_e" class="liRight">E. 厌恶</label>
-                            </li>
-                            <li class="answer">
-                                <input id="emotion_f"
-                                       class="inputClass"
-                                       type="radio"
-                                       name="place1"
-                                       value="F"/>
-                                <label for="emotion_f" class="liRight">F. 惊奇</label>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-                <button type="button" id="question_button">确定提交</button>
-            </div>
+            <form id="question_form">
+                <div class="question_title">
+                    <span class="badge rounded-pill bg-primary">单选题</span>
+                    <div class="fs-2 fw-bold lh-base question_text">根据大屏幕中视频，判断并选择视频中人物的情绪</div>
+                </div>
+                <ul start="" class="question_option" name="single">
+                    <li class="answer">
+                        <input id="emotion_a"
+                                class="btn-check"
+                                type="radio"
+                                name="place1"
+                                value="A"/>
+                        <label for="emotion_a" class="btn btn-outline-primary btn-lg answer-label">A. 快乐</label>
+                    </li>
+                    <li class="answer">
+                        <input id="emotion_b"
+                                class="btn-check"
+                                type="radio"
+                                name="place1"
+                                value="B"/>
+                        <label for="emotion_b" class="btn btn-outline-primary btn-lg answer-label">B. 悲伤</label>
+                    </li>
+                    <li class="answer">
+                        <input id="emotion_c"
+                                class="btn-check"
+                                type="radio"
+                                name="place1"
+                                value="C"/>
+                        <label for="emotion_c" class="btn btn-outline-primary btn-lg answer-label">C. 愤怒</label>
+                    </li>
+                    <li class="answer">
+                        <input id="emotion_d"
+                                class="btn-check"
+                                type="radio"
+                                name="place1"
+                                value="D"/>
+                        <label for="emotion_d" class="btn btn-outline-primary btn-lg answer-label">D. 恐惧</label>
+                    </li>
+                    <li class="answer">
+                        <input id="emotion_e"
+                                class="btn-check"
+                                type="radio"
+                                name="place1"
+                                value="E"/>
+                        <label for="emotion_e" class="btn btn-outline-primary btn-lg answer-label">E. 厌恶</label>
+                    </li>
+                    <li class="answer">
+                        <input id="emotion_f"
+                                class="btn-check"
+                                type="radio"
+                                name="place1"
+                                value="F"/>
+                        <label for="emotion_f" class="btn btn-outline-primary btn-lg answer-label">F. 惊奇</label>
+                    </li>
+                </ul>
+            </form>
+            <button type="button" id="question_button" class="btn btn-primary btn-lg">确定提交</button>
         </div>
     </div>
     <div id="page_round" style="display: none">s4</div>

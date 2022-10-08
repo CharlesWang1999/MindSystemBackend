@@ -358,7 +358,7 @@ def question_s1_view(request, uaid, round_num,running_mode):
         str_write=str(start_time)+' question_s1阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
         f.write(str_write)
     start_record(uaid, 's1', round_num)
-    return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num})
+    return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num, 'img_name': 'start.jpg'})
 
 
 @login_required
@@ -392,7 +392,7 @@ def question_s2_view(request, uaid, round_num,running_mode):
         str_write=str(start_time)+' question_s2阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
         f.write(str_write)
     start_record(uaid, 's2', round_num)
-    return render(request, 'question_s2.html', {'uaid': uaid, 'round_num': round_num})
+    return render(request, 'question_s2.html', {'uaid': uaid, 'round_num': round_num, 'video_name': 'sub01-1.mp4'})
 
 
 @login_required

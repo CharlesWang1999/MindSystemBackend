@@ -7,52 +7,47 @@ body {
 }
 .box_right {
     height: 100vh;
-    padding: 10px 10px 10px 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #ffffff;
-}
-.box_right_container {
+    padding: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    background-color: #ffffff;
 }
 #question_form {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 .question_title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-.question_text {
-    margin-left: 10px;
+    margin-bottom: 56px;
 }
 .question_option {
+    flex: 1;
     display: flex;
-}
-.olCss {
-    display: flex;
-    width: 100%;
     flex-direction: column;
     align-items: center;
-    padding-left: 0px;
+    padding-left: 0;
 }
 .answer {
-    margin-top: 40px
+    margin-top: 40px;
+    width: 100%;
+    cursor: pointer;
+}
+.answer-label {
+    width: 100%;
+}
+.answer-label:hover {
+    color: #0d6efd;
+    border-color: #0d6efd;
+    background-color: unset;
 }
 #question_button{
-    display: flex;
-    color: #fff;
-    background: #0095ff;
-    border-radius: 10px;
-    font-size: 16px;
-    line-height: 44px;
-    font-weight: 500;
-    margin-top: 60px;
+    margin-top: 56px;
+    width: 100%;
+}
+#self_report_button{
+    margin-top: 56px;
+    width: 100%;
 }
 ul {
     list-style: none;
@@ -60,31 +55,11 @@ ul {
 canvas {
     pointer-events: none;
 }
-.question_class{
-    display: flex;
-    color: rgb(0, 0, 0);
-    background: #00ff2a;
-    border-radius: 16px;
-    font-size: 10px;
-    line-height: 44px;
-    font-weight: 500;
+.question_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-.question_text{
-    display: flex;
-    color: #fff;
-    background: #0095ff;
-    border-radius: 10px;
-    font-size: 16px;
-    line-height: 44px;
-    font-weight: 500;
-}
-#self_report_button{
-    display: flex;
-    color: #fff;
-    background: #0095ff;
-    border-radius: 10px;
-    font-size: 16px;
-    line-height: 44px;
-    font-weight: 500;
-    margin-top: 60px;
+.other-info-input {
+    display: none;
 }
