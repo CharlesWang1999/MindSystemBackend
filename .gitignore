@@ -4,6 +4,8 @@ test.avi
 VideoData/2022_*
 VideoData/time
 FMEDetection/
+FERMoudle/
+ARPictureBook/migrations/__pycache__
 PaddleDetection/
 MindSystemBackend/settings.py
 ARPictureBook/__pycache__/*
