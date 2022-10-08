@@ -2,7 +2,7 @@ db.sqlite3
 test.avi
 .DS_Store
 VideoData/2022_*
-VideoData/time
+VideoData/time/
 FMEDetection/
 FERMoudle/
 ARPictureBook/migrations/__pycache__
