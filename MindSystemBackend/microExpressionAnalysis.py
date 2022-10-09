@@ -12,11 +12,19 @@ class MicroExpressionAnalysis:
     def analysis(self, video_path, uaid, page_round, round_num):
         print(f'Start micro expression analysis {video_path}')
         analysis_result = []
-        output_path = '/home/FERMoudle/output/result.txt'
-        log_path = '/home/FERMoudle/log/log.txt'
-        checkpoint_path = '/home/FERMoudle/checkpoint/model_set_4.pth'
-        docker_command = f'python3 /home/FERMoudle/main.py --video /home/FERMoudle/{video_path} --output {output_path} --log {log_path} --checkpoint {checkpoint_path}'
-        command = f'docker exec -it FERMoudle {docker_command}'
+        # output_path = '/home/FERMoudle/output/result.txt'
+        # log_path = '/home/FERMoudle/log/log.txt'
+        # checkpoint_path = '/home/FERMoudle/checkpoint/model_set_4.pth'
+        # docker_command = f'python3 /home/FERMoudle/main.py --video /home/FERMoudle/{video_path} --output {output_path} --log {log_path} --checkpoint {checkpoint_path}'
+        output_path = './output/result.txt'
+        log_path = './log/log.txt'
+        checkpoint_path = './checkpoint/model_set_4.pth'
+        # docker_command = f"cd /home/FERMoudle; python3 main.py --video './{video_path}' --output '{output_path}' --log '{log_path}' --checkpoint '{checkpoint_path}';"
+        # command = f'docker exec -it FERMoudle {docker_command}'
+
+        docker_command = f"cd /home/FERMoudle && python3 main.py --video './{video_path}' --output '{output_path}' --log '{log_path}' --checkpoint '{checkpoint_path}';"
+        command = f'docker exec -it FERMoudle bash -c "{docker_command}"'
+
         # command = 'pwd'
         # docker exec -it FMEDetection python3 /home/FMEDetection/FMEDetectionTest.py /home/FMEDetection/sub01-1.mp4 /home/FMEDetection/output
         # python3 FMEDetection.py VideoData/2022_09_03_23_32_17/camera_micro_expression.avi ./output

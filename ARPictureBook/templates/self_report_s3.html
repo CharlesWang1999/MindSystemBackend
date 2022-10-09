@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-lg-8 col-sm-8 box_left">
             <!-- ar代码 -->
-            <a-scene
+            {% comment %} <a-scene
                 mindar-image="imageTargetSrc: https://raw.githubusercontent.com/weiqingv/ARedu/main/minds/lion.mind;uiError:no; uiLoading:no; uiScanning:no;"
                 color-space="sRGB"
                 renderer="colorManagement: true, physicallyCorrectLights"
@@ -123,7 +123,8 @@
                         >
                     </a-gltf-model>
                 </a-entity>
-            </a-scene>
+            </a-scene> {% endcomment %}
+            <img class="question_image" src="/static/image/{{ img_name }}" />
         </div>
         <!-- ar代码 -->
         <div class="col-lg-4 col-sm-4 box_right">

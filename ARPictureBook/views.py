@@ -383,7 +383,7 @@ def question_link_view(request, uaid, round_num,running_mode):
 def question_s2_view(request, uaid, round_num,running_mode):
     command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg' #打开ARmaker
     os.system(command)
-    sleep(10)
+    sleep(0.1)
     command = 'python PlayVideo/playVideoAtWeb.py '+str(running_mode)+'-s2-'+str(round_num)+'.mp4'
     os.system(command)
     start_time = datetime.now()
@@ -429,7 +429,7 @@ def self_report_s1_view(request, uaid, round_num):
     with open(str(this_time_txt_save_path),"a") as f:
         str_write=str(start_time)+' self_report_s1阶段'+'第'+str(round_num)+'页'+" 页面进入\n"
         f.write(str_write)
-    return render(request, 'self_report_s1.html', {'uaid': uaid, 'round_num': round_num})
+    return render(request, 'self_report_s1.html', {'uaid': uaid, 'round_num': round_num, 'img_name': 'start.jpg'})
 
 
 @login_required
@@ -439,7 +439,7 @@ def self_report_s2_view(request, uaid, round_num):
     with open(str(this_time_txt_save_path),"a") as f:
         str_write=str(start_time)+' self_report_s2阶段'+'第'+str(round_num)+'页'+" 页面进入\n"
         f.write(str_write)
-    return render(request, 'self_report_s2.html', {'uaid': uaid, 'round_num': round_num})
+    return render(request, 'self_report_s2.html', {'uaid': uaid, 'round_num': round_num, 'img_name': 'start.jpg'})
 
 
 @login_required
@@ -449,7 +449,7 @@ def self_report_s3_view(request, uaid, round_num):
     with open(str(this_time_txt_save_path),"a") as f:
         str_write=str(start_time)+' self_report_s3阶段'+'第'+str(round_num)+'页'+" 页面进入\n"
         f.write(str_write)
-    return render(request, 'self_report_s3.html', {'uaid': uaid, 'round_num': round_num})
+    return render(request, 'self_report_s3.html', {'uaid': uaid, 'round_num': round_num, 'img_name': 'start.jpg'})
 
 
 @login_required
