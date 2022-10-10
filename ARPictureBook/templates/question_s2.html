@@ -124,7 +124,10 @@
                     </a-gltf-model>
                 </a-entity>
             </a-scene> -->
-            <video width="100%" height="100%" src="/static/video/{{ video_name }}" controls autoplay loop />
+            <video width="100%" height="100%" autoplay muted loop>
+              <source src="/static/video/{{ video_name }}" type="video/mp4" />
+              <track src="/static/video_caption/{{ running_mode }}.vtt" default/>
+            </video>
         </div>
         <!-- ar代码 -->
         <div class="col-lg-4 col-sm-4 box_right">
