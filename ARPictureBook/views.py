@@ -43,6 +43,7 @@ video_data_save_path = 'VideoData'
 analysis_thread_queue = SimpleQueue()
 time_txt_save_path = 'VideoData/time'
 
+
 def analysis_thread():
     while True:
         while analysis_thread_queue.empty():
@@ -54,13 +55,15 @@ def analysis_thread():
         current_analysis_thread.join()
 
 
-def start_record(uaid, page_round, round_num):
+def start_record(uaid, page_round, round_num, imi=False):
     start_time = datetime.now()
-    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
-    with open(str(this_time_txt_save_path),"a") as f:
-        str_write=str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 视频录制开始\n"
+    this_time_txt_save_path = time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path), "a") as f:
+        str_write = str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 视频录制开始\n"
         f.write(str_write)
     video_data_save_dir_this_round = f'{video_data_save_path}/{start_time.year:=04}_{start_time.month:=02}_{start_time.day:=02}_{start_time.hour:=02}_{start_time.minute:=02}_{start_time.second:=02}_{uaid}_{page_round}_{round_num}'
+    if imi:
+        video_data_save_dir_this_round += '_imi'
     if not os.path.exists(video_data_save_dir_this_round):
         os.mkdir(video_data_save_dir_this_round)
 
@@ -75,11 +78,11 @@ def start_record(uaid, page_round, round_num):
         video_record.start_record(micro_expression_save_path)
 
 
-def stop_record(uaid, page_round, round_num):
+def stop_record(uaid, page_round, round_num, imi=False):
     start_time = datetime.now()
-    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
-    with open(str(this_time_txt_save_path),"a") as f:
-        str_write=str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 视频录制结束\n"
+    this_time_txt_save_path = time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path), "a") as f:
+        str_write = str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 视频录制结束\n"
         f.write(str_write)
     if settings.KINECT_RECORD:
         kinect_record.stop_record()
@@ -96,7 +99,7 @@ def stop_record(uaid, page_round, round_num):
         micro_expression_thread = Thread(
             name=f'analysis {micro_expression_save_path}',
             target=micro_expression_analysis.analysis,
-            args=(micro_expression_save_path, uaid, page_round, round_num, )
+            args=(micro_expression_save_path, uaid, page_round, round_num, imi, )
         )
         analysis_thread_queue.put(micro_expression_thread)
 
@@ -403,19 +406,19 @@ def question_s2_view(request, uaid, round_num,running_mode):
 @login_required
 def question_s3_view(request, uaid, round_num,running_mode):
     if (running_mode == 'Extra'):
-        command = 'python PlayVideo/playImageAtWeb.py ARmaker-'+str(round_num)+'.jpg' #打开ARmaker
+        command = 'python PlayVideo/playImageAtWeb.py ARmaker-'+str(round_num)+'.jpg'  #打开ARmaker
     else:
-        command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg' #打开ARmaker
+        command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg'  #打开ARmaker
     os.system(command)
     sleep(10)
     command = 'python PlayVideo/playVideoAtWeb.py s3-'+str(round_num)+'.mp4'
     os.system(command)
     start_time = datetime.now()
-    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
-    with open(str(this_time_txt_save_path),"a") as f:
-        str_write=str(start_time)+' question_s3阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
+    this_time_txt_save_path = time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path), "a") as f:
+        str_write = str(start_time)+' question_s3阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
         f.write(str_write)
-    start_record(uaid, 's3', round_num)
+    start_record(uaid, 's3', round_num, imi=True)
     return render(request, 'question_s3.html', {'uaid': uaid, 'round_num': round_num})
 
 
@@ -613,4 +616,17 @@ def get_web_click_view(request):
     print("继续开始录制")
     start_record()
 
+    return JsonResponse({"status": "success"})
+
+
+@csrf_exempt
+@login_required
+def imitation_finish_view(request):
+    uaid = request.POST.get('uaid', None)
+    round_num = request.POST.get('round_num', None)
+    uaid = int(uaid)
+    round_num = int(round_num)
+    stop_record(uaid=uaid, page_round='s3', round_num=round_num, imi=True)
+    print('@627--- imi finish, restart record ')
+    start_record(uaid=uaid, page_round='s3', round_num=round_num)
     return JsonResponse({"status": "success"})

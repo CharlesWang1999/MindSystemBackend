@@ -9,7 +9,7 @@ class MicroExpressionAnalysis:
     def __init__(self):
         pass
 
-    def analysis(self, video_path, uaid, page_round, round_num):
+    def analysis(self, video_path, uaid, page_round, round_num, imi=False):
         print(f'Start micro expression analysis {video_path}')
         analysis_result = []
         # output_path = '/home/FERMoudle/output/result.txt'
@@ -48,13 +48,22 @@ class MicroExpressionAnalysis:
                 page_round=page_round,
                 round_num=round_num
             )
-        final_result.happiness_prob = float(result_list[0].split(':')[-1])
-        final_result.sadness_prob = float(result_list[1].split(':')[-1])
-        final_result.neutral_prob = float(result_list[2].split(':')[-1])
-        final_result.anger_prob = float(result_list[3].split(':')[-1])
-        final_result.surprise_prob = float(result_list[4].split(':')[-1])
-        final_result.disgust_prob = float(result_list[5].split(':')[-1])
-        final_result.fear_prob = float(result_list[6].split(':')[-1])
+        if not imi:
+            final_result.happiness_prob = float(result_list[0].split(':')[-1])
+            final_result.sadness_prob = float(result_list[1].split(':')[-1])
+            final_result.neutral_prob = float(result_list[2].split(':')[-1])
+            final_result.anger_prob = float(result_list[3].split(':')[-1])
+            final_result.surprise_prob = float(result_list[4].split(':')[-1])
+            final_result.disgust_prob = float(result_list[5].split(':')[-1])
+            final_result.fear_prob = float(result_list[6].split(':')[-1])
+        else:
+            final_result.happiness_prob_imi = float(result_list[0].split(':')[-1])
+            final_result.sadness_prob_imi = float(result_list[1].split(':')[-1])
+            final_result.neutral_prob_imi = float(result_list[2].split(':')[-1])
+            final_result.anger_prob_imi = float(result_list[3].split(':')[-1])
+            final_result.surprise_prob_imi = float(result_list[4].split(':')[-1])
+            final_result.disgust_prob_imi = float(result_list[5].split(':')[-1])
+            final_result.fear_prob_imi = float(result_list[6].split(':')[-1])
         final_result.save()
         print(f'Micro expression analysis {video_path} finish')
         return analysis_result
