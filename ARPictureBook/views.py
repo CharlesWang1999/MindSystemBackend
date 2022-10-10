@@ -630,3 +630,21 @@ def imitation_finish_view(request):
     print('@627--- imi finish, restart record ')
     start_record(uaid=uaid, page_round='s3', round_num=round_num)
     return JsonResponse({"status": "success"})
+
+
+@login_required
+def task1_view(request):
+    return render(request, 'task1.html')
+
+
+@login_required
+def imitation_view(request):
+    return render(request, 'imitation.html')
+
+
+@login_required
+def score_view(request):
+    return render(request, 'score.html', {
+        'cognitive_score': ','.join(map(str, [0.9, 0.5, 0.4, 0.6, 0.7, 0.8])),
+        'emotion_score': ','.join(map(str, [0.7, 0.5, 0.8, 0.6, 0.9, 0.4]))
+    })

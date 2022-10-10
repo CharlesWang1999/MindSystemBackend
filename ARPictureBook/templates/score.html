@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <head>
+        <title>
+            {% block title %}
+                Score
+            {% endblock title %}
+        </title>
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/score.css" %}" />
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <script src="{% static "js/echarts.min.js" %}"></script>
+    </head>
+    <body>
+        <h1>测评结果</h1>
+        <div class="content">
+            <div class="chart-container">
+                <div id="chart1" class="chart"></div>
+                <p class="lead">认知共情水平</p>
+            </div>
+            <div class="chart-container">
+                <div id="chart2" class="chart"></div>
+                <p class="lead">情绪共情水平</p>
+            </div>
+        </div>
+        <script>
+            const chart1 = echarts.init(document.getElementById('chart1'));
+            const chart2 = echarts.init(document.getElementById('chart2'));
+
+            const chartOption1 = {
+                color: ['#F9713C'],
+                radar: {
+                    indicator: [
+                        { name: '开心', max: 1 },
+                        { name: '愤怒', max: 1 },
+                        { name: '恐惧', max: 1 },
+                        { name: '难过', max: 1 },
+                        { name: '厌恶', max: 1 },
+                        { name: '惊讶', max: 1 },
+                    ]
+                },
+                series: [
+                    {
+                        type: 'radar',
+                        data: [
+                            {
+                                value: [{{ cognitive_score }}],
+                                areaStyle: {
+                                    opacity: 0.5,
+                                }
+                            },
+                        ],
+                    }
+                ]
+            };
+
+            const chartOption2 = {
+                color: ['#B3E4A1'],
+                radar: {
+                    indicator: [
+                        { name: '开心', max: 1 },
+                        { name: '愤怒', max: 1 },
+                        { name: '恐惧', max: 1 },
+                        { name: '难过', max: 1 },
+                        { name: '厌恶', max: 1 },
+                        { name: '惊讶', max: 1 },
+                    ]
+                },
+                series: [
+                    {
+                        type: 'radar',
+                        data: [
+                            {
+                                value: [{{ emotion_score }}],
+                                areaStyle: {
+                                    opacity: 0.5,
+                                }
+                            },
+                        ],
+                    }
+                ]
+            };
+
+            chart1.setOption(chartOption1);
+            chart2.setOption(chartOption2);
+        </script>
+    </body>
+</html>
