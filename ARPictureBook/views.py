@@ -402,7 +402,7 @@ def question_s3_view(request, uaid, round_num,running_mode):
     else:
         command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg' #打开ARmaker
     os.system(command)
-    sleep(10)
+    sleep(0.1)
     command = 'python PlayVideo/playVideoAtWeb.py s3-'+str(round_num)+'.mp4'
     os.system(command)
     start_time = datetime.now()
@@ -412,7 +412,6 @@ def question_s3_view(request, uaid, round_num,running_mode):
         f.write(str_write)
     start_record(uaid, 's3', round_num)
     return render(request, 'question_s3.html', {'uaid': uaid, 'round_num': round_num})
-
 
 @login_required
 def question_s4_view(request, uaid, round_num):

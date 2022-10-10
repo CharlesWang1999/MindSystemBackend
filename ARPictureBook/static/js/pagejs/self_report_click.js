@@ -17,7 +17,7 @@ $('#self_report_button').click(function(){
           return;
         }
         if (response['have_next_page']){
-          if(response['running_mode'] == 'Testing'){
+          if(response['running_mode'] == 'Testing'&& resultData['page_round']=='s2'){
             url = "/ARPicture/question_" + resultData['page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' +response['running_mode'] + '/'
           } else {
             url = "/ARPicture/smooth_music/" + response['uaid'] + '/' + response['round_num'] + '/' + resultData['page_round'] + '/'
@@ -27,7 +27,7 @@ $('#self_report_button').click(function(){
           }
           window.location.href = url;
         } else {
-          if(response['running_mode'] === 'Testing'){
+          if(response['running_mode'] === 'Testing' && resultData['page_round']=='s2'){
             url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/'+response['running_mode'] + '/'
             if(response['next_page_round'] == 's4') {
               url = "/ARPicture/finish/" + resultData['uaid'] + '/'
