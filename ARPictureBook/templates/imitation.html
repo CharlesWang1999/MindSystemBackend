@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <head>
+        <title>
+            {% block title %}
+                Task1
+            {% endblock title %}
+        </title>
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/imitation.css" %}" />
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <script src="{% static "js/dayjs.min.js" %}"></script>
+    </head>
+    <body>
+        <h1 id="time-counter">
+            <span class="time-unit">00</span>:<span class="time-unit">00</span>:<span class="time-unit">00</span>
+        </h1>
+        <button id="imitate" class="btn btn-primary btn-lg">开始模仿</button>
+        <script>
+            let imitating = false;
+            let startTime = 0;
+            let endTime = 0;
+            let timeCounterHandler;
+            function startShowTime() {
+                const timePassed = dayjs().unix() - startTime;
+                const hour = Math.floor(timePassed / 3600).toString().padStart(2, '0');
+                const minute = Math.floor((timePassed % 3600) / 60).toString().padStart(2, '0');
+                const second = (timePassed % 60).toString().padStart(2, '0');
+                $('#time-counter').html(`<span class="time-unit">${hour}</span>:<span class="time-unit">${minute}</span>:<span class="time-unit">${second}</span>`);
+                timeCounterHandler = setTimeout(startShowTime, 500);
+            }
+            $('#imitate').on('click', function () {
+                if (imitating) {
+                    imitating = false;
+                    endTime = dayjs().unix();
+                    clearTimeout(timeCounterHandler);
+                    // TODO: 传给后端，记录开始时间结束时间（秒级 unix 时间戳）
+                    console.log({
+                        startTime,
+                        endTime,
+                    });
+                    $('#imitate').html('开始模仿');
+                } else {
+                    imitating = true;
+                    startTime = dayjs().unix();
+                    $('#imitate').html('停止模仿');
+                    startShowTime();
+                }
+            });
+        </script>
+    </body>
+</html>

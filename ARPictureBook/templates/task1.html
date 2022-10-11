@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <head>
+        <title>
+            {% block title %}
+                Task1
+            {% endblock title %}
+        </title>
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/task1.css" %}" />
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+    </head>
+    <body>
+        <h1>Task 1</h1>
+        <div class="content">
+            <p class="lead">请观看大屏幕上的图片</p>
+        </div>
+        <button class="btn btn-primary btn-lg">准备好了，开始吧</button>
+    </body>
+</html>

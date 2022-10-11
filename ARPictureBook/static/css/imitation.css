@@ -1,0 +1,20 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#imitate {
+  margin-top: 36px;
+}
+
+.time-unit {
+  display: inline-block;
+  width: 60px;
+  text-align: center;
+}
