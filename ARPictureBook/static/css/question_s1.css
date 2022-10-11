@@ -19,7 +19,7 @@ body {
     width: 100%;
 }
 .question_title {
-    margin-bottom: 56px;
+    margin-bottom: 2vh;
 }
 .question_option {
     flex: 1;
@@ -29,7 +29,7 @@ body {
     padding-left: 0;
 }
 .answer {
-    margin-top: 40px;
+    margin-top: 5px;
     width: 100%;
     cursor: pointer;
 }
@@ -42,11 +42,11 @@ body {
     background-color: unset;
 }
 #question_button{
-    margin-top: 56px;
+    margin-top: 10px;
     width: 100%;
 }
 #self_report_button{
-    margin-top: 56px;
+    margin-top: 2vh;
     width: 100%;
 }
 ul {
