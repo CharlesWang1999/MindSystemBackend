@@ -1,0 +1,28 @@
+{% extends "./base_task.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <head>
+        <title>
+            {% block title %}
+                Task4
+            {% endblock title %}
+        </title>
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/task1.css" %}" />
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+    </head>
+    <body>
+        <h1>Task 4</h1>
+        <div class="content">
+            <p class="lead">您将先使用平板扫描大屏幕的图片得到AR模型，并根据AR模型的表情对着摄像头进行模仿，完成模仿后点击模仿完成。再观看大屏幕情景视频，并选择当前你的情绪</p>
+        </div>
+        <button type='button' id='task_button' class="btn btn-primary btn-lg">准备好了，开始吧</button>
+    </body>
+    <div id="page_round" style="display: none">s3</div>
+</html>
+
+{% endblock content %}

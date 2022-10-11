@@ -59,7 +59,10 @@ def start_record(uaid, page_round, round_num, imi=False):
     start_time = datetime.now()
     this_time_txt_save_path = time_txt_save_path+'/'+str(uaid)+'.txt'
     with open(str(this_time_txt_save_path), "a") as f:
-        str_write = str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 视频录制开始\n"
+        if (imi):
+            str_write = str(start_time)+' '+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 视频录制开始\n"
+        else:
+            str_write = str(start_time)+' 模仿表情阶段'+'第'+str(round_num)+'页'+" 视频录制开始\n"
         f.write(str_write)
     video_data_save_dir_this_round = f'{video_data_save_path}/{start_time.year:=04}_{start_time.month:=02}_{start_time.day:=02}_{start_time.hour:=02}_{start_time.minute:=02}_{start_time.second:=02}_{uaid}_{page_round}_{round_num}'
     if imi:
@@ -348,6 +351,49 @@ def smooth_music_click_view(request):
     return JsonResponse(context)
 
 
+
+@login_required
+@csrf_exempt
+def task_click_view(request):
+    uaid = request.POST.get('uaid', None)
+    round_num = request.POST.get('round_num', None)
+    page_round = request.POST.get('page_round', None)
+    round_num = int(round_num)
+    have_next_page = round_num != settings.MAX_ROUND_NUM
+    next_page_round = None
+    if have_next_page:
+        next_page_round = page_round
+        next_round_num = round_num + 1
+    else:
+        next_round_num = 1
+        if page_round == 's1':
+            next_page_round = 'link'
+        elif page_round == 'link':
+            next_page_round = 's2'
+        elif page_round == 's2':
+            next_page_round = 's3'
+        elif page_round == 's3':
+            next_page_round = 's4'
+    user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+    running_mode = user_answer_info.running_mode
+    print('@189---', running_mode)
+    context = {
+        'uaid': uaid,
+        'next_round_num': next_round_num,
+        'next_page_round': next_page_round,
+        "running_mode": running_mode,
+        "have_next_page": have_next_page
+    }
+    print('@241---', context)
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' task_'+str(page_round)+'阶段'+'第'+str(round_num)+'页'+" 点击提交\n"
+        f.write(str_write)
+    return JsonResponse(context)
+
+
+
 @login_required
 def question_s1_view(request, uaid, round_num,running_mode):
     # command = 'python PlayVideo/playVideoAtWeb.py sub01-1.mp4'
@@ -361,7 +407,8 @@ def question_s1_view(request, uaid, round_num,running_mode):
         str_write=str(start_time)+' question_s1阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
         f.write(str_write)
     start_record(uaid, 's1', round_num)
-    return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num, 'img_name': 'start.jpg'})
+    img_name = str(running_mode) +'-s1-'+str(round_num)+'.jpg'
+    return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num, 'img_name': img_name})
 
 
 @login_required
@@ -395,10 +442,11 @@ def question_s2_view(request, uaid, round_num,running_mode):
         str_write=str(start_time)+' question_s2阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
         f.write(str_write)
     start_record(uaid, 's2', round_num)
+    video_name=str(running_mode)+'-s2-'+str(round_num)+'.mp4'
     return render(request, 'question_s2.html', {
         'uaid': uaid,
         'round_num': round_num,
-        'video_name': 'sub01-1.mp4',
+        'video_name': video_name,
         'running_mode': running_mode,
     })
 
@@ -411,8 +459,7 @@ def question_s3_view(request, uaid, round_num,running_mode):
         command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg'  #打开ARmaker
     os.system(command)
     sleep(0.1)
-    command = 'python PlayVideo/playVideoAtWeb.py s3-'+str(round_num)+'.mp4'
-    os.system(command)
+    
     start_time = datetime.now()
     this_time_txt_save_path = time_txt_save_path+'/'+str(uaid)+'.txt'
     with open(str(this_time_txt_save_path), "a") as f:
@@ -625,6 +672,8 @@ def imitation_finish_view(request):
     round_num = request.POST.get('round_num', None)
     uaid = int(uaid)
     round_num = int(round_num)
+    command = 'python PlayVideo/playVideoAtWeb.py s3-'+str(round_num)+'.mp4'
+    os.system(command)
     stop_record(uaid=uaid, page_round='s3', round_num=round_num, imi=True)
     print('@627--- imi finish, restart record ')
     start_record(uaid=uaid, page_round='s3', round_num=round_num)
@@ -632,8 +681,47 @@ def imitation_finish_view(request):
 
 
 @login_required
-def task1_view(request):
-    return render(request, 'task1.html')
+def task_s1_view(request, uaid):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' task_s1阶段'+" 页面进入\n"
+        f.write(str_write)
+    return render(request, 'task_s1.html',{'uaid': uaid})
+
+
+@login_required
+def task_s2_view(request, uaid):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' task_s2阶段'+" 页面进入\n"
+        f.write(str_write)
+    return render(request, 'task_s2.html',{'uaid': uaid})
+
+
+@login_required
+def task_s3_view(request, uaid):
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' task_s3阶段'+" 页面进入\n"
+        f.write(str_write)
+    return render(request, 'task_s3.html',{'uaid': uaid})
+
+
+@login_required
+def task_link_view(request, uaid):
+    print("检查1")
+    print(uaid)
+    print("检查2")
+    start_time = datetime.now()
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(start_time)+' task_link阶段'+" 页面进入\n"
+        f.write(str_write)
+    print("检查3")
+    return render(request, 'task_link.html',{'uaid': uaid})
 
 
 @login_required

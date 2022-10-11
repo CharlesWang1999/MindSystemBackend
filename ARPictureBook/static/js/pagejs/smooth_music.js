@@ -268,8 +268,11 @@ function back_the_question() {
       success:function (response) {
         console.log(response);
         url = "/ARPicture/question_" + response['next_page_round'] + "/" + response['uaid'] + '/' + response['next_round_num'] + '/' + response['running_mode'] + '/'
+        if (!response['have_next_page']) {
+            url = "/ARPicture/task_"+ response['next_page_round'] + "/" + response['uaid'] + '/'
+        }
         if(response['next_page_round'] == 's4' ) {
-            url = "/ARPicture/finish/" + resultData['uaid'] + '/'
+            url = "/ARPicture/score/"
           }
         window.location.href = url;
       }

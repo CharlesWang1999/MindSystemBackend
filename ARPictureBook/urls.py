@@ -27,9 +27,13 @@ from ARPictureBook.views import (
     system_evaluate_click_view,
     system_evaluate_view,
     imitation_finish_view,
-    task1_view,
     imitation_view,
     score_view,
+    task_click_view,
+    task_s1_view,
+    task_link_view,
+    task_s2_view,
+    task_s3_view,
 )
 
 urlpatterns = [
@@ -59,7 +63,13 @@ urlpatterns = [
     path('experiment_evaluate/<int:uaid>/', experiment_evaluate_view, name='experiment_evaluate'),
     path('finish/<int:uaid>/', finish_view, name='finish'),
     path('imitation_finish/', imitation_finish_view),
-    path('task1/', task1_view, name='task1'),
+    # path('task1/', task1_view, name='task1'),
     path('imitation/', imitation_view, name='imitation'),
     path('score/', score_view, name='score'),
+    path('task_click/', task_click_view),
+    path('task_s1/<int:uaid>/', task_s1_view, name='task_s1'),
+    path('task_s2/<int:uaid>/', task_s2_view, name='task_s2'),
+    path('task_s3/<int:uaid>/', task_s3_view, name='task_s3'),
+    path('task_link/<int:uaid>/', task_link_view, name='task_link'),
+    
 ]

@@ -1,11 +1,13 @@
+{% extends "./base_task.html" %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
     <meta charset="UTF-8" />
     <head>
         <title>
             {% block title %}
-                Task1
+                Task3
             {% endblock title %}
         </title>
         <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
@@ -14,10 +16,13 @@
         <script src="{% static "js/bootstrap.min.js" %}"></script>
     </head>
     <body>
-        <h1>Task 1</h1>
+        <h1>Task 3</h1>
         <div class="content">
-            <p class="lead">请观看大屏幕上的图片</p>
+            <p class="lead">请观看大屏幕上的人物面部表情变化的视频，选择该人物发生了哪种情绪</p>
         </div>
-        <button class="btn btn-primary btn-lg">准备好了，开始吧</button>
+        <button type='button' id='task_button' class="btn btn-primary btn-lg">准备好了，开始吧</button>
     </body>
+    <div id="page_round" style="display: none">s2</div>
 </html>
+
+{% endblock content %}
