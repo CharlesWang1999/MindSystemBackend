@@ -1,7 +1,6 @@
 from cmath import pi
 from decimal import Rounded
 from math import exp
-from symbol import power
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt

@@ -26,9 +26,9 @@ body::before {
     justify-content: center;
 }
 
-.navbar {
-    display: none;
-}
+/* .navbar { */
+/*     display: none; */
+/* } */
 
 .container {
     display: flex;

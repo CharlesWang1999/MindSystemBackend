@@ -2,16 +2,25 @@
 {% load static %}
 {% load static %}
 {% block content %}
-    <form id="choose_mode_form">
-        {% csrf_token %}
-        Choose Yor Mode:
-        <input type="radio" name="mode" value="Testing" checked="checked" />A
-        <input type="radio" name="mode" value="Production" />B
-        <input type="radio" name="mode" value="Extra" />C
-        <button id="choose_mode_submit" type="button" class="btn btn-primary float-right">
-            Submit
-        </button>
-    </form>
+<head>
+    <link rel="stylesheet" href="{% static "css/choose_mode.css" %}">
+</head>
+<div class="left">
+    <h1 class="mb-4">AR × Empathy 系统评估实验</h1>
+    <p class="lead">华东师范大学计算机科学与技术学院</p>
+</div>
+<form id="choose_mode_form" action='' method="POST" class="d-grid col-4 form" >    
+    <h2 class="mb-4">Choose your mode</h2>
+    {% csrf_token %}
+    <div class="mb-5">
+        <select class="form-select" name="mode" aria-label="Choose your mode">
+          <option value="Testing">A</option>
+          <option value="Production">B</option>
+          <option value="Extra">C</option>
+        </select>
+    </div>
+    <button id="choose_mode_submit" class="btn btn-primary" type="submit">Submit</button>
+</form>
 {% endblock %}
 
 {% block script %}
