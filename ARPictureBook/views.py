@@ -811,6 +811,8 @@ def score_view(request, uaid):
         else:
             final_result = None
             s3_answer.append(None)
+            s3_detection_imi.append(None)
+            s3_detection_video.append(None)
     print(s1_answer, link_answer, s2_answer, s3_answer, s3_detection_imi, s3_detection_video)
     return render(request, 'score.html', {
         'cognitive_score': ','.join(map(str, [0.9, 0.5, 0.4, 0.6, 0.7, 0.8])),
