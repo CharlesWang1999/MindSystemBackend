@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <head>
+        <title>
+            EQ
+        </title>
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/task1.css" %}" />
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+    </head>
+    <body>
+        <h1>请使用您的手机扫描下方二维码完成EQ量表，完成以后再点击下方按钮查看实验结果</h1>
+        <div class="content">
+            <p class="lead"><img src="{% static "image/eq_evaluate.jpg" %}" width="200" height="200" /></p>
+        </div>
+        <button type='button' id='task_button' class="btn btn-primary btn-lg">完成了，开始吧</button>
+    </body>
+    <div id="uaid" style="display: none">{{ uaid }}</div>
+</html>
+<script>
+    $("#task_button").click(function(){
+        let uaid = $("#uaid").text()
+        let url = '/ARPicture/score/' + uaid + '/'
+        window.location.href = url;
+    })
+</script>

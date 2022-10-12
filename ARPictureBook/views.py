@@ -739,13 +739,22 @@ def imitation_view(request):
 def score_view(request, uaid):
     real_answer_s1 = ['D', 'A', 'C', 'E', 'F', 'B']
     real_answer_other = ['C', 'E', 'D', 'A', 'B', 'F']
+    # A/C 0 angry 1 disgust 2 fear 3 happiness 4 sadness 5 surprise
+    # B 0 happiness 1 sadness 2 surprise 3 angry 4 disgust 5 fear
+    # needed order [0 happy, 1 sadness, 2 anger, 3 fear, 4 disgust, 5 surprise]
     user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+    running_mode = user_answer_info.running_mode
+    mapping_dict = {}
+    if running_mode == 'Production':
+        mapping_dict = {0: 0, 1: 1, 2: 5, 3: 2, 4: 4, 5: 3}
+    else:
+        mapping_dict = {0: 2, 1: 4, 2: 3, 3: 0, 4: 1, 5: 5}
     s1_answer = []
     link_answer = []
     s2_answer = []
     s3_answer = []
-    s3_detection_imi = []
-    s3_detection_video = []
+    s3_detection_imi = [None, None, None, None, None, None]
+    s3_detection_video = [None, None, None, None, None, None]
     for i in range(6):
         final_result = FinalResult.objects.filter(
             answer_info=user_answer_info,
@@ -792,8 +801,7 @@ def score_view(request, uaid):
             final_result = final_result.first()
             final_question_result = final_result.question_result
             s3_answer.append(0 if final_question_result == real_answer_other[i] else 1)
-            s3_detection_imi.append(
-                [
+            s3_detection_imi[mapping_dict[i]] = [
                     final_result.happiness_prob_imi,
                     final_result.sadness_prob_imi,
                     final_result.anger_prob_imi,
@@ -801,9 +809,7 @@ def score_view(request, uaid):
                     final_result.disgust_prob_imi,
                     final_result.surprise_prob_imi
                 ]
-            )
-            s3_detection_video.append(
-                [
+            s3_detection_video[mapping_dict[i]] = [
                     final_result.happiness_prob,
                     final_result.sadness_prob,
                     final_result.anger_prob,
@@ -811,12 +817,9 @@ def score_view(request, uaid):
                     final_result.disgust_prob,
                     final_result.surprise_prob
                 ]
-            )
         else:
             final_result = None
             s3_answer.append(None)
-            s3_detection_imi.append(None)
-            s3_detection_video.append(None)
     print(s1_answer, link_answer, s2_answer, s3_answer, s3_detection_imi, s3_detection_video)
     print(s3_detection_imi)
     #计算结果
@@ -844,3 +847,8 @@ def score_view(request, uaid):
         'cognitive_score': ','.join(map(str, cog_empathy)),
         'emotion_score': ','.join(map(str, emo_empathy))
     })
+
+
+@login_required
+def eq_evaluate_view(request, uaid):
+    return render(request, 'eq_evaluate.html', {'uaid': uaid})

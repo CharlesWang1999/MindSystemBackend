@@ -34,6 +34,7 @@ from ARPictureBook.views import (
     task_link_view,
     task_s2_view,
     task_s3_view,
+    eq_evaluate_view
 )
 
 urlpatterns = [
@@ -71,5 +72,5 @@ urlpatterns = [
     path('task_s2/<int:uaid>/', task_s2_view, name='task_s2'),
     path('task_s3/<int:uaid>/', task_s3_view, name='task_s3'),
     path('task_link/<int:uaid>/', task_link_view, name='task_link'),
-    
+    path('eq_evaluate/<int:uaid>/', eq_evaluate_view, name='eq_evaluate'),
 ]
