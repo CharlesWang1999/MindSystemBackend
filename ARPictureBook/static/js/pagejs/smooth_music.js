@@ -272,7 +272,7 @@ function back_the_question() {
             url = "/ARPicture/task_"+ response['next_page_round'] + "/" + response['uaid'] + '/'
         }
         if(response['next_page_round'] == 's4' ) {
-            url = "/ARPicture/score/"
+            url = "/ARPicture/score/"+ response['uaid'] + '/'
           }
         window.location.href = url;
       }

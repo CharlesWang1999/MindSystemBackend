@@ -1,4 +1,7 @@
+from cmath import pi
 from decimal import Rounded
+from math import exp
+from symbol import power
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -453,9 +456,10 @@ def question_s2_view(request, uaid, round_num,running_mode):
 
 @login_required
 def question_s3_view(request, uaid, round_num,running_mode):
+    print(running_mode)
     if (running_mode == 'Extra'):
         command = 'python PlayVideo/playImageAtWeb.py ARmaker-'+str(round_num)+'.jpg'  #打开ARmaker
-    if (running_mode == 'Production'):
+    elif (running_mode == 'Production'):
         command = 'python PlayVideo/playImageAtWeb.py ARmaker-'+str((round_num+2)%6+1)+'.jpg'  #打开ARmaker
     else:
         command = 'python PlayVideo/playImageAtWeb.py ARmaker.jpg'  #打开ARmaker
@@ -750,7 +754,7 @@ def score_view(request, uaid):
         )
         if final_result:
             final_result = final_result.first().question_result
-            s1_answer.append(1 if final_result == real_answer_s1[i] else 0)
+            s1_answer.append(0 if final_result == real_answer_s1[i] else 1)
         else:
             final_result = None
             s1_answer.append(None)
@@ -762,7 +766,7 @@ def score_view(request, uaid):
         )
         if final_result:
             final_result = final_result.first().question_result
-            link_answer.append(1 if final_result == real_answer_other[i] else 0)
+            link_answer.append(0 if final_result == real_answer_other[i] else 1)
         else:
             final_result = None
             link_answer.append(None)
@@ -774,7 +778,7 @@ def score_view(request, uaid):
         )
         if final_result:
             final_result = final_result.first().question_result
-            s2_answer.append(1 if final_result == real_answer_other[i] else 0)
+            s2_answer.append(0 if final_result == real_answer_other[i] else 1)
         else:
             final_result = None
             s2_answer.append(None)
@@ -787,7 +791,7 @@ def score_view(request, uaid):
         if final_result:
             final_result = final_result.first()
             final_question_result = final_result.question_result
-            s3_answer.append(1 if final_question_result == real_answer_other[i] else 0)
+            s3_answer.append(0 if final_question_result == real_answer_other[i] else 1)
             s3_detection_imi.append(
                 [
                     final_result.happiness_prob_imi,
@@ -814,7 +818,29 @@ def score_view(request, uaid):
             s3_detection_imi.append(None)
             s3_detection_video.append(None)
     print(s1_answer, link_answer, s2_answer, s3_answer, s3_detection_imi, s3_detection_video)
+    print(s3_detection_imi)
+    #计算结果
+    cog_empathy=[]
+    emo_empathy=[]
+    average_E=[]
+    for i in range(6):
+        s1_answer[i]=s1_answer[i] if s1_answer[i]!=None else 1
+        link_answer[i]=link_answer[i] if link_answer[i]!=None else 1
+        s2_answer[i]=s2_answer[i] if s2_answer[i]!=None else 1
+        s3_answer[i]=s3_answer[i] if s3_answer[i]!=None else 1
+        cog_empathy.append(exp(-1*pi/2*pow(0.15*s1_answer[i]+0.20*link_answer[i]+0.30*s2_answer[i]+0.35*s3_answer[i],2)))
+    print(cog_empathy)
+    for i in range(6):
+        E_all=0
+        s3_detection_imi[i][i]= s3_detection_imi[i][i] if s3_detection_imi[i][i] !=None else 1
+        for j in range(6):
+            print(s3_detection_video[i][j])
+            s3_detection_video[i][j]=s3_detection_video[i][j] if s3_detection_video[i][j] !=None else 0
+            print(s3_detection_video[i][j])
+            E_all+=s3_detection_video[i][j]
+        average_E.append(E_all/6)
+        emo_empathy.append((s3_detection_video[i][i]-average_E[i])/s3_detection_imi[i][i])
     return render(request, 'score.html', {
-        'cognitive_score': ','.join(map(str, [0.9, 0.5, 0.4, 0.6, 0.7, 0.8])),
-        'emotion_score': ','.join(map(str, [0.7, 0.5, 0.8, 0.6, 0.9, 0.4]))
+        'cognitive_score': ','.join(map(str, cog_empathy)),
+        'emotion_score': ','.join(map(str, emo_empathy))
     })
