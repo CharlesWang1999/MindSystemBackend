@@ -65,7 +65,7 @@ urlpatterns = [
     path('imitation_finish/', imitation_finish_view),
     # path('task1/', task1_view, name='task1'),
     path('imitation/', imitation_view, name='imitation'),
-    path('score/', score_view, name='score'),
+    path('score/<int:uaid>/', score_view, name='score'),
     path('task_click/', task_click_view),
     path('task_s1/<int:uaid>/', task_s1_view, name='task_s1'),
     path('task_s2/<int:uaid>/', task_s2_view, name='task_s2'),

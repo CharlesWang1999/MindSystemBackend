@@ -732,7 +732,86 @@ def imitation_view(request):
 
 
 @login_required
-def score_view(request):
+def score_view(request, uaid):
+    real_answer_s1 = ['D', 'A', 'C', 'E', 'F', 'B']
+    real_answer_other = ['C', 'E', 'D', 'A', 'B', 'F']
+    user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
+    s1_answer = []
+    link_answer = []
+    s2_answer = []
+    s3_answer = []
+    s3_detection_imi = []
+    s3_detection_video = []
+    for i in range(6):
+        final_result = FinalResult.objects.filter(
+            answer_info=user_answer_info,
+            page_round='s1',
+            round_num=i+1
+        )
+        if final_result:
+            final_result = final_result.first().question_result
+            s1_answer.append(1 if final_result == real_answer_s1[i] else 0)
+        else:
+            final_result = None
+            s1_answer.append(None)
+    for i in range(6):
+        final_result = FinalResult.objects.filter(
+            answer_info=user_answer_info,
+            page_round='link',
+            round_num=i+1
+        )
+        if final_result:
+            final_result = final_result.first().question_result
+            link_answer.append(1 if final_result == real_answer_other[i] else 0)
+        else:
+            final_result = None
+            link_answer.append(None)
+    for i in range(6):
+        final_result = FinalResult.objects.filter(
+            answer_info=user_answer_info,
+            page_round='s2',
+            round_num=i+1
+        )
+        if final_result:
+            final_result = final_result.first().question_result
+            s2_answer.append(1 if final_result == real_answer_other[i] else 0)
+        else:
+            final_result = None
+            s2_answer.append(None)
+    for i in range(6):
+        final_result = FinalResult.objects.filter(
+            answer_info=user_answer_info,
+            page_round='s3',
+            round_num=i+1
+        )
+        if final_result:
+            final_result = final_result.first()
+            final_question_result = final_result.question_result
+            s3_answer.append(1 if final_question_result == real_answer_other[i] else 0)
+            s3_detection_imi.append(
+                [
+                    final_result.happiness_prob_imi,
+                    final_result.sadness_prob_imi,
+                    final_result.anger_prob_imi,
+                    final_result.fear_prob_imi,
+                    final_result.disgust_prob_imi,
+                    final_result.surprise_prob_imi
+                ]
+            )
+            s3_detection_video.append(
+                [
+                    final_result.happiness_prob,
+                    final_result.sadness_prob,
+                    final_result.anger_prob,
+                    final_result.fear_prob,
+                    final_result.disgust_prob,
+                    final_result.surprise_prob
+                ]
+            )
+        else:
+            final_result = None
+            s3_answer.append(None)
+    print(s1_answer, link_answer, s2_answer, s3_answer, s3_detection_imi, s3_detection_video)
     return render(request, 'score.html', {
         'cognitive_score': ','.join(map(str, [0.9, 0.5, 0.4, 0.6, 0.7, 0.8])),
         'emotion_score': ','.join(map(str, [0.7, 0.5, 0.8, 0.6, 0.9, 0.4]))
