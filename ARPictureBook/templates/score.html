@@ -15,15 +15,15 @@
         <script src="{% static "js/echarts.min.js" %}"></script>
     </head>
     <body>
-        <h1>测评结果</h1>
+        <h1>test result</h1>
         <div class="content">
             <div class="chart-container">
                 <div id="chart1" class="chart"></div>
-                <p class="lead">认知共情水平</p>
+                <p class="lead">cognition empathy level</p>
             </div>
             <div class="chart-container">
                 <div id="chart2" class="chart"></div>
-                <p class="lead">情绪共情水平</p>
+                <p class="lead">affective  empathy level</p>
             </div>
         </div>
         <script>
@@ -34,12 +34,12 @@
                 color: ['#F9713C'],
                 radar: {
                     indicator: [
-                        { name: '开心', max: 1 },
-                        { name: '愤怒', max: 1 },
-                        { name: '恐惧', max: 1 },
-                        { name: '难过', max: 1 },
-                        { name: '厌恶', max: 1 },
-                        { name: '惊讶', max: 1 },
+                        { name: 'happiness', max: 1 },
+                        { name: 'anger', max: 1 },
+                        { name: 'sadness', max: 1 },
+                        { name: 'disgust', max: 1 },
+                        { name: 'fear', max: 1 },
+                        { name: 'surprise', max: 1 },
                     ]
                 },
                 series: [
@@ -61,12 +61,12 @@
                 color: ['#B3E4A1'],
                 radar: {
                     indicator: [
-                        { name: '开心', max: 1 },
-                        { name: '愤怒', max: 1 },
-                        { name: '恐惧', max: 1 },
-                        { name: '难过', max: 1 },
-                        { name: '厌恶', max: 1 },
-                        { name: '惊讶', max: 1 },
+                        { name: 'happiness', max: 1 },
+                        { name: 'anger', max: 1 },
+                        { name: 'sadness', max: 1 },
+                        { name: 'disgust', max: 1 },
+                        { name: 'fear', max: 1 },
+                        { name: 'surprise', max: 1 },
                     ]
                 },
                 series: [

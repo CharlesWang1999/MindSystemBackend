@@ -199,7 +199,8 @@ def question_click_view(request):
             return JsonResponse({"status": "error", "errormessage": "can not found answer info by uaid"})
     else:
         return JsonResponse({"status": "error", "errormessage": "UnExpected Error... Maybe dismiss id..."})
-    stop_record(uaid, page_round, round_num)
+    if (page_round == 's3' or page_round == 's2'):
+        stop_record(uaid, page_round, round_num)
     running_mode = user_answer_info.running_mode
     have_next_page = round_num != settings.MAX_ROUND_NUM
     final_result_queryset = FinalResult.objects.filter(
@@ -409,7 +410,7 @@ def question_s1_view(request, uaid, round_num,running_mode):
     with open(str(this_time_txt_save_path),"a") as f:
         str_write=str(start_time)+' question_s1阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
         f.write(str_write)
-    start_record(uaid, 's1', round_num)
+    # start_record(uaid, 's1', round_num)
     img_name = str(running_mode) +'-s1-'+str(round_num)+'.jpg'
     return render(request, 'question_s1.html', {'uaid': uaid, 'round_num': round_num, 'img_name': img_name})
 
@@ -427,7 +428,7 @@ def question_link_view(request, uaid, round_num,running_mode):
     with open(str(this_time_txt_save_path),"a") as f:
         str_write=str(start_time)+' question_link阶段'+'第'+str(round_num)+'页'+" 图片出现\n"
         f.write(str_write)
-    start_record(uaid, 'link', round_num)
+    # start_record(uaid, 'link', round_num)
     img_name = str(running_mode) +'-link-'+str(round_num)+'.jpg'
     return render(request, 'question_link.html', {'uaid': uaid, 'round_num': round_num, 'img_name': img_name})
 
@@ -738,21 +739,24 @@ def imitation_view(request):
 @login_required
 def score_view(request, uaid):
     real_answer_s1 = ['D', 'A', 'C', 'E', 'F', 'B']
+    s1_map=[3,0,2,4,5,1]
     real_answer_other = ['C', 'E', 'D', 'A', 'B', 'F']
+    other_map=[2,4,3,0,1,5]
     # A/C 0 angry 1 disgust 2 fear 3 happiness 4 sadness 5 surprise
     # B 0 happiness 1 sadness 2 surprise 3 angry 4 disgust 5 fear
     # needed order [0 happy, 1 sadness, 2 anger, 3 fear, 4 disgust, 5 surprise]
     user_answer_info = UserAnswerInfo.objects.filter(pk=uaid).first()
     running_mode = user_answer_info.running_mode
     mapping_dict = {}
+    mapping_dict_video = {0: 2, 1: 4, 2: 3, 3: 0, 4: 1, 5: 5}
     if running_mode == 'Production':
         mapping_dict = {0: 0, 1: 1, 2: 5, 3: 2, 4: 4, 5: 3}
     else:
         mapping_dict = {0: 2, 1: 4, 2: 3, 3: 0, 4: 1, 5: 5}
-    s1_answer = []
-    link_answer = []
-    s2_answer = []
-    s3_answer = []
+    s1_answer = [None, None, None, None, None, None]
+    link_answer = [None, None, None, None, None, None]
+    s2_answer = [None, None, None, None, None, None]
+    s3_answer = [None, None, None, None, None, None]
     s3_detection_imi = [None, None, None, None, None, None]
     s3_detection_video = [None, None, None, None, None, None]
     for i in range(6):
@@ -763,10 +767,10 @@ def score_view(request, uaid):
         )
         if final_result:
             final_result = final_result.first().question_result
-            s1_answer.append(0 if final_result == real_answer_s1[i] else 1)
+            s1_answer[s1_map[i]]=(0 if final_result == real_answer_s1[i] else 1)
         else:
             final_result = None
-            s1_answer.append(None)
+            # s1_answer.append(None)
     for i in range(6):
         final_result = FinalResult.objects.filter(
             answer_info=user_answer_info,
@@ -775,10 +779,10 @@ def score_view(request, uaid):
         )
         if final_result:
             final_result = final_result.first().question_result
-            link_answer.append(0 if final_result == real_answer_other[i] else 1)
+            link_answer[other_map[i]]=(0 if final_result == real_answer_other[i] else 1)
         else:
             final_result = None
-            link_answer.append(None)
+            # link_answer.append(None)
     for i in range(6):
         final_result = FinalResult.objects.filter(
             answer_info=user_answer_info,
@@ -787,10 +791,10 @@ def score_view(request, uaid):
         )
         if final_result:
             final_result = final_result.first().question_result
-            s2_answer.append(0 if final_result == real_answer_other[i] else 1)
+            s2_answer[other_map[i]]=(0 if final_result == real_answer_other[i] else 1)
         else:
             final_result = None
-            s2_answer.append(None)
+            # s2_answer.append(None)
     for i in range(6):
         final_result = FinalResult.objects.filter(
             answer_info=user_answer_info,
@@ -800,7 +804,7 @@ def score_view(request, uaid):
         if final_result:
             final_result = final_result.first()
             final_question_result = final_result.question_result
-            s3_answer.append(0 if final_question_result == real_answer_other[i] else 1)
+            s3_answer[other_map[i]]=(0 if final_question_result == real_answer_other[i] else 1)
             s3_detection_imi[mapping_dict[i]] = [
                     final_result.happiness_prob_imi,
                     final_result.sadness_prob_imi,
@@ -809,7 +813,7 @@ def score_view(request, uaid):
                     final_result.disgust_prob_imi,
                     final_result.surprise_prob_imi
                 ]
-            s3_detection_video[mapping_dict[i]] = [
+            s3_detection_video[mapping_dict_video[i]] = [
                     final_result.happiness_prob,
                     final_result.sadness_prob,
                     final_result.anger_prob,
@@ -819,9 +823,27 @@ def score_view(request, uaid):
                 ]
         else:
             final_result = None
-            s3_answer.append(None)
+            # s3_answer.append(None)
     print(s1_answer, link_answer, s2_answer, s3_answer, s3_detection_imi, s3_detection_video)
-    print(s3_detection_imi)
+    this_time_txt_save_path=time_txt_save_path+'/'+str(uaid)+'.txt'
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(s1_answer)+' t1答案\n'
+        f.write(str_write)
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(link_answer)+' t2答案\n'
+        f.write(str_write)    
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(s2_answer)+' t3答案\n'
+        f.write(str_write)  
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(s3_answer)+' t4答案\n'
+        f.write(str_write)  
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(s3_detection_imi)+'模仿概率\n'
+        f.write(str_write)  
+    with open(str(this_time_txt_save_path),"a") as f:
+        str_write=str(s3_detection_video)+'观看视频概率\n'
+        f.write(str_write)  
     #计算结果
     cog_empathy=[]
     emo_empathy=[]
@@ -842,7 +864,10 @@ def score_view(request, uaid):
             print(s3_detection_video[i][j])
             E_all+=s3_detection_video[i][j]
         average_E.append(E_all/6)
-        emo_empathy.append((s3_detection_video[i][i]-average_E[i])/s3_detection_imi[i][i])
+        emo_empathy.append(exp(-1*s3_detection_imi[i][i]/s3_detection_video[i][i]))
+        print('@123---',(exp(-1*s3_detection_imi[i][i]/s3_detection_video[i][i])))
+    print('@848---', emo_empathy)
+    
     return render(request, 'score.html', {
         'cognitive_score': ','.join(map(str, cog_empathy)),
         'emotion_score': ','.join(map(str, emo_empathy))
