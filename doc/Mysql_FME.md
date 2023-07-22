@@ -29,6 +29,8 @@ Linux/MacOSX: ``ln -snf settings_xxx.py settings.py``
 
 ## 关于微表情识别
 
+news: 最新版本已经替换为了FERModule，下方具体路径谨慎参考。
+
 昨天（2022/09/03）晚上我把项目文件的压缩包放在了群里，下载完解压后放在本项目的根目录下，建议命名为FMEDetection，然后手动在该目录下再新建一个output文件夹。
 
 docker image 拉取命令： ``docker pull chamberharr/fmedetection:v1``

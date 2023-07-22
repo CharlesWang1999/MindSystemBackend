@@ -1,6 +1,70 @@
 # MindSystemBackend
 MindSystemBackend
-## How to Start Django Environment
+
+
+## Clone this project
+
+It is recommended that you fork this project and then clone it for development.
+
+## Create a python environment and install dependencies
+
+It is recommended that you use Anaconda to create virtual environments.
+
+python >= 3.7 is recommended
+
+Run ```pip install -r requirements.txt``` to install dependencies.
+
+
+## Install MySQL database
+
+All versions may work, but we only tested on version 8.0.29.
+
+After you have finished installing mysql, be sure to add the installation directory to your environment variables.
+
+You can run ```mysql -uroot -p``` to confirm that the installation is complete.
+
+Then run ```create databases <database_name>``` to create a new database where the recommended name for the ```<database_name>``` is ```mind_system_mysql_db```
+
+
+## Install Docker
+
+Download Docker Desktop on offical website.
+
+Then run ```docker pull chamberharr/fmedetection:v1``` to pull the docker image.
+
+Download file FERMoudle.7z in [Google Drive](https://drive.google.com/file/d/1zF7bt3Bi2pFf2i6mPnIPW2xzTcQvvlf5/view?usp=sharing) or [Baidu Netdisk](https://pan.baidu.com/s/1G9RpcxBcgPUvO6nFFAIFkw?pwd=v02b). Then unzip it to the project root directory.
+
+Use docker run to create container from image.
+```
+docker run --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --volume=.\FERMoudle:/home/FERMoudle --volume=.\VideoData:/home/FERMoudle/VideoData --runtime=runc --name=FERModule -dit chamberharr/fmedetection:v1
+```
+**Hint: --volume is based on your system.**
+
+Then run ```docker start FERModule``` to start the container.
+
+## Start Django server
+
+1. Create a file ```settings_<your_name>.py``` in MindSystemBackend folder. You can reference ```settings_yuji.py``` and [Tutorial](./doc/Mysql_FME.md). Change the database configuration information.
+2. Make a Symbolic link ```settings.py``` to ```settings_<your_name>.py```. E.g.```ln -snf settings_<your_name>.py settings.py``` for Linux/MacOSX. ```mklink settings.py settings_<your_name>.py``` for Windows CMD. ```New-Item -ItemType SymbolicLink -Path settings.py -Target .\settings_<your_name>.py``` for Windows Terminal.
+3. Run ```python manage.py migrate``` to migrate the database.
+4. Run ```python manage.py createsuperuser```, then create a user. If raise python exception, please modify the error line from ```query = query.decode(errors='replace')``` to ```query = query.encode(errors='replace').decode(errors='replace')```
+5. Run ```python manage.py runsslserver 0.0.0.0:8080```
+6. The main page url of this project is https://localhost:8080/ARPicture/login/
+7. Use superuser to login.
+8. Django databases page url is https://localhost:8080/admin/. You can create new user here.
+
+
+## Test the system
+1. Check your phone/pad is at the same local network with your server.
+2. Use your phone/pad visit https://x.x.x.x:8080
+3. Login and follow the prompt message.
+
+
+----
+
+
+## This is old readme version, for reference only.
+
 **Hint: Based on Linux/MacOSX**
 1. ```pip3 install virtualenv```
 2. ```mkdir -p /app/ENV/```
@@ -55,5 +119,6 @@ Then fllow the step 7-10. (maybe use pip instead of pip3)
 5. Create models to save the query result. --via. Charles 2022/08/11
 6. Finish save result logic. --via Charles 2022/08/12
 
-## Reference
-1. [How to use H5 camera](https://www.jianshu.com/p/052a7fecc358)
+
+
+

@@ -5,6 +5,7 @@ VideoData/2022_*
 VideoData/time/
 FMEDetection/
 FERMoudle/
+FERMoudle.7z
 ARPictureBook/migrations/__pycache__
 PaddleDetection/
 MindSystemBackend/settings.py
